@@ -24,6 +24,8 @@ using std::setw;
 #pragma endregion
 
 #pragma region header
+void readEnter();
+void readChar(char &);
 void showFileError(exception &);
 bool getMaxMin(ifstream &, double &, double &);
 bool getMean(ifstream &, double &);
@@ -37,11 +39,10 @@ bool outputValues(ifstream &);
  */
 int main() {
 	bool looping = true;
-	int i;
 	double total = 0, mean = 0, max = 0, min = 0;
 	char userChoice;
-	ifstream fil;
-	fil.exceptions(ios::failbit);
+	ifstream inputFile;
+	inputFile.exceptions(ios::failbit);
 
 	cout << endl << endl <<
 		"Temperature Statistics" << endl <<
@@ -66,15 +67,15 @@ int main() {
 			"4. Quit" << endl <<
 			endl <<
 			"Make your choice: ";
-		cin.get(userChoice);
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		readChar(userChoice);
 
 		try {
-			fil.open(LOG_FILE);
+			inputFile.open(LOG_FILE);
 		} catch (exception &e) {
 			showFileError(e);
 			cerr << endl << "Press enter to terminate the program" << endl;
-			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			readEnter();
+
 			return EXIT_FAILURE;
 		}
 
@@ -87,7 +88,7 @@ int main() {
 		case '1':
 			cout << endl << "Displaying the latest " << NUMBER_OF_VALUES << " temperature values:" << endl << endl;
 
-			if (!outputValues(fil)) {
+			if (!outputValues(inputFile)) {
 				break;
 			}
 
@@ -96,7 +97,7 @@ int main() {
 		case '2':
 			cout << endl << "Calculating the maximum and minimum temperature..." << endl;
 
-			if (!getMaxMin(fil, max, min)) {
+			if (!getMaxMin(inputFile, max, min)) {
 				break;
 			}
 
@@ -107,7 +108,7 @@ int main() {
 		case '3':
 			cout << endl << "Calculating average temperature..." << endl;
 
-			if (!getMean(fil, mean)) {
+			if (!getMean(inputFile, mean)) {
 				break;
 			}
 
@@ -121,14 +122,23 @@ int main() {
 			break;
 
 		default:
-			cout << endl << endl << "Illegal menu option.";
+			cout << endl << endl << "Invalid menu option.";
 			break;
 		}
 		cout << endl << endl << "Press Enter to continue:";
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		fil.close();
+		readEnter();
+		inputFile.close();
 	}
 	return EXIT_SUCCESS;
+}
+
+void readEnter() {
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void readChar(char &userChoice) {
+	cin.get(userChoice);
+	readEnter();
 }
 
 void showFileError(exception &e) {
@@ -179,6 +189,7 @@ bool getMaxMin(ifstream &fil, double &max, double &min) {
 bool getMean(ifstream &fil, double &mean) {
 	double temp = 0.0;
 	double total = 0.0;
+
 	try {
 		for (int i = 0; i < NUMBER_OF_VALUES; ++i) {
 			fil >> temp;
@@ -188,6 +199,8 @@ bool getMean(ifstream &fil, double &mean) {
 		showFileError(e);
 		return false;
 	}
+
 	mean = total / (double) NUMBER_OF_VALUES;
+
 	return true;
 }
