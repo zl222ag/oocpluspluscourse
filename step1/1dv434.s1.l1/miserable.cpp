@@ -24,6 +24,7 @@ using std::setw;
 #pragma endregion
 
 #pragma region header
+void showFileError(exception &);
 bool getMaxMin(ifstream &, double &, double &);
 bool getMean(ifstream &, double &);
 bool outputValues(ifstream &);
@@ -68,25 +69,36 @@ int main() {
 		cin.get(userChoice);
 		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-		fil.open(LOG_FILE);
-
-		if (fil.tellg() > 0) {
-			fil.clear();
-			fil.seekg(0, ios::beg);
+		try {
+			fil.open(LOG_FILE);
+		} catch (exception &e) {
+			showFileError(e);
+			cerr << endl << "Press enter to terminate the program" << endl;
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			return EXIT_FAILURE;
 		}
+
+		//		if (fil.tellg() > 0) {
+		//			fil.clear();
+		//			fil.seekg(0, ios::beg);
+		//		}
 
 		switch (userChoice) {
 		case '1':
 			cout << endl << "Displaying the latest " << NUMBER_OF_VALUES << " temperature values:" << endl << endl;
 
-			outputValues(fil);
+			if (!outputValues(fil)) {
+				break;
+			}
 
 			break;
 
 		case '2':
 			cout << endl << "Calculating the maximum and minimum temperature..." << endl;
 
-			getMaxMin(fil, max, min);
+			if (!getMaxMin(fil, max, min)) {
+				break;
+			}
 
 			cout << endl << "Maximum temperature: " << fixed << setprecision(2) << max << " degrees Celcius" << endl;
 			cout << endl << "Minimum temperature: " << min << " degrees Celcius" << endl;
@@ -95,7 +107,9 @@ int main() {
 		case '3':
 			cout << endl << "Calculating average temperature..." << endl;
 
-			getMean(fil, mean);
+			if (!getMean(fil, mean)) {
+				break;
+			}
 
 			cout << endl << "Average temperature: ";
 			cout << " " << fixed << setprecision(2) << mean << " degrees Celcius" << endl;
@@ -117,11 +131,15 @@ int main() {
 	return EXIT_SUCCESS;
 }
 
+void showFileError(exception &e) {
+	cerr << "An Error occured while reading file: " << endl << "\t" << e.what() << endl;
+}
+
 bool outputValues(ifstream  &fil) {
-	double temp;
+	double temp = 0.0;
 
 	try {
-		for (int i = 0; i < NUMBER_OF_VALUES; i++) {
+		for (int i = 0; i < NUMBER_OF_VALUES; ++i) {
 			if (i % 6 == 0) {
 				cout << endl;
 			}
@@ -129,19 +147,20 @@ bool outputValues(ifstream  &fil) {
 			cout << fixed << setprecision(2) << setw(8) << temp;
 		}
 	} catch (exception &e) {
-		cerr << e.what() << endl;
+		showFileError(e);
 		return false;
 	}
 	return true;
 }
 
 bool getMaxMin(ifstream &fil, double &max, double &min) {
-	double temp;
-	fil >> temp;
-	max = min = temp;
+	double temp = 0.0;
 
 	try {
-		for (int i = 1; i < NUMBER_OF_VALUES; i++) {
+		fil >> temp;
+		max = min = temp;
+
+		for (int i = 1; i < NUMBER_OF_VALUES; ++i) {
 			fil >> temp;
 			if (temp > max) {
 				max = temp;
@@ -151,22 +170,22 @@ bool getMaxMin(ifstream &fil, double &max, double &min) {
 			}
 		}
 	} catch (exception &e) {
-		cerr << e.what() << endl;
+		showFileError(e);
 		return false;
 	}
 	return true;
 }
 
 bool getMean(ifstream &fil, double &mean) {
-	double temp;
+	double temp = 0.0;
 	double total = 0.0;
 	try {
-		for (int i = 0; i < NUMBER_OF_VALUES; i++) {
+		for (int i = 0; i < NUMBER_OF_VALUES; ++i) {
 			fil >> temp;
 			total += temp;
 		}
 	} catch (exception &e) {
-		cerr << e.what() << endl;
+		showFileError(e);
 		return false;
 	}
 	mean = total / (double) NUMBER_OF_VALUES;
