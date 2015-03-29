@@ -5,6 +5,8 @@
 
 #define LOG_FILE "templog.txt"
 #define NUMBER_OF_VALUES 24
+#define PRECISION 2
+#define NUMBER_WIDTH 8
 
 #include <iostream>
 #include <fstream>
@@ -21,6 +23,8 @@ using std::exception;
 using std::fixed;
 using std::setprecision;
 using std::setw;
+using std::numeric_limits;
+using std::streamsize;
 #pragma endregion
 
 #pragma region header
@@ -51,11 +55,11 @@ int main() {
 		"Reading logged values for processing and presentation..." << endl <<
 		endl <<
 		"Press Enter for menu: ";
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	readEnter();
 	cin.clear();
 
 	while (looping) {
-		system("cls");
+		system("cls"); // clears screen.
 		cout << endl <<
 			endl <<
 			"MENU" << endl <<
@@ -101,7 +105,7 @@ int main() {
 				break;
 			}
 
-			cout << endl << "Maximum temperature: " << fixed << setprecision(2) << max << " degrees Celcius" << endl;
+			cout << endl << "Maximum temperature: " << fixed << setprecision(PRECISION) << max << " degrees Celcius" << endl;
 			cout << endl << "Minimum temperature: " << min << " degrees Celcius" << endl;
 			break;
 
@@ -113,7 +117,7 @@ int main() {
 			}
 
 			cout << endl << "Average temperature: ";
-			cout << " " << fixed << setprecision(2) << mean << " degrees Celcius" << endl;
+			cout << " " << fixed << setprecision(PRECISION) << mean << " degrees Celcius" << endl;
 			break;
 
 		case '4':
@@ -133,19 +137,19 @@ int main() {
 }
 
 void readEnter() {
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-void readChar(char &userChoice) {
-	cin.get(userChoice);
+void readChar(char &a_userChoice) {
+	cin.get(a_userChoice);
 	readEnter();
 }
 
-void showFileError(exception &e) {
-	cerr << "An Error occured while reading file: " << endl << "\t" << e.what() << endl;
+void showFileError(exception &a_e) {
+	cerr << "An Error occured while reading file: " << endl << "\t" << a_e.what() << endl;
 }
 
-bool outputValues(ifstream  &fil) {
+bool outputValues(ifstream  &a_fil) {
 	double temp = 0.0;
 
 	try {
@@ -153,8 +157,8 @@ bool outputValues(ifstream  &fil) {
 			if (i % 6 == 0) {
 				cout << endl;
 			}
-			fil >> temp;
-			cout << fixed << setprecision(2) << setw(8) << temp;
+			a_fil >> temp;
+			cout << fixed << setprecision(PRECISION) << setw(NUMBER_WIDTH) << temp;
 		}
 	} catch (exception &e) {
 		showFileError(e);
@@ -163,20 +167,20 @@ bool outputValues(ifstream  &fil) {
 	return true;
 }
 
-bool getMaxMin(ifstream &fil, double &max, double &min) {
+bool getMaxMin(ifstream &a_fil, double &a_max, double &a_min) {
 	double temp = 0.0;
 
 	try {
-		fil >> temp;
-		max = min = temp;
+		a_fil >> temp;
+		a_max = a_min = temp;
 
 		for (int i = 1; i < NUMBER_OF_VALUES; ++i) {
-			fil >> temp;
-			if (temp > max) {
-				max = temp;
+			a_fil >> temp;
+			if (temp > a_max) {
+				a_max = temp;
 			}
-			if (temp < min) {
-				min = temp;
+			if (temp < a_min) {
+				a_min = temp;
 			}
 		}
 	} catch (exception &e) {
@@ -186,13 +190,13 @@ bool getMaxMin(ifstream &fil, double &max, double &min) {
 	return true;
 }
 
-bool getMean(ifstream &fil, double &mean) {
+bool getMean(ifstream &a_fil, double &a_mean) {
 	double temp = 0.0;
 	double total = 0.0;
 
 	try {
 		for (int i = 0; i < NUMBER_OF_VALUES; ++i) {
-			fil >> temp;
+			a_fil >> temp;
 			total += temp;
 		}
 	} catch (exception &e) {
@@ -200,7 +204,7 @@ bool getMean(ifstream &fil, double &mean) {
 		return false;
 	}
 
-	mean = total / (double) NUMBER_OF_VALUES;
+	a_mean = total / (double) NUMBER_OF_VALUES;
 
 	return true;
 }
