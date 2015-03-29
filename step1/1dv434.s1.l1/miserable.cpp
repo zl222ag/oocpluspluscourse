@@ -28,6 +28,7 @@ using std::streamsize;
 #pragma endregion
 
 #pragma region header
+void clearScreen();
 void readEnter();
 void readChar(char &);
 void showFileError(exception &);
@@ -59,7 +60,7 @@ int main() {
 	cin.clear();
 
 	while (looping) {
-		system("cls"); // clears screen.
+		clearScreen();
 		cout << endl <<
 			endl <<
 			"MENU" << endl <<
@@ -72,6 +73,7 @@ int main() {
 			endl <<
 			"Make your choice: ";
 		readChar(userChoice);
+		clearScreen();
 
 		try {
 			inputFile.open(LOG_FILE);
@@ -87,10 +89,10 @@ int main() {
 		//			fil.clear();
 		//			fil.seekg(0, ios::beg);
 		//		}
-
+		cout << endl << endl; // results should be lower in console.
 		switch (userChoice) {
 		case '1':
-			cout << endl << "Displaying the latest " << NUMBER_OF_VALUES << " temperature values:" << endl << endl;
+			cout << "Displaying the latest " << NUMBER_OF_VALUES << " temperature values:" << endl << endl;
 
 			if (!outputValues(inputFile)) {
 				break;
@@ -99,7 +101,7 @@ int main() {
 			break;
 
 		case '2':
-			cout << endl << "Calculating the maximum and minimum temperature..." << endl;
+			cout << "Calculating the maximum and minimum temperature..." << endl;
 
 			if (!getMaxMin(inputFile, max, min)) {
 				break;
@@ -110,30 +112,33 @@ int main() {
 			break;
 
 		case '3':
-			cout << endl << "Calculating average temperature..." << endl;
+			cout << "Calculating average temperature..." << endl;
 
 			if (!getMean(inputFile, mean)) {
 				break;
 			}
 
-			cout << endl << "Average temperature: ";
-			cout << " " << fixed << setprecision(PRECISION) << mean << " degrees Celcius" << endl;
+			cout << endl << "Average temperature: " << fixed << setprecision(PRECISION) << mean << " degrees Celcius" << endl;
 			break;
 
 		case '4':
+			cout << "Terminating the program." << endl;
 			looping = false;
-			cout << endl << endl << "Terminating the program.";
 			break;
 
 		default:
-			cout << endl << endl << "Invalid menu option.";
+			cout << "Invalid menu option." << endl;
 			break;
 		}
-		cout << endl << endl << "Press Enter to continue:";
+		cout << endl << "Press Enter to continue:";
 		readEnter();
 		inputFile.close();
 	}
 	return EXIT_SUCCESS;
+}
+
+void clearScreen() {
+	system("cls");
 }
 
 void readEnter() {
