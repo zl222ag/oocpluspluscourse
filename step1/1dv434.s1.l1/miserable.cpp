@@ -37,10 +37,12 @@ bool getMean(ifstream &, double &);
 bool outputValues(ifstream &);
 #pragma endregion
 
-/*
- * Här körs programmet.
- * Den ska kunna via menyn visa temperatur,
- * maximum och minimum, medelvärdet och man kan kunna stänga den.
+/* The starter function for the program.
+ * It should be able to show a menu with choices:
+ * show all temperatures,
+ * show max and min,
+ * show mean temperature, and
+ * It should also be closeable.
  */
 int main() {
 	bool looping = true;
@@ -137,23 +139,28 @@ int main() {
 	return EXIT_SUCCESS;
 }
 
+// Clears the console screen.
 void clearScreen() {
 	system("cls");
 }
 
+// Ignores all user's input until the enter key is pressed.
 void readEnter() {
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
+// Reads the user's input (ignores all characters except the first).
 void readChar(char &a_userChoice) {
 	cin.get(a_userChoice);
 	readEnter();
 }
 
+// Shows an error.
 void showFileError(exception &a_e) {
 	cerr << "An Error occured while reading file: " << endl << "\t" << a_e.what() << endl;
 }
 
+// Reads values from file and shows them in a formatted table.
 bool outputValues(ifstream  &a_fil) {
 	double temp = 0.0;
 
@@ -172,6 +179,7 @@ bool outputValues(ifstream  &a_fil) {
 	return true;
 }
 
+// Reads values from file and gets the max and min values.
 bool getMaxMin(ifstream &a_fil, double &a_max, double &a_min) {
 	double temp = 0.0;
 
@@ -195,6 +203,7 @@ bool getMaxMin(ifstream &a_fil, double &a_max, double &a_min) {
 	return true;
 }
 
+// Reads values from file and gets the mean values.
 bool getMean(ifstream &a_fil, double &a_mean) {
 	double temp = 0.0;
 	double total = 0.0;
