@@ -186,3 +186,9 @@ FakesAssemblies/
 *.exe
 *.out
 *.app
+
+# Eclipse junk
+.project
+.cproject
+
+.settings/
