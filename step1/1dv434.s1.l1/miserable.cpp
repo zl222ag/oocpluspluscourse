@@ -31,7 +31,7 @@ using std::streamsize;
 void clearScreen();
 void readEnter();
 void readChar(char &);
-void showFileError(exception &);
+void showFileError(ifstream::failure &);
 bool getMaxMin(ifstream &, double &, double &);
 bool getMean(ifstream &, double &);
 bool outputValues(ifstream &);
@@ -49,7 +49,10 @@ int main() {
 	double total = 0.0, mean = 0.0, max = 0.0, min = 0.0;
 	char userChoice;
 	ifstream inputFile;
-	inputFile.exceptions(ios::failbit);
+	// Causes exception to be thrown when an error occures on I/O operation or a
+	// read/write occures on I/O operations.
+	// source: http://www.cplusplus.com/reference/ios/ios/exceptions/
+	inputFile.exceptions(ios::failbit | ios::badbit);
 
 	cout << endl << endl <<
 		"Temperature Statistics" << endl <<
@@ -79,7 +82,7 @@ int main() {
 
 		try {
 			inputFile.open(LOG_FILE);
-		} catch (exception &e) {
+		} catch (ifstream::failure &e) {
 			showFileError(e);
 			cerr << endl << "Press enter to terminate the program" << endl;
 			readEnter();
@@ -147,6 +150,7 @@ void clearScreen() {
 }
 
 // Ignores all user's input until the enter key is pressed.
+// source: http://stackoverflow.com/questions/25020129/cin-ignorenumeric-limitsstreamsizemax-n
 void readEnter() {
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
@@ -158,7 +162,7 @@ void readChar(char &a_userChoice) {
 }
 
 // Shows an error.
-void showFileError(exception &a_e) {
+void showFileError(ifstream::failure &a_e) {
 	cerr << "An Error occured while reading file: " << endl << "\t" <<
 		a_e.what() << endl;
 }
@@ -176,7 +180,7 @@ bool outputValues(ifstream  &a_fil) {
 			cout << fixed << setprecision(PRECISION) << setw(NUMBER_WIDTH) <<
 				temp;
 		}
-	} catch (exception &e) {
+	} catch (ifstream::failure &e) {
 		showFileError(e);
 		return false;
 	}
@@ -200,7 +204,7 @@ bool getMaxMin(ifstream &a_fil, double &a_max, double &a_min) {
 				a_min = temp;
 			}
 		}
-	} catch (exception &e) {
+	} catch (ifstream::failure &e) {
 		showFileError(e);
 		return false;
 	}
@@ -217,7 +221,7 @@ bool getMean(ifstream &a_fil, double &a_mean) {
 			a_fil >> temp;
 			total += temp;
 		}
-	} catch (exception &e) {
+	} catch (ifstream::failure &e) {
 		showFileError(e);
 		return false;
 	}
