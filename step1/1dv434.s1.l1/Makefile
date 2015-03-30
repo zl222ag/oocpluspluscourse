@@ -1,3 +1,5 @@
+all: miserable
+
 miserable: miserable.cpp
 	g++ $^ -Wall -o $@
 

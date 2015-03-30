@@ -56,6 +56,8 @@ int main() {
 	// source: http://www.cplusplus.com/reference/ios/ios/exceptions/
 	inputFile.exceptions(ios::failbit | ios::badbit);
 
+	clearScreen();
+
 	cout << endl << endl <<
 		"Temperature Statistics" << endl <<
 		"----------------------" << endl <<
@@ -148,7 +150,14 @@ int main() {
 
 // Clears the console screen.
 void clearScreen() {
+#if defined(_WIN32) || defined(_WIN64)
+	// FIXME: DEFAULT cmd.exe built command, should probably be replaced.
 	system("cls");
+#elif defined(unix)
+	// ANSI THINGY, clears the screen and set the cursor position at the
+	// beginning!
+	cout << "\033[2J\033[0f" << endl;
+#endif
 }
 
 // Ignores all user's input until the enter key is pressed.
