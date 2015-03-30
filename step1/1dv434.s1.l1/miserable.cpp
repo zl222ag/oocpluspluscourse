@@ -84,7 +84,7 @@ int main() {
 			inputFile.open(LOG_FILE);
 		} catch (ifstream::failure &e) {
 			showFileError(e);
-			cerr << endl << "Press enter to terminate the program" << endl;
+			cerr << endl << "Press enter to terminate the program..." << endl;
 			readEnter();
 
 			return EXIT_FAILURE;
@@ -163,7 +163,7 @@ void readChar(char &a_userChoice) {
 
 // Shows an error.
 void showFileError(ifstream::failure &a_e) {
-	cerr << "An Error occured while reading file: " << endl << "\t" <<
+	cerr << endl << "An Error occured while reading file: " << endl << "\t" <<
 		a_e.what() << endl;
 }
 
