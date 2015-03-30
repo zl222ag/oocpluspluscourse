@@ -46,7 +46,7 @@ bool outputValues(ifstream &);
  */
 int main() {
 	bool looping = true;
-	double total = 0, mean = 0, max = 0, min = 0;
+	double total = 0.0, mean = 0.0, max = 0.0, min = 0.0;
 	char userChoice;
 	ifstream inputFile;
 	inputFile.exceptions(ios::failbit);
@@ -87,14 +87,11 @@ int main() {
 			return EXIT_FAILURE;
 		}
 
-		//		if (fil.tellg() > 0) {
-		//			fil.clear();
-		//			fil.seekg(0, ios::beg);
-		//		}
 		cout << endl << endl; // results should be lower in console.
 		switch (userChoice) {
 		case '1':
-			cout << "Displaying the latest " << NUMBER_OF_VALUES << " temperature values:" << endl << endl;
+			cout << "Displaying the latest " << NUMBER_OF_VALUES <<
+				" temperature values:" << endl << endl;
 
 			if (!outputValues(inputFile)) {
 				break;
@@ -103,14 +100,18 @@ int main() {
 			break;
 
 		case '2':
-			cout << "Calculating the maximum and minimum temperature..." << endl;
+			cout << "Calculating the maximum and minimum temperature..." <<
+				endl;
 
 			if (!getMaxMin(inputFile, max, min)) {
 				break;
 			}
 
-			cout << endl << "Maximum temperature: " << fixed << setprecision(PRECISION) << max << " degrees Celcius" << endl;
-			cout << endl << "Minimum temperature: " << min << " degrees Celcius" << endl;
+			cout << endl << "Maximum temperature: " << fixed <<
+				setprecision(PRECISION) << max << " degrees Celcius" << endl;
+
+			cout << endl << "Minimum temperature: " << min << " degrees Celcius"
+				<< endl;
 			break;
 
 		case '3':
@@ -120,7 +121,8 @@ int main() {
 				break;
 			}
 
-			cout << endl << "Average temperature: " << fixed << setprecision(PRECISION) << mean << " degrees Celcius" << endl;
+			cout << endl << "Average temperature: " << fixed <<
+				setprecision(PRECISION) << mean << " degrees Celcius" << endl;
 			break;
 
 		case '4':
@@ -157,7 +159,8 @@ void readChar(char &a_userChoice) {
 
 // Shows an error.
 void showFileError(exception &a_e) {
-	cerr << "An Error occured while reading file: " << endl << "\t" << a_e.what() << endl;
+	cerr << "An Error occured while reading file: " << endl << "\t" <<
+		a_e.what() << endl;
 }
 
 // Reads values from file and shows them in a formatted table.
@@ -170,7 +173,8 @@ bool outputValues(ifstream  &a_fil) {
 				cout << endl;
 			}
 			a_fil >> temp;
-			cout << fixed << setprecision(PRECISION) << setw(NUMBER_WIDTH) << temp;
+			cout << fixed << setprecision(PRECISION) << setw(NUMBER_WIDTH) <<
+				temp;
 		}
 	} catch (exception &e) {
 		showFileError(e);
