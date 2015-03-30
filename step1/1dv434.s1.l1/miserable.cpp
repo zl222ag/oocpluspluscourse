@@ -11,6 +11,8 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <limits>
+#include <cstdlib>
 
 #pragma region Using
 using std::cout;
@@ -46,7 +48,7 @@ bool outputValues(ifstream &);
  */
 int main() {
 	bool looping = true;
-	double total = 0.0, mean = 0.0, max = 0.0, min = 0.0;
+	double mean = 0.0, max = 0.0, min = 0.0;
 	char userChoice;
 	ifstream inputFile;
 	// Causes exception to be thrown when an error occures on I/O operation or a
