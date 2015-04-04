@@ -55,7 +55,6 @@ int main() {
 	// read/write occures on I/O operations.
 	// source: http://www.cplusplus.com/reference/ios/ios/exceptions/
 	inputFile.exceptions(ios::failbit | ios::badbit);
-
 	clearScreen();
 
 	cout << endl << endl <<
@@ -88,7 +87,7 @@ int main() {
 			inputFile.open(LOG_FILE);
 		} catch (ifstream::failure &e) {
 			showFileError(e);
-			cerr << endl << "Press enter to terminate the program..." << endl;
+			cerr << endl << "Press enter to terminate the program...";
 			readEnter();
 
 			return EXIT_FAILURE;

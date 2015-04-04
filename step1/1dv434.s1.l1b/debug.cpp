@@ -49,9 +49,11 @@ int main()
 	
 	int temp;
 
-	for (i = 0; i < strlen(newStr) - 1; i++)
+	// strlen returns size_t which is an unsigned integer,
+	// integer could get a very high value if strlen returns 0
+	for (i = 0; i < ((int) strlen(newStr)) - 1; i++)
 	{
-		for (j = i + 1; j < strlen(newStr); j++)
+		for (j = i + 1; j < (int) strlen(newStr); j++)
 		{
 			if (newStr[j] < newStr[i])	// sorts in alphabetical
 			{						// and numerical order 
