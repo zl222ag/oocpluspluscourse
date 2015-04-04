@@ -1,0 +1,12 @@
+title Testing
+App->InputOutput: create
+App->Temperature: create
+App->Temperature: loadTemperatures("templog.txt")
+Temperature->FileReader: create
+Temperature->FileReader: readNextDouble()
+Temperature->FileReader: destory
+App->InputOutput: clearScreen()
+App->InputOutput: readChar()
+App->Temperature: getMean()
+App->Temperature: destroy
+App->InputOutput: destroy

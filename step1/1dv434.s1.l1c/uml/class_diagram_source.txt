@@ -1,0 +1,3 @@
+[App|-PRECISION: int;-NUMBER_WIDTH: int;-VALUES_PER_ROW: int;LOG_FILE: char *|+run(): bool;-outputValues(Temperature *): void{bg:green}]->[InputOutput|+readChar(char &): void;+readLine(): void;+clearScreen(): void{bg:blue}]
+[App]->[Temperature|MAX_ITEMS: int;m_size: int; m_items: double *|+getMean(float &): bool;+getMaxMin(float& float&): bool;+LoadTemperatures(char *): void;+get(int): double;+getSize(): int{bg:red}]
+[Temperature]->[FileReader|m_file: ifstream|open(char *): void;isOpen() bool;close(): void;readNextDouble(double &): bool]
