@@ -15,33 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InputOutput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="temperature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
+    <ClCompile Include="filereader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="filereader.cpp">
+    <ClCompile Include="inputoutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InputOutput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="temperature.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="App.h">
+    <ClInclude Include="filereader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="filereader.h">
+    <ClInclude Include="inputoutput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="app.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
