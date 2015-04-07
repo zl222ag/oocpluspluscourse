@@ -1,4 +1,9 @@
-#include <cstdlib>
+// 1dv434.s1.l3/main.cpp
+// Datum: 2015-04-07
+// Programmerare: Zlatko Ladan
+// Kort beskrivning: Skapa program som fungerar med klassen TakeFive.
+
+#include <iostream>
 #include <stdexcept>
 #include <locale>
 #include <menu.h>
@@ -19,8 +24,6 @@ private:
 		PLAYER,
 		COMPUTER
 	};
-
-	static const char *LANGUAGE;
 
 	static const int MAIN_MENU = 0;
 	static const int STARTER_MENU = 1;
@@ -61,113 +64,124 @@ int App::run() {
 	//	setLanguage();
 	StartingPlayer startingPlayer = StartingPlayer::NONE;
 	bool startGame = false;
+	char doContinue = '\0';
 
 	srand((unsigned int) time(NULL)); // randomizes with time
 
 	loadMenus();
 
 	do {
-		switch (m_menu.select(MAIN_MENU)) {
-		case STARTER_MENU_ITEM:
-			if (m_menu.select(STARTER_MENU) == STARTER_PLAYER_MENU_ITEM) {
-				startingPlayer = StartingPlayer::PLAYER;
-				cout << "You are ";
-			} else {
-				startingPlayer = StartingPlayer::COMPUTER;
-				cout << "The computer is ";
-			}
-			cout << "going to start first.";
+		startGame = false;
 
-			readEnter();
-			cout << endl;
-			break;
+		do {
+			switch (m_menu.select(MAIN_MENU)) {
+			case STARTER_MENU_ITEM:
+				if (m_menu.select(STARTER_MENU) == STARTER_PLAYER_MENU_ITEM) {
+					startingPlayer = StartingPlayer::PLAYER;
+					cout << "You are ";
+				} else {
+					startingPlayer = StartingPlayer::COMPUTER;
+					cout << "The computer is ";
+				}
+				cout << "going to start first.";
 
-		case OBJECT_CHOICE_MENU_ITEM:
-			if (m_menu.select(OBJECT_MENU) == OBJECT_CROSS_MENU_ITEM) {
-				setPlayerObject(Player::CROSS);
-
-				cout << "You choose to play as \"X\"";
-			} else {
-				setPlayerObject(Player::RING);
-
-				cout << "You choose to play as \"O\"";
-			}
-
-			readEnter();
-			cout << endl;
-			break;
-
-		case BOARD_SIZE_MENU_ITEM:
-			int cols, rows;
-			getIntegerFromUser("Enter number of columns for the field",
-				cols, MIN_COLUMNS, MAX_COLUMNS);
-			getIntegerFromUser("Enter number of rows for the field",
-				rows, MIN_COLUMNS, MAX_ROWS);
-
-			if (m_board != NULL) {
-				delete m_board;
-			}
-			m_board = new TakeFive(cols, rows);
-
-			readEnter();
-			break;
-
-		case START_GAME_MENU_ITEM:
-			if (m_board == NULL) {
-				cout << "Error, field size should be set first!";
 				readEnter();
 				cout << endl;
-			} else {
-				startGame = true;
+				break;
+
+			case OBJECT_CHOICE_MENU_ITEM:
+				if (m_menu.select(OBJECT_MENU) == OBJECT_CROSS_MENU_ITEM) {
+					setPlayerObject(Player::CROSS);
+
+					cout << "You choose to play as \"X\"";
+				} else {
+					setPlayerObject(Player::RING);
+
+					cout << "You choose to play as \"O\"";
+				}
+
+				readEnter();
+				cout << endl;
+				break;
+
+			case BOARD_SIZE_MENU_ITEM:
+				int cols, rows;
+				getIntegerFromUser("Enter number of columns for the field",
+					cols, MIN_COLUMNS, MAX_COLUMNS);
+				getIntegerFromUser("Enter number of rows for the field",
+					rows, MIN_COLUMNS, MAX_ROWS);
+
+				if (m_board != NULL) {
+					delete m_board;
+				}
+				m_board = new TakeFive(cols, rows);
+
+				readEnter();
+				break;
+
+			case START_GAME_MENU_ITEM:
+				if (m_board == NULL) {
+					cout << "Error, field size should be set first!";
+					readEnter();
+					cout << endl;
+				} else {
+					startGame = true;
+					m_board->startNewGame();
+				}
+				break;
+
+			case CLOSE_GAME_MENU_ITEM:
+				return EXIT_SUCCESS;
 			}
-			break;
+		} while (m_board == NULL || !startGame);
 
-		case CLOSE_GAME_MENU_ITEM:
-			return EXIT_SUCCESS;
+		if (m_humanPlayer == Player::NONE) {
+			setPlayerObject((((rand() % 100) < 50) ?
+				Player::CROSS : Player::RING));
 		}
-	} while (m_board == NULL || !startGame);
 
-	if (m_humanPlayer == Player::NONE) {
-		setPlayerObject((((rand() % 100) < 50) ? Player::CROSS : Player::RING));
-	}
+		if (startingPlayer == StartingPlayer::NONE) {
+			startingPlayer = (((rand() % 100) < 50) ?
+				StartingPlayer::PLAYER : StartingPlayer::COMPUTER);
+		}
 
-	if (startingPlayer == StartingPlayer::NONE) {
-		startingPlayer = (((rand() % 100) < 50) ?
-			StartingPlayer::PLAYER : StartingPlayer::COMPUTER);
-	}
-
-	Player result = Player::NONE;
-	if (startingPlayer == StartingPlayer::PLAYER) {
-		m_board->show();
-	}
-
-	while (m_board->gameIsActive() && result == Player::NONE) {
+		Player result = Player::NONE;
 		if (startingPlayer == StartingPlayer::PLAYER) {
-			result = playerMakeMove();
-			if (result == Player::NONE) {
-				result = m_board->makeMove(m_computerPlayer);
-				m_board->show();
-			}
-		} else {
-			result = m_board->makeMove(m_computerPlayer);
-			if (result == Player::NONE) {
-				m_board->show();
-				result = playerMakeMove();
-			}
+			m_board->show();
 		}
-		cout << result << endl;
-	}
 
-	m_board->show();
-	if (result == Player::ERROR) {
-		cout << "Whoops, an error seems to have occured!" << endl;
-	} else {
-		if (result == m_humanPlayer) {
-			cout << "Congratulations, you won!" << endl;
-		} else {
-			cout << "Sorry, you lost." << endl;
+		while (m_board->gameIsActive() && result == Player::NONE) {
+			if (startingPlayer == StartingPlayer::PLAYER) {
+				result = playerMakeMove();
+				if (result == Player::NONE) {
+					result = m_board->makeMove(m_computerPlayer);
+					m_board->show();
+				}
+			} else {
+				result = m_board->makeMove(m_computerPlayer);
+				if (result == Player::NONE) {
+					m_board->show();
+					result = playerMakeMove();
+				}
+			}
 		}
-	}
+
+		m_board->show();
+		if (result == Player::ERROR) {
+			cout << "Whoops, an error seems to have occured!" << endl;
+		} else {
+			if (result == m_humanPlayer) {
+				cout << "Congratulations, you won!" << endl;
+			} else {
+				cout << "Sorry, you lost." << endl;
+			}
+		}
+
+		do {
+			getCharacterFromUser("Continue playing?: ", doContinue);
+			doContinue = tolower(doContinue);
+		} while (doContinue != 'y' && doContinue != 'n');
+	} while ((doContinue == 'y'));
 
 	system("pause");
 	return EXIT_SUCCESS;
