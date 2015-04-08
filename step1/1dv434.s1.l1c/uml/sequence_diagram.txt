@@ -1,12 +1,31 @@
-title Testing
-App->InputOutput: create
-App->Temperature: create
+title "Misterable" Sequence Diagram
+App->+InputOutput: create
+App->+Temperature: create
 App->Temperature: loadTemperatures("templog.txt")
-Temperature->FileReader: create
-Temperature->FileReader: readNextDouble()
-Temperature->FileReader: destory
-App->InputOutput: clearScreen()
-App->InputOutput: readChar()
-App->Temperature: getMean()
-App->Temperature: destroy
-App->InputOutput: destroy
+Temperature->+FileReader: create
+loop while doubles are left
+    Temperature->FileReader: readNextDouble()
+    FileReader-->Temperature: stores the varable
+end
+FileReader-->-Temperature: destory
+Temperature-->App: loaded value
+loop while user doens't exit
+    App->InputOutput: clearScreen()
+    InputOutput-->App: clears the screen
+    App->InputOutput: readChar()
+    InputOutput-->App: gets Character
+    alt display mean
+        App->Temperature: getMean()
+        Temperature-->App: display Mean
+    else display max and min
+        App->Temperature: getMaxMin()
+        Temperature-->App: display max and min
+    else display all values
+        loop for each element
+            App->Temperature: get()
+            Temperature-->App: show value
+        end
+    end
+end
+Temperature-->-App: destroy
+InputOutput-->-App: destroy

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="uml">
+      <UniqueIdentifier>{9b33a08c-3c9d-414b-beec-a18fbd9e2639}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="temperature.cpp">
@@ -38,5 +41,21 @@
     <ClInclude Include="inputoutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="uml\class_diagram.png">
+      <Filter>uml</Filter>
+    </Image>
+    <Image Include="uml\sequence_diagram.png">
+      <Filter>uml</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="uml\sequence_diagram.txt">
+      <Filter>uml</Filter>
+    </Text>
+    <Text Include="uml\class_diagram_source.txt">
+      <Filter>uml</Filter>
+    </Text>
   </ItemGroup>
 </Project>

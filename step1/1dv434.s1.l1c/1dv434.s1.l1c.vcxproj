@@ -88,6 +88,14 @@
     <ClInclude Include="inputoutput.h" />
     <ClInclude Include="temperature.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="uml\class_diagram.png" />
+    <Image Include="uml\sequence_diagram.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="uml\class_diagram_source.txt" />
+    <Text Include="uml\sequence_diagram.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
