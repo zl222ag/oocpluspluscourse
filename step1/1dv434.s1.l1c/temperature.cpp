@@ -4,14 +4,14 @@
 #include "temperature.h"
 
 Temperature::~Temperature() {
-	if (m_items != NULL) {
-		delete[] m_items;
-	}
+	deleteTemperatures();
 }
 
 // Loads all temperatures from file.
 // Stops loading until reaching EOF or a non numeric character.
+// Removes old values.
 void Temperature::LoadTemperatures(char *a_filename) {
+    deleteTemperatures();
 	double *tempItems = new double[MAX_ITEMS];
 	int i;
 	FileReader inputFile;
@@ -47,6 +47,7 @@ int Temperature::getSize() {
 }
 
 // Gets a temperature value.
+// may throw out_of_range if out of range.
 double Temperature::get(int a_index) {
 	if (a_index < 0 || a_index > m_size) {
 		throw out_of_range("Out of range for items!");
@@ -77,6 +78,15 @@ double Temperature::getMean() {
 	}
 
 	return total / (double) m_size;
+}
+
+// Removes all temperatures (if there are any).
+void Temperature::deleteTemperatures() {
+    if (m_items == NULL) {
+        return;
+    }
+
+    delete[] m_items;
 }
 
 #endif // TEMPERATURE_CPP

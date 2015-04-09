@@ -18,12 +18,14 @@ public:
 
 	// Loads all temperatures from file.
 	// Stops loading until reaching EOF or a non numeric character.
+	// Removes old values.
 	void LoadTemperatures(char *);
 
 	// Gets the size.
 	int getSize();
 
 	// Gets a temperature value.
+	// may throw out_of_range if out of range.
 	double get(int);
 
 	// Gets the max and min values.
@@ -35,6 +37,9 @@ public:
 private:
 	int m_size = 0;
 	double *m_items = NULL;
+
+	// Removes all temperatures (if there are any).
+	void deleteTemperatures();
 };
 
 #endif // TEMPERATURE_H

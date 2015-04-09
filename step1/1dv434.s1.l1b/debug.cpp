@@ -16,6 +16,7 @@
 //		2015-03-31 Update Version 1.1.1 by Zlatko.
 /**********************************************************************/
 
+#include <cstdlib>
 #include <iostream>
 const int SIZE = 100;
 
