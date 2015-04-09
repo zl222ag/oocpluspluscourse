@@ -9,7 +9,7 @@ void FileReader::open(char *a_filename) {
 	}
 	m_file.open(a_filename);
 	if (!m_file.is_open()) {
-		throw new std::runtime_error("Error on opening file!");
+		throw runtime_error("Error on opening file!");
 	}
 }
 
@@ -19,14 +19,14 @@ bool FileReader::isOpen() {
 
 void FileReader::close() {
 	if (!m_file.is_open()) {
-		throw new state_error("A file must be opened!");
+		throw state_error("A file must be opened!");
 	}
 	m_file.close();
 }
 
 bool FileReader::readNextDouble(double &a_var) {
 	if (!m_file.is_open()) {
-		throw new state_error("A file must be opened!");
+		throw state_error("A file must be opened!");
 	}
 	double tmp = 0.0;
 	m_file >> tmp;

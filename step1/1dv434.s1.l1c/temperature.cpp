@@ -49,7 +49,7 @@ int Temperature::getSize() {
 // Gets a temperature value.
 double Temperature::get(int a_index) {
 	if (a_index < 0 || a_index > m_size) {
-		throw new out_of_range("Out of range for items!");
+		throw out_of_range("Out of range for items!");
 	}
 	return m_items[a_index];
 }

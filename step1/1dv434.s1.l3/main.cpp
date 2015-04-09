@@ -3,6 +3,7 @@
 // Programmerare: Zlatko Ladan
 // Kort beskrivning: Skapa program som fungerar med klassen TakeFive.
 
+#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 #include <locale>
@@ -16,6 +17,7 @@ using std::runtime_error;
 
 class App {
 public:
+    // Runnin'
 	int run();
 
 private:
@@ -50,16 +52,30 @@ private:
 	TakeFive *m_board = NULL;
 	Player m_humanPlayer = Player::NONE, m_computerPlayer = Player::NONE;
 
+	// Reads a number from the user (repeated until it's not an error).
+	// With min and max.
 	static void getIntegerFromUser(char *, int &, int, int);
+
+	// Reads a number from the user (repeated until it's not an error).
 	static void getIntegerFromUser(char *, int &);
+
+	// Reads a single character from user (repeated until it's not an error).
 	static void getCharacterFromUser(char *, char &);
+
+	// Ignores input until a new line, or enter
 	static void readEnter();
 
+	// Creates the menus that are used
 	void loadMenus();
+
+	// Sets the users object to play with, also the computers (opposite).
 	void setPlayerObject(Player);
+
+	// Easy method that asks the user for input.
 	Player playerMakeMove();
 };
 
+// Runnin'
 int App::run() {
 	//	setLanguage();
 	StartingPlayer startingPlayer = StartingPlayer::NONE;
@@ -168,7 +184,7 @@ int App::run() {
 
 		m_board->show();
 		if (result == Player::ERROR) {
-			cout << "Whoops, an error seems to have occured!" << endl;
+			cout << "Whoops, an error seems to have occurred!" << endl;
 		} else {
 			if (result == m_humanPlayer) {
 				cout << "Congratulations, you won!" << endl;
@@ -183,13 +199,14 @@ int App::run() {
 		} while (doContinue != 'y' && doContinue != 'n');
 	} while ((doContinue == 'y'));
 
-	system("pause");
 	return EXIT_SUCCESS;
 }
 
+// Reads a number from the user (repeated until it's not an error).
+// With min and max.
 void App::getIntegerFromUser(char *a_text, int &a_value, int a_min, int a_max) {
 	if (a_min > a_max) {
-		throw new runtime_error("Error cannot have a min value "
+		throw runtime_error("Error cannot have a min value "
 			"greater than the max value!");
 	}
 	int temp;
@@ -214,6 +231,7 @@ void App::getIntegerFromUser(char *a_text, int &a_value, int a_min, int a_max) {
 	a_value = temp;
 }
 
+// Reads a number from the user (repeated until it's not an error).
 void App::getIntegerFromUser(char *a_text, int &a_value) {
 	int temp;
 	bool error = false;
@@ -230,6 +248,7 @@ void App::getIntegerFromUser(char *a_text, int &a_value) {
 	a_value = temp;
 }
 
+// Reads a single character from user (repeated until it's not an error).
 void App::getCharacterFromUser(char *a_text, char &a_value) {
 	char temp;
 	bool error = false;
@@ -246,10 +265,12 @@ void App::getCharacterFromUser(char *a_text, char &a_value) {
 	a_value = temp;
 }
 
+// Ignores input until a new line, or enter
 void App::readEnter() {
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
+// Creates the menus that are used
 void App::loadMenus() {
 	m_menu.addMenu("Welcome to a game of noughts and crosses");
 	m_menu.addMenuItem(MAIN_MENU, "Choose if you or the computer should start");
@@ -267,6 +288,7 @@ void App::loadMenus() {
 	m_menu.addMenuItem(OBJECT_MENU, "O");
 }
 
+// Sets the users object to play with, also the computers (opposite).
 void App::setPlayerObject(Player a_object) {
 	if (a_object == Player::CROSS) {
 		m_humanPlayer = Player::CROSS;
@@ -278,6 +300,7 @@ void App::setPlayerObject(Player a_object) {
 	m_computerPlayer = Player::CROSS;
 }
 
+// Easy method that asks the user for input.
 Player App::playerMakeMove() {
 	int val = 0;
 	char chr = '\0';
@@ -292,6 +315,7 @@ Player App::playerMakeMove() {
 	return Player::NONE;
 }
 
+// Starts here.
 int main() {
 	App app;
 

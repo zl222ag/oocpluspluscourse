@@ -6,6 +6,7 @@
 
 using std::ifstream;
 using std::logic_error;
+using std::runtime_error;
 
 class state_error : public logic_error {
 public:
