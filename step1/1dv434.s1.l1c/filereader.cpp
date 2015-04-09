@@ -3,6 +3,13 @@
 
 #include "filereader.h"
 
+FileReader::~FileReader() {
+    if (m_file.is_open()) {
+        close();
+    }
+}
+
+// Opens a file, if a file is already opened then it closes the previous one.
 void FileReader::open(char *a_filename) {
 	if (m_file.is_open()) {
 		close();
@@ -13,10 +20,12 @@ void FileReader::open(char *a_filename) {
 	}
 }
 
+// Is a file currently opened?
 bool FileReader::isOpen() {
 	return m_file.is_open();
 }
 
+// Closes the file, throws state_error if a file is not opened.
 void FileReader::close() {
 	if (!m_file.is_open()) {
 		throw state_error("A file must be opened!");
@@ -24,6 +33,8 @@ void FileReader::close() {
 	m_file.close();
 }
 
+// Reads next Double, returns true if not EOF or non double value,
+// throws state_error if a file is not opened.
 bool FileReader::readNextDouble(double &a_var) {
 	if (!m_file.is_open()) {
 		throw state_error("A file must be opened!");
