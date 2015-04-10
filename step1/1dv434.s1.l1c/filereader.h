@@ -18,9 +18,10 @@ public:
 class FileReader {
 private:
 	ifstream m_file;
-    ~FileReader();
 
 public:
+    ~FileReader();
+
     // Opens a file, if a file is already opened
     // then it closes the previous one.
 	void open(char *);

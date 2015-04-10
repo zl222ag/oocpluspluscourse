@@ -54,13 +54,13 @@ private:
 
 	// Reads a number from the user (repeated until it's not an error).
 	// With min and max.
-	static void getIntegerFromUser(char *, int &, int, int);
+	static void getIntegerFromUser(const char *, int &, int, int);
 
 	// Reads a number from the user (repeated until it's not an error).
-	static void getIntegerFromUser(char *, int &);
+	static void getIntegerFromUser(const char *, int &);
 
 	// Reads a single character from user (repeated until it's not an error).
-	static void getCharacterFromUser(char *, char &);
+	static void getCharacterFromUser(const char *, char &);
 
 	// Ignores input until a new line, or enter
 	static void readEnter();
@@ -155,6 +155,8 @@ int App::run() {
 			setPlayerObject((((rand() % 100) < 50) ?
 				Player::CROSS : Player::RING));
 		}
+		cout << "You are going to play as \"" <<
+		    ((m_humanPlayer == Player::CROSS) ? 'X' : 'O') << "\"." << endl;
 
 		if (startingPlayer == StartingPlayer::NONE) {
 			startingPlayer = (((rand() % 100) < 50) ?
@@ -194,17 +196,17 @@ int App::run() {
 		}
 
 		do {
-			getCharacterFromUser("Continue playing?: ", doContinue);
+			getCharacterFromUser("Restart form menu?: ", doContinue);
 			doContinue = tolower(doContinue);
 		} while (doContinue != 'y' && doContinue != 'n');
-	} while ((doContinue == 'y'));
+	} while (doContinue == 'y');
 
 	return EXIT_SUCCESS;
 }
 
 // Reads a number from the user (repeated until it's not an error).
 // With min and max.
-void App::getIntegerFromUser(char *a_text, int &a_value, int a_min, int a_max) {
+void App::getIntegerFromUser(const char *a_text, int &a_value, int a_min, int a_max) {
 	if (a_min > a_max) {
 		throw runtime_error("Error cannot have a min value "
 			"greater than the max value!");
@@ -232,7 +234,7 @@ void App::getIntegerFromUser(char *a_text, int &a_value, int a_min, int a_max) {
 }
 
 // Reads a number from the user (repeated until it's not an error).
-void App::getIntegerFromUser(char *a_text, int &a_value) {
+void App::getIntegerFromUser(const char *a_text, int &a_value) {
 	int temp;
 	bool error = false;
 
@@ -249,7 +251,7 @@ void App::getIntegerFromUser(char *a_text, int &a_value) {
 }
 
 // Reads a single character from user (repeated until it's not an error).
-void App::getCharacterFromUser(char *a_text, char &a_value) {
+void App::getCharacterFromUser(const char *a_text, char &a_value) {
 	char temp;
 	bool error = false;
 
@@ -312,7 +314,7 @@ Player App::playerMakeMove() {
 
 		returnValue = m_board->makeMove(m_humanPlayer, val, chr);
 	} while (returnValue == Player::ERROR);
-	return Player::NONE;
+	return returnValue;
 }
 
 // Starts here.

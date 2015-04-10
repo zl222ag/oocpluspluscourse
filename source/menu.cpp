@@ -38,7 +38,7 @@ int Menu::select(int a_menu) {
 	return --returnValue;
 }
 
-int Menu::addMenu(char *a_header) {
+int Menu::addMenu(const char *a_header) {
 	if (m_length >= MAX_MENUES) {
 		return -1;
 	}
@@ -47,7 +47,7 @@ int Menu::addMenu(char *a_header) {
 	return m_length++;
 }
 
-int Menu::addMenuItem(int a_menu, char *a_itemText) {
+int Menu::addMenuItem(int a_menu, const char *a_itemText) {
 	if (a_menu < 0 || a_menu >= m_length) {
 		return -1; // TODO: THROW EXCEPTION
 	}

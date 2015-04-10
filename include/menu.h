@@ -14,16 +14,16 @@ class Menu {
 public:
 	Menu();
 	int select(int);
-	int addMenu(char *);
-	int addMenuItem(int, char *);
+	int addMenu(const char *);
+	int addMenuItem(int, const char *);
 
 private:
 	static const int MAX_MENU_ITEMS = 100;
 	static const int MAX_MENUES = 50;
 
 	struct MenuHolder {
-		char *header = NULL;
-		char *item[MAX_MENU_ITEMS];
+		const char *header = NULL;
+		const char *item[MAX_MENU_ITEMS];
 		int length = 0;
 	};
 
