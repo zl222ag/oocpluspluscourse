@@ -63,7 +63,7 @@ private:
 	// Ignores input until a new line, or enter
 	static void readEnter();
 
-	Player playGame(StartingPlayer, int, int);
+	void playGame(StartingPlayer, int, int);
 
 	// Creates the menus that are used
 	void loadMenus();
@@ -82,7 +82,6 @@ int App::run() {
 	bool startGame = false;
 	char doContinue = '\0';
 	int cols, rows;
-	Player result;
 
 	srand((unsigned int) time(NULL)); // randomizes with time
 
@@ -169,29 +168,10 @@ int App::run() {
 	return EXIT_SUCCESS;
 }
 
-Player App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
+void App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
 	TakeFive board(a_cols, a_rows);
 	board.startNewGame();
 	Player result = Player::NONE;
-	/*if (startingPlayer == StartingPlayer::PLAYER) {
-		board.show();
-	}
-
-	while (m_board->gameIsActive() && result == Player::NONE) {
-		if (startingPlayer == StartingPlayer::PLAYER) {
-			result = playerMakeMove();
-			if (result == Player::NONE) {
-				result = m_board->makeMove(m_computerPlayer);
-				m_board->show();
-			}
-		} else {
-			result = m_board->makeMove(m_computerPlayer);
-			if (result == Player::NONE) {
-				m_board->show();
-				result = playerMakeMove();
-			}
-		}
-	}*/
 
 	unsigned int i = 0;
 	while (board.gameIsActive() && result == Player::NONE &&
@@ -207,6 +187,9 @@ Player App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
 		++i;
 	}
 
+	board.show();
+
+	// No switch here, "impossible".
 	if (result == Player::ERROR) {
 		cout << "Whoops, an error seems to have occurred!" << endl;
 	} else if (result == m_humanPlayer) {
@@ -216,9 +199,6 @@ Player App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
 	} else {
 		cout << "Nobody won" << endl;
 	}
-
-	board.show();
-	return result;
 }
 
 // Reads a number from the user (repeated until it's not an error).
