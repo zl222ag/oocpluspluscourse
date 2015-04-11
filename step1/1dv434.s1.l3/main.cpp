@@ -186,7 +186,7 @@ void App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
 			a_rows > MAX_ROWS) {
 		throw runtime_error("Columns nor rows follow the conditions!");
 	}
-	TakeFive board(a_cols, a_rows);
+	TakeFive board(a_rows, a_cols);
 	Player result = Player::NONE;
 
 	unsigned int i = 0;
@@ -196,10 +196,8 @@ void App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
 
 		if ((i % 2 == 0 && startingPlayer == StartingPlayer::COMPUTER) ||
 				(i % 2 == 1 && startingPlayer == StartingPlayer::PLAYER)) {
-			cout << "\e[32m" << "comp plays" << "\e[0m" << endl;
 			result = board.makeMove(m_computerPlayer);
 		} else {
-			cout << "\e[32m" << "user plays" << "\e[0m" << endl;
 			result = playerMakeMove(board);
 		}
 		++i;
@@ -330,6 +328,10 @@ Player App::playerMakeMove(TakeFive &a_board) {
 	Player returnValue = Player::NONE;
 
 	do {
+		if (returnValue == Player::ERROR) {
+			cout << "INVALID position, try again!" << endl;
+			a_board.show();
+		}
 		getCharacterFromUser("Choose column: ", chr);
 		getIntegerFromUser("Choose row: ", val);
 
