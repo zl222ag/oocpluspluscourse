@@ -4,9 +4,9 @@
 #include "filereader.h"
 
 FileReader::~FileReader() {
-    if (m_file.is_open()) {
-        close();
-    }
+	if (m_file.is_open()) {
+		close();
+	}
 }
 
 // Opens a file, if a file is already opened then it closes the previous one.

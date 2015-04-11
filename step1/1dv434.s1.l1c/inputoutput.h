@@ -12,7 +12,7 @@ using std::streamsize;
 
 class InputOutput {
 public:
-    // Clears the console screen.
+	// Clears the console screen.
 	static void clearScreen();
 
 	// Ignores all user's input until the enter key is pressed.

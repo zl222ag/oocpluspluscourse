@@ -25,6 +25,7 @@ private:
 	static const int VALUES_PER_ROW = 6;
 	static char *LOG_FILE /*= "templog.txt"*/;
 
+	// Reads values from file and shows them in a formatted table.
 	void outputValues(Temperature *);
 
 public:

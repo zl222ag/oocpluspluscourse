@@ -12,12 +12,11 @@
 
 using std::cout;
 using std::cin;
-using std::locale;
 using std::runtime_error;
 
 class App {
 public:
-    // Runnin'
+	// Runnin'
 	int run();
 
 private:
@@ -49,7 +48,6 @@ private:
 	static const int MAX_ROWS = 75;
 
 	Menu m_menu;
-	TakeFive *m_board = NULL;
 	Player m_humanPlayer = Player::NONE, m_computerPlayer = Player::NONE;
 
 	// Reads a number from the user (repeated until it's not an error).
@@ -65,6 +63,8 @@ private:
 	// Ignores input until a new line, or enter
 	static void readEnter();
 
+	Player playGame(StartingPlayer, int, int);
+
 	// Creates the menus that are used
 	void loadMenus();
 
@@ -72,7 +72,7 @@ private:
 	void setPlayerObject(Player);
 
 	// Easy method that asks the user for input.
-	Player playerMakeMove();
+	Player playerMakeMove(TakeFive &);
 };
 
 // Runnin'
@@ -81,6 +81,8 @@ int App::run() {
 	StartingPlayer startingPlayer = StartingPlayer::NONE;
 	bool startGame = false;
 	char doContinue = '\0';
+	int cols, rows;
+	Player result;
 
 	srand((unsigned int) time(NULL)); // randomizes with time
 
@@ -121,79 +123,42 @@ int App::run() {
 				break;
 
 			case BOARD_SIZE_MENU_ITEM:
-				int cols, rows;
 				getIntegerFromUser("Enter number of columns for the field",
 					cols, MIN_COLUMNS, MAX_COLUMNS);
 				getIntegerFromUser("Enter number of rows for the field",
 					rows, MIN_COLUMNS, MAX_ROWS);
 
-				if (m_board != NULL) {
-					delete m_board;
-				}
-				m_board = new TakeFive(cols, rows);
-
 				readEnter();
 				break;
 
 			case START_GAME_MENU_ITEM:
-				if (m_board == NULL) {
+				if (cols < 1 || rows < 1) {
 					cout << "Error, field size should be set first!";
 					readEnter();
 					cout << endl;
 				} else {
 					startGame = true;
-					m_board->startNewGame();
 				}
 				break;
 
 			case CLOSE_GAME_MENU_ITEM:
 				return EXIT_SUCCESS;
 			}
-		} while (m_board == NULL || !startGame);
+		} while (!startGame);
 
 		if (m_humanPlayer == Player::NONE) {
 			setPlayerObject((((rand() % 100) < 50) ?
 				Player::CROSS : Player::RING));
 		}
 		cout << "You are going to play as \"" <<
-		    ((m_humanPlayer == Player::CROSS) ? 'X' : 'O') << "\"." << endl;
+			((m_humanPlayer == Player::CROSS) ? 'X' : 'O') << "\"." << endl;
 
 		if (startingPlayer == StartingPlayer::NONE) {
 			startingPlayer = (((rand() % 100) < 50) ?
 				StartingPlayer::PLAYER : StartingPlayer::COMPUTER);
 		}
 
-		Player result = Player::NONE;
-		if (startingPlayer == StartingPlayer::PLAYER) {
-			m_board->show();
-		}
-
-		while (m_board->gameIsActive() && result == Player::NONE) {
-			if (startingPlayer == StartingPlayer::PLAYER) {
-				result = playerMakeMove();
-				if (result == Player::NONE) {
-					result = m_board->makeMove(m_computerPlayer);
-					m_board->show();
-				}
-			} else {
-				result = m_board->makeMove(m_computerPlayer);
-				if (result == Player::NONE) {
-					m_board->show();
-					result = playerMakeMove();
-				}
-			}
-		}
-
-		m_board->show();
-		if (result == Player::ERROR) {
-			cout << "Whoops, an error seems to have occurred!" << endl;
-		} else {
-			if (result == m_humanPlayer) {
-				cout << "Congratulations, you won!" << endl;
-			} else {
-				cout << "Sorry, you lost." << endl;
-			}
-		}
+		playGame(startingPlayer, cols, rows);
 
 		do {
 			getCharacterFromUser("Restart form menu?: ", doContinue);
@@ -204,9 +169,62 @@ int App::run() {
 	return EXIT_SUCCESS;
 }
 
+Player App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
+	TakeFive board(a_cols, a_rows);
+	board.startNewGame();
+	Player result = Player::NONE;
+	/*if (startingPlayer == StartingPlayer::PLAYER) {
+		board.show();
+	}
+
+	while (m_board->gameIsActive() && result == Player::NONE) {
+		if (startingPlayer == StartingPlayer::PLAYER) {
+			result = playerMakeMove();
+			if (result == Player::NONE) {
+				result = m_board->makeMove(m_computerPlayer);
+				m_board->show();
+			}
+		} else {
+			result = m_board->makeMove(m_computerPlayer);
+			if (result == Player::NONE) {
+				m_board->show();
+				result = playerMakeMove();
+			}
+		}
+	}*/
+
+	unsigned int i = 0;
+	while (board.gameIsActive() && result == Player::NONE &&
+			((signed) i) < (a_cols * a_rows)) {
+		board.show();
+
+		if ((i % 2 == 0 && startingPlayer == StartingPlayer::COMPUTER) ||
+				(i % 2 == 1 && startingPlayer == StartingPlayer::PLAYER)) {
+			result = board.makeMove(m_computerPlayer);
+		} else {
+			result = playerMakeMove(board);
+		}
+		++i;
+	}
+
+	if (result == Player::ERROR) {
+		cout << "Whoops, an error seems to have occurred!" << endl;
+	} else if (result == m_humanPlayer) {
+		cout << "Congratulations, you won!" << endl;
+	} else if (result == m_computerPlayer) {
+		cout << "Sorry, you lost." << endl;
+	} else {
+		cout << "Nobody won" << endl;
+	}
+
+	board.show();
+	return result;
+}
+
 // Reads a number from the user (repeated until it's not an error).
 // With min and max.
-void App::getIntegerFromUser(const char *a_text, int &a_value, int a_min, int a_max) {
+void App::getIntegerFromUser(const char *a_text, int &a_value, int a_min,
+		int a_max) {
 	if (a_min > a_max) {
 		throw runtime_error("Error cannot have a min value "
 			"greater than the max value!");
@@ -303,7 +321,7 @@ void App::setPlayerObject(Player a_object) {
 }
 
 // Easy method that asks the user for input.
-Player App::playerMakeMove() {
+Player App::playerMakeMove(TakeFive &a_board) {
 	int val = 0;
 	char chr = '\0';
 	Player returnValue = Player::NONE;
@@ -312,7 +330,7 @@ Player App::playerMakeMove() {
 		getCharacterFromUser("Choose column: ", chr);
 		getIntegerFromUser("Choose row: ", val);
 
-		returnValue = m_board->makeMove(m_humanPlayer, val, chr);
+		returnValue = a_board.makeMove(m_humanPlayer, val, chr);
 	} while (returnValue == Player::ERROR);
 	return returnValue;
 }

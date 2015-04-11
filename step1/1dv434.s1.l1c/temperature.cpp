@@ -11,7 +11,7 @@ Temperature::~Temperature() {
 // Stops loading until reaching EOF or a non numeric character.
 // Removes old values.
 void Temperature::LoadTemperatures(char *a_filename) {
-    deleteTemperatures();
+	deleteTemperatures();
 	double *tempItems = new double[MAX_ITEMS];
 	int i;
 	FileReader inputFile;
@@ -82,11 +82,11 @@ double Temperature::getMean() {
 
 // Removes all temperatures (if there are any).
 void Temperature::deleteTemperatures() {
-    if (m_items == NULL) {
-        return;
-    }
+	if (m_items == NULL) {
+		return;
+	}
 
-    delete[] m_items;
+	delete[] m_items;
 }
 
 #endif // TEMPERATURE_CPP

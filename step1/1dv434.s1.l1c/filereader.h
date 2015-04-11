@@ -20,10 +20,10 @@ private:
 	ifstream m_file;
 
 public:
-    ~FileReader();
+	~FileReader();
 
-    // Opens a file, if a file is already opened
-    // then it closes the previous one.
+	// Opens a file, if a file is already opened
+	// then it closes the previous one.
 	void open(char *);
 
 	// Is a file currently opened?
