@@ -4,6 +4,7 @@
 // Kort beskrivning: Skapa program som fungerar med klassen TakeFive.
 
 #include <cstdlib>
+#include <limits>
 #include <iostream>
 #include <stdexcept>
 #include <locale>
@@ -60,12 +61,16 @@ private:
 	// Reads a single character from user (repeated until it's not an error).
 	static void getCharacterFromUser(const char *, char &);
 
-	// Ignores input until a new line, or enter
+	// Ignores input until a new line, or enter.
 	static void readEnter();
 
+	// Returns a random boolean value (true, or false).
+	static bool randomBool();
+
+	// Start the actual game.
 	void playGame(StartingPlayer, int, int);
 
-	// Creates the menus that are used
+	// Creates the menus that are used.
 	void loadMenus();
 
 	// Sets the users object to play with, also the computers (opposite).
@@ -77,7 +82,7 @@ private:
 
 // Runnin'
 int App::run() {
-	//	setLanguage();
+	// setLanguage();
 	StartingPlayer startingPlayer = StartingPlayer::NONE;
 	bool startGame = false;
 	char doContinue = '\0';
@@ -127,7 +132,11 @@ int App::run() {
 				getIntegerFromUser("Enter number of rows for the field",
 					rows, MIN_COLUMNS, MAX_ROWS);
 
+				cout << "Number of columns: " << cols << ", number of rows: " <<
+						rows;
+
 				readEnter();
+				cout << endl;
 				break;
 
 			case START_GAME_MENU_ITEM:
@@ -146,14 +155,14 @@ int App::run() {
 		} while (!startGame);
 
 		if (m_humanPlayer == Player::NONE) {
-			setPlayerObject((((rand() % 100) < 50) ?
+			setPlayerObject((randomBool() ?
 				Player::CROSS : Player::RING));
 		}
 		cout << "You are going to play as \"" <<
 			((m_humanPlayer == Player::CROSS) ? 'X' : 'O') << "\"." << endl;
 
 		if (startingPlayer == StartingPlayer::NONE) {
-			startingPlayer = (((rand() % 100) < 50) ?
+			startingPlayer = (randomBool() ?
 				StartingPlayer::PLAYER : StartingPlayer::COMPUTER);
 		}
 
@@ -168,9 +177,16 @@ int App::run() {
 	return EXIT_SUCCESS;
 }
 
+// Start the actual game.
 void App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
+	if (startingPlayer == StartingPlayer::NONE) {
+		throw runtime_error("Starting player cannot be \"NONE\"!");
+	}
+	if (a_cols < MIN_COLUMNS || a_rows < MIN_ROWS || a_cols > MAX_COLUMNS ||
+			a_rows > MAX_ROWS) {
+		throw runtime_error("Columns nor rows follow the conditions!");
+	}
 	TakeFive board(a_cols, a_rows);
-	board.startNewGame();
 	Player result = Player::NONE;
 
 	unsigned int i = 0;
@@ -180,8 +196,10 @@ void App::playGame(StartingPlayer startingPlayer, int a_cols, int a_rows) {
 
 		if ((i % 2 == 0 && startingPlayer == StartingPlayer::COMPUTER) ||
 				(i % 2 == 1 && startingPlayer == StartingPlayer::PLAYER)) {
+			cout << "\e[32m" << "comp plays" << "\e[0m" << endl;
 			result = board.makeMove(m_computerPlayer);
 		} else {
+			cout << "\e[32m" << "user plays" << "\e[0m" << endl;
 			result = playerMakeMove(board);
 		}
 		++i;
@@ -268,6 +286,11 @@ void App::getCharacterFromUser(const char *a_text, char &a_value) {
 // Ignores input until a new line, or enter
 void App::readEnter() {
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+// Returns a random boolean value (true, or false).
+bool App::randomBool() {
+	return ((rand() % 100) < 50);
 }
 
 // Creates the menus that are used
