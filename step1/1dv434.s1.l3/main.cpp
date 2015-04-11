@@ -133,7 +133,7 @@ int App::run() {
 					rows, MIN_COLUMNS, MAX_ROWS);
 
 				cout << "Number of columns: " << cols << ", number of rows: " <<
-						rows;
+						rows << '.';
 
 				readEnter();
 				cout << endl;
