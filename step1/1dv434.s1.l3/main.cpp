@@ -86,7 +86,7 @@ int App::run() {
 	StartingPlayer startingPlayer = StartingPlayer::NONE;
 	bool startGame = false;
 	char doContinue = '\0';
-	int cols, rows;
+	int cols = 0, rows = 0;
 
 	srand((unsigned int) time(NULL)); // randomizes with time
 

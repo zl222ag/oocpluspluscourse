@@ -5,6 +5,7 @@
 
 class Compare {
 public:
+	// Compares 2 char arrays
 	static bool equal(const char *a, const char *b) {
 		size_t length = strlen(a);
 		if (length != strlen(b)) {
