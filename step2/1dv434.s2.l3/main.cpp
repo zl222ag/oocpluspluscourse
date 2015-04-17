@@ -1,7 +1,7 @@
 // 1dv434.s2.l3/main.cpp
 // Datum: 2015-04-16
 // Programmerare: Zlatko Ladan
-// Kort beskrivning: skriv alphabetet så snabbt som möjligt.
+// Kort beskrivning: Skapa klass som tar hand om bråktal.
 
 #include <iostream>
 #include <inputoutput.h>
@@ -29,9 +29,6 @@ int App::run() {
 // Starts from the beginning.
 int main() {
 	App app;
-
-	cout << "CLEARED" << endl;
-	InputOutput::clearScreen();
 
 	return app.run();
 }

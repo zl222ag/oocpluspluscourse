@@ -4,6 +4,13 @@
 #include <iostream>
 #include <limits>
 #include <menu.h>
+#include <inputoutput.h>
+
+using std::cout;
+using std::cin;
+using std::endl;
+using std::numeric_limits;
+using std::streamsize;
 
 Menu::Menu() {
 
@@ -27,7 +34,7 @@ int Menu::select(int a_menu) const {
 			" and press ENTER: ";
 		cin >> returnValue;
 		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		InputOutput::readEnter();
 
 		if (returnValue == 0) {
 			cout << endl;

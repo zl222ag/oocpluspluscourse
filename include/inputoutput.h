@@ -6,7 +6,6 @@
 
 using std::cout;
 using std::cin;
-using std::endl;
 using std::numeric_limits;
 using std::streamsize;
 
