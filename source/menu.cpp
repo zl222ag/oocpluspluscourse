@@ -1,13 +1,15 @@
 #ifndef MENU_CPP
 #define MENU_CPP
 
+#include <iostream>
+#include <limits>
 #include <menu.h>
 
 Menu::Menu() {
 
 }
 
-int Menu::select(int a_menu) {
+int Menu::select(int a_menu) const {
 	if (a_menu < 0 || a_menu >= m_length) {
 		return -1; // TODO: THROW EXCEPTION
 	}
@@ -59,7 +61,7 @@ int Menu::addMenuItem(int a_menu, const char *a_itemText) {
 	return m_menus[a_menu].length++;
 }
 
-void Menu::showMenu(int a_menu) {
+void Menu::showMenu(int a_menu) const {
 	MenuHolder currentMenu = m_menus[a_menu];
 	cout << currentMenu.header << endl << endl;
 	cout << "-------------------------------------" << endl;

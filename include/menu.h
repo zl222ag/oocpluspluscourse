@@ -1,8 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include <iostream>
-#include <limits>
+#include <cstdlib>
 
 using std::cout;
 using std::cin;
@@ -13,7 +12,7 @@ using std::streamsize;
 class Menu {
 public:
 	Menu();
-	int select(int);
+	int select(int) const;
 	int addMenu(const char *);
 	int addMenuItem(int, const char *);
 
@@ -29,7 +28,7 @@ private:
 
 	MenuHolder m_menus[MAX_MENUES];
 	int m_length = 0;
-	void showMenu(int);
+	void showMenu(int) const;
 };
 
 #endif // MENU_H
