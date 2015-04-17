@@ -9,7 +9,7 @@ OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 all: 1dv434.s2.l3
 
 1dv434.s2.l3: ${OBJS}
-	${CXX} ${CFLAGS} ${OBJS} ../../lib/zlib.a ${LDFLAGS} -o 1dv434.s2.l3
+	${CXX} ${CFLAGS} ${OBJS} ../../lib/zlib.a ${LDFLAGS} -o $@
 
 $(OBJDIR)/%.o: %.cpp
 	mkdir -p $(dir $@)

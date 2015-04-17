@@ -8,7 +8,7 @@ OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 all: miserable
 
 miserable: ${OBJS}
-	${CXX} -g ${CFLAGS} ${OBJS} ${LDFLAGS} -o miserable
+	${CXX} -g ${CFLAGS} ${OBJS} ${LDFLAGS} -o $@
 
 $(OBJDIR)/%.o: %.cpp
 	mkdir -p $(dir $@)

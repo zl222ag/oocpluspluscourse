@@ -19,4 +19,4 @@ $(OBJDIR)/%.o: ../source/%.cpp
 	${CXX} ${CFLAGS} ${LDFLAGS} -c $< -o $@
 
 clean:
-	rm -rfv obj/ bin/
+	rm -rfv ${OBJDIR} ${OUTDIR}
