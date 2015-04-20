@@ -22,19 +22,18 @@ ostream &operator<<(ostream &a_ostream, const Fraction &a_f) {
 }
 
 istream &operator>>(istream &a_istream, Fraction &a_f) {
-	int temp = 1;
+	int temp1 = 1, temp2 = 1;
 	cout << "Enter numerator: ";
-	a_istream >> temp;
-	a_f.m_numerator = temp;
+	a_istream >> temp1;
 	cout << endl;
 	a_istream.clear();
 
 	cout << "Enter denominator: ";
-	temp = 1;
-	a_istream >> temp;
-	a_f.m_denominator = temp;
+	a_istream >> temp2;
 	cout << endl;
 	a_istream.clear();
+
+	a_f.set(temp1, temp2);
 
 	cout << "Result for input: " << a_f.m_numerator << " / " <<
 		a_f.m_denominator << endl;
@@ -116,6 +115,24 @@ int Fraction::gcd(const int a_num, const int a_den) {
 	}
 
 	return n;
+}
+
+void Fraction::set(int a_numerator /*= 1*/, int a_denominator/* = 1*/)
+throw (zero_division_error) {
+	if (a_numerator == 0 || a_denominator == 0) {
+		throw zero_division_error("The denominator cannot ever be zero!");
+	}
+	if (a_numerator > 0 && a_denominator < 0) {
+		a_numerator = -a_numerator;
+		a_denominator = -a_denominator;
+	} else if (a_numerator < 0 && a_denominator < 0) {
+		a_numerator = abs(a_numerator);
+		a_denominator = abs(a_denominator);
+	}
+
+	int temp = Fraction::gcd(a_numerator, a_denominator);
+	m_numerator = a_numerator / temp;
+	m_denominator = a_denominator / temp;
 }
 
 #endif // FRACTION_CPP

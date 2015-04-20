@@ -37,8 +37,9 @@ class Application {
 	}
 
 	void testUser();
-	void test1();
-	void test2();
+	void testFractionArithmetic();
+	void testRightSideArithmetic();
+	void testLeftSideArithmetic();
 	void testException();
 
 public:
@@ -51,6 +52,7 @@ int Application::run() {
 	Fraction result;
 
 	testUser();
+	testFractionArithmetic();
 
 	// Testing class Fraction with predefined values
 	result = (1 + f1) * (f2 - 3);
@@ -58,8 +60,8 @@ int Application::run() {
 		<< result << endl;
 	assert(result == Fraction(35, 2));
 
-	test1();
-	test2();
+	testLeftSideArithmetic();
+	testRightSideArithmetic();
 
 	testException();
 
@@ -68,20 +70,34 @@ int Application::run() {
 	return 0;
 }
 
-// testing user input.
+// Testing user input.
 void Application::testUser() {
-	Fraction f1(3, 2);
-	Fraction f2(10);
-	Fraction result;
+	Fraction f1, f2;
 
 	cout << "--begin user test--" << endl;
 	readEnter();
 
-	cout << "Input two fractions as example: 2/-3 5/6 "
+	cout << "Input two fractions as: 2/-3 5/6 "
 		"(separated by whitespace):" << endl;
 	cin >> f1 >> f2;
 	InputOutput::readEnter();
 
+	cout << "Following should be \"2/-3\", got: " << f1 <<
+		endl;
+	assert(f1 == Fraction(2, -3));
+
+	cout << "Following should be \"5/6\" got: " << f2 <<
+		endl;
+	assert(f2 == Fraction(5, 6));
+
+	cout << "--end user test--" << endl << endl;
+}
+
+// Testing fraction with two Fraction classes.
+void Application::testFractionArithmetic() {
+	Fraction f1(2, -3), f2(5, 6), result;
+
+	cout << "--begin fraction arithmetic test--" << endl;
 	result = f1 + f2;
 	cout << "Following should output \"2/-3 + 5/6 = 1/6\", got: " << result <<
 		endl;
@@ -102,13 +118,15 @@ void Application::testUser() {
 		endl;
 	assert(result == Fraction(-4, 5));
 
-	cout << "--end user test--" << endl << endl;
+	cout << "--end fraction arithmetic test--" << endl << endl;
 }
 
-void Application::test1() {
+// Testing fraction where numbers are on the right and fractions
+// are on left side.
+void Application::testRightSideArithmetic() {
 	Fraction result;
 
-	cout << "--begin test1--" << endl;
+	cout << "--begin right side arithmetic test--" << endl;
 	readEnter();
 
 	result = Fraction(5, 2) + 2;
@@ -131,13 +149,15 @@ void Application::test1() {
 		<< result << endl;
 	assert(result == Fraction(21, 2));
 
-	cout << "--end test1--" << endl << endl;
+	cout << "--end right side arithmetic test--" << endl << endl;
 }
 
-void Application::test2() {
+// Testing fraction where numbers are on the left and fractions
+// are on right side.
+void Application::testLeftSideArithmetic() {
 	Fraction result;
 
-	cout << "--begin test2--" << endl;
+	cout << "--begin left side arithmetic test--" << endl;
 	readEnter();
 
 	result = 6 * Fraction(2, 7);
@@ -160,9 +180,10 @@ void Application::test2() {
 		<< result << endl;
 	assert(result == Fraction(929, 14));
 
-	cout << "--end test2--" << endl << endl;
+	cout << "--end left side arithmetic test--" << endl << endl;
 }
 
+// Testing exceptions for Fraction class
 void Application::testException() {
 	Fraction result;
 	bool thrown = false;

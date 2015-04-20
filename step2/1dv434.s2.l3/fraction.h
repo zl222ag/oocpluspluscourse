@@ -37,27 +37,13 @@ class Fraction {
 
 	static int gcd(const int a_num, const int a_den);
 
+	void set(int a_numerator = 1, int a_denominator = 1)
+		throw (zero_division_error);
+
 public:
 	Fraction(int a_numerator = 1, int a_denominator = 1)
-			throw (zero_division_error) {
-		if (a_numerator == 0 || a_denominator == 0) {
-			throw zero_division_error("The denominator cannot ever be zero!");
-		}
-		if (a_numerator > 0 && a_denominator < 0) {
-			a_numerator = -a_numerator;
-			a_denominator = -a_denominator;
-		} else if (a_numerator < 0 && a_denominator < 0) {
-			a_numerator = abs(a_numerator);
-			a_denominator = abs(a_denominator);
-		}
-
-		int temp = Fraction::gcd(a_numerator, a_denominator);
-		m_numerator = a_numerator / temp;
-		m_denominator = a_denominator / temp;
-	}
-
-	~Fraction() {
-
+		throw (zero_division_error) {
+		set(a_numerator, a_denominator);
 	}
 
 	Fraction Fraction::operator+(const Fraction &a_b) const {
