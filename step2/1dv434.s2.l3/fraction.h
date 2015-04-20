@@ -73,17 +73,8 @@ public:
 	}
 
 	Fraction operator=(const Fraction &a_b) {
-		if (a_b.m_numerator == 0) {
-			m_numerator = 0;
-		}
-		if (a_b.m_denominator == 0) {
-			m_denominator = 0;
-			return *this;
-		}
-
-		int temp = Fraction::gcd(a_b.m_numerator, a_b.m_denominator);
-		m_numerator = a_b.m_numerator / temp;
-		m_denominator = a_b.m_denominator / temp;
+		m_numerator = a_b.m_numerator;
+		m_denominator = a_b.m_denominator;
 
 		return *this;
 	}
