@@ -69,9 +69,9 @@ Fraction operator-(const Fraction &a_f, int a_int) {
 
 Fraction operator-(int a_int, const Fraction &a_f) {
 	return Fraction(
-		1 * a_f.m_denominator -
-		a_f.m_numerator * a_int,
-		a_int * a_f.m_denominator);
+		a_int * a_f.m_denominator -
+		a_f.m_numerator * 1,
+		1 * a_f.m_denominator);
 }
 #pragma endregion Subtraction
 

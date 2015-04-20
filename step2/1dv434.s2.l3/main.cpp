@@ -69,6 +69,27 @@ int Application::run() {
 		<< result << endl;
 	assert(result == Fraction(21, 2));
 
+
+	result = 6 * Fraction(2, 7);
+	cout << "Following should output \"6 * 2/7 = 12/7\", got: "
+		<< result << endl;
+	assert(result == Fraction(12, 7));
+
+	result = 8 / Fraction(1, 4);
+	cout << "Following should output \"8 / 1/4 = 32/1\", got: "
+		<< result << endl;
+	assert(result == Fraction(32, 1));
+
+	result = 32 - Fraction(6, 3);
+	cout << "Following should output \"32 - 6/3 = 30/1\", got: "
+		<< result << endl;
+	assert(result == Fraction(30, 1));
+
+	result = 65 + Fraction(76, 56);
+	cout << "Following should output \"65 + 76/56 = 929/14\", got: "
+		<< result << endl;
+	assert(result == Fraction(929, 14));
+
 	cout << "Press enter to continue...";
 	InputOutput::readEnter();
 	return 0;
