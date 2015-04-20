@@ -38,7 +38,8 @@ class Fraction {
 	static int gcd(const int a_num, const int a_den);
 
 public:
-	Fraction(int a_numerator = 1, int a_denominator = 1) {
+	Fraction(int a_numerator = 1, int a_denominator = 1)
+			throw (zero_division_error) {
 		if (a_numerator == 0 || a_denominator == 0) {
 			throw zero_division_error("The denominator cannot ever be zero!");
 		}
