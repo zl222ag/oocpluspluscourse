@@ -36,12 +36,15 @@ istream &operator>>(istream &a_istream, Fraction &a_f) {
 	cout << endl;
 	a_istream.clear();
 
+	cout << "Result for input: " << a_f.m_numerator << " / " <<
+		a_f.m_denominator << endl;
+
 	return a_istream;
 }
 #pragma endregion Stream
 
 #pragma region Addition
-Fraction operator+(const Fraction & a_f, int a_int) {
+Fraction operator+(const Fraction &a_f, int a_int) {
 	return Fraction(
 		a_f.m_numerator * 1 +
 		a_int * a_f.m_denominator,

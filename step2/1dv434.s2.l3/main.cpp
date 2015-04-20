@@ -42,8 +42,10 @@ int Application::run() {
 	Fraction result;
 
 	// Testing class Fraction with predefined values
-	cout << "Test 1:" << endl;
-	assert((1 + f1) * (f2 - 3) == Fraction(35, 2));
+	result = (1 + f1) * (f2 - 3);
+	cout << "Following should output \"(1 + 3/2) * (10/1 - 3) = 35/2\", got: "
+		<< result << endl;
+	assert(result == Fraction(35, 2));
 
 	testUser(f1, f2);
 
@@ -68,37 +70,39 @@ int Application::run() {
 	assert(result == Fraction(21, 2));
 
 	cout << "Press enter to continue...";
-	cin.get();
+	InputOutput::readEnter();
 	return 0;
 }
 
+// testing user input.
 void Application::testUser(Fraction &f1, Fraction &f2) {
 	Fraction result;
-	cout << "Test 2:" << endl;
+	cout << "--begin user test--" << endl;
 	cout << "Input two fractions as example: 2/-3 5/6 "
 		"(separated by whitespace):" << endl;
 	cin >> f1 >> f2;
 	InputOutput::readEnter();
 
 	result = f1 + f2;
-	cout << "Following should output \"2/-3 + 5/6 = 1/6\", got: "
-		<< result << endl;
+	cout << "Following should output \"2/-3 + 5/6 = 1/6\", got: " << result <<
+		endl;
 	assert(result == Fraction(1, 6));
 
 	result = f1 - f2;
-	cout << "Following should output \"2/-3 - 5/6 = -3/2\", got: "
-		<< result << endl;
-	assert(result == Fraction(3, -2));
+	cout << "Following should output \"2/-3 - 5/6 = -3/2\", got: " << result <<
+		endl;
+	assert(result == Fraction(-3, 2));
 
 	result = f1 * f2;
-	cout << "Following should output \"2/-3 * 5/6 = -5/9\", got: "
-		<< result << endl;
-	assert(result == Fraction(5, -9));
+	cout << "Following should output \"2/-3 * 5/6 = -5/9\", got: " << result <<
+		endl;
+	assert(result == Fraction(-5, 9));
 
 	result = f1 / f2;
-	cout << "Following should output \"2/-3 / 5/6 = -4/5\", got: "
-		<< result << endl;
-	assert(result == Fraction(4, -5));
+	cout << "Following should output \"2/-3 / 5/6 = -4/5\", got: " << result <<
+		endl;
+	assert(result == Fraction(-4, 5));
+	cout << "--end user test--" << endl << endl;
 }
 
 int main() {

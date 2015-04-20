@@ -42,7 +42,10 @@ public:
 		if (a_numerator == 0 || a_denominator == 0) {
 			throw zero_division_error("The denominator cannot ever be zero!");
 		}
-		if (a_numerator < 0 && a_denominator < 0) {
+		if (a_numerator > 0 && a_denominator < 0) {
+			a_numerator = -a_numerator;
+			a_denominator = -a_denominator;
+		} else if (a_numerator < 0 && a_denominator < 0) {
 			a_numerator = abs(a_numerator);
 			a_denominator = abs(a_denominator);
 		}
