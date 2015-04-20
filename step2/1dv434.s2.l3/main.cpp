@@ -33,7 +33,8 @@ using std::cout;
 class Application {
 public:
 	int run();
-	void testUser(Fraction &f1, Fraction &f2);
+	void testUser();
+	void testException();
 };
 
 int Application::run() {
@@ -47,7 +48,7 @@ int Application::run() {
 		<< result << endl;
 	assert(result == Fraction(35, 2));
 
-	testUser(f1, f2);
+	testUser();
 
 	result = Fraction(5, 2) + 2;
 	cout << "Following should output \"5/2 + 2 = 9/2\", got: "
@@ -90,13 +91,17 @@ int Application::run() {
 		<< result << endl;
 	assert(result == Fraction(929, 14));
 
+	testException();
+
 	cout << "Press enter to continue...";
 	InputOutput::readEnter();
 	return 0;
 }
 
 // testing user input.
-void Application::testUser(Fraction &f1, Fraction &f2) {
+void Application::testUser() {
+	Fraction f1(3, 2);
+	Fraction f2(10);
 	Fraction result;
 	cout << "--begin user test--" << endl;
 	cout << "Input two fractions as example: 2/-3 5/6 "
@@ -124,6 +129,30 @@ void Application::testUser(Fraction &f1, Fraction &f2) {
 		endl;
 	assert(result == Fraction(-4, 5));
 	cout << "--end user test--" << endl << endl;
+}
+
+void Application::testException() {
+	Fraction result;
+	bool thrown = false;
+
+	try {
+		result = 0;
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"result = 0\"? " << (thrown ? "yes" : "no") <<
+		endl;
+	assert(thrown);
+
+	thrown = false;
+	try {
+		result = 5 - Fraction(5, 1);
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"result = 0\"? " << (thrown ? "yes" : "no") <<
+		endl;
+	assert(thrown);
 }
 
 int main() {
