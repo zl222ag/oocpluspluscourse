@@ -11,6 +11,7 @@ using std::endl;
 using std::ostream;
 using std::istream;
 using std::runtime_error;
+using std::abs;
 
 #pragma region Friends
 

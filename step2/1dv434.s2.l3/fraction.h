@@ -5,9 +5,9 @@
 #include <istream>
 #include <stdexcept>
 
-class zero_division_error : public std::exception {
+class zero_division_error : public std::logic_error {
 public:
-	zero_division_error(const char *a_msg) : std::exception(a_msg) {
+	zero_division_error(const char *a_msg) : std::logic_error(a_msg) {
 	}
 };
 
@@ -46,33 +46,33 @@ public:
 		set(a_numerator, a_denominator);
 	}
 
-	Fraction Fraction::operator+(const Fraction &a_b) const {
+	Fraction operator+(const Fraction &a_b) const {
 		return Fraction(
 			m_numerator * a_b.m_denominator +
 			a_b.m_numerator * m_denominator,
 			m_denominator * a_b.m_denominator);
 	}
 
-	Fraction Fraction::operator-(const Fraction &a_b) const {
+	Fraction operator-(const Fraction &a_b) const {
 		return Fraction(
 			m_numerator * a_b.m_denominator -
 			a_b.m_numerator * m_denominator,
 			m_denominator * a_b.m_denominator);
 	}
 
-	Fraction Fraction::operator*(const Fraction &a_b) const {
+	Fraction operator*(const Fraction &a_b) const {
 		return Fraction(
 			m_numerator * a_b.m_numerator,
 			m_denominator * a_b.m_denominator);
 	}
 
-	Fraction Fraction::operator/(const Fraction &a_b) const {
+	Fraction operator/(const Fraction &a_b) const {
 		return Fraction(
 			m_numerator * a_b.m_denominator,
 			m_denominator * a_b.m_numerator);
 	}
 
-	Fraction Fraction::operator=(const Fraction &a_b) {
+	Fraction operator=(const Fraction &a_b) {
 		if (a_b.m_numerator == 0) {
 			m_numerator = 0;
 		}
@@ -88,11 +88,11 @@ public:
 		return *this;
 	}
 
-	bool Fraction::operator==(const Fraction &a_b) const {
+	bool operator==(const Fraction &a_b) const {
 		return m_numerator == a_b.m_numerator && m_denominator == a_b.m_denominator;
 	}
 
-	bool Fraction::operator!=(const Fraction &a_b) const {
+	bool operator!=(const Fraction &a_b) const {
 		return m_numerator != a_b.m_numerator || m_denominator != a_b.m_denominator;
 	}
 };
