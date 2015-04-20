@@ -85,10 +85,12 @@ void Application::testUser() {
 	cout << "Following should be \"2/-3\", got: " << f1 <<
 		endl;
 	assert(f1 == Fraction(2, -3));
+	assert(Fraction(2, -3) == f1);
 
 	cout << "Following should be \"5/6\" got: " << f2 <<
 		endl;
 	assert(f2 == Fraction(5, 6));
+	assert(Fraction(5, 6) == f2);
 
 	cout << "--end user test--" << endl << endl;
 }
@@ -102,21 +104,25 @@ void Application::testFractionArithmetic() {
 	cout << "Following should output \"2/-3 + 5/6 = 1/6\", got: " << result <<
 		endl;
 	assert(result == Fraction(1, 6));
+	assert(Fraction(1, 6) == result);
 
 	result = f1 - f2;
 	cout << "Following should output \"2/-3 - 5/6 = -3/2\", got: " << result <<
 		endl;
 	assert(result == Fraction(-3, 2));
+	assert(Fraction(-3, 2) == result);
 
 	result = f1 * f2;
 	cout << "Following should output \"2/-3 * 5/6 = -5/9\", got: " << result <<
 		endl;
 	assert(result == Fraction(-5, 9));
+	assert(Fraction(-5, 9) == result);
 
 	result = f1 / f2;
 	cout << "Following should output \"2/-3 / 5/6 = -4/5\", got: " << result <<
 		endl;
 	assert(result == Fraction(-4, 5));
+	assert(Fraction(-4, 5) == result);
 
 	cout << "--end fraction arithmetic test--" << endl << endl;
 }
@@ -133,21 +139,25 @@ void Application::testRightSideArithmetic() {
 	cout << "Following should output \"5/2 + 2 = 9/2\", got: "
 		<< result << endl;
 	assert(result == Fraction(9, 2));
+	assert(Fraction(9, 2) == result);
 
 	result = Fraction(9, 7) - 6;
 	cout << "Following should output \"9/7 - 6 = -33/7\", got: "
 		<< result << endl;
 	assert(result == Fraction(-33, 7));
+	assert(Fraction(-33, 7) == result);
 
 	result = Fraction(3, 3) / 5;
 	cout << "Following should output \"3/2 / 5 = 1/5\", got: "
 		<< result << endl;
 	assert(result == Fraction(1, 5));
+	assert(Fraction(1, 5) == result);
 
 	result = Fraction(7, 2) * 3;
 	cout << "Following should output \"7/2 * 3 = 21/2\", got: "
 		<< result << endl;
 	assert(result == Fraction(21, 2));
+	assert(Fraction(21, 2) == result);
 
 	cout << "--end right side arithmetic test--" << endl << endl;
 }
@@ -164,21 +174,35 @@ void Application::testLeftSideArithmetic() {
 	cout << "Following should output \"6 * 2/7 = 12/7\", got: "
 		<< result << endl;
 	assert(result == Fraction(12, 7));
+	assert(Fraction(12, 7) == result);
+
+	cout << "Following should output \"6 * 2/7 != 13/7\", got: "
+		<< result << endl;
+	assert(result != Fraction(13, 7));
+	assert(Fraction(13, 7) != result);
 
 	result = 8 / Fraction(1, 4);
 	cout << "Following should output \"8 / 1/4 = 32/1\", got: "
 		<< result << endl;
 	assert(result == Fraction(32, 1));
+	assert(Fraction(32, 1) == result);
+
+	cout << "Following should output \"8 / 1/4 != 1/1\", got: "
+		<< result << endl;
+	assert(!(result == Fraction(1, 1)));
+	assert(!(Fraction(1, 1) == result));
 
 	result = 32 - Fraction(6, 3);
 	cout << "Following should output \"32 - 6/3 = 30/1\", got: "
 		<< result << endl;
 	assert(result == Fraction(30, 1));
+	assert(Fraction(30, 1) == result);
 
 	result = 65 + Fraction(76, 56);
 	cout << "Following should output \"65 + 76/56 = 929/14\", got: "
 		<< result << endl;
 	assert(result == Fraction(929, 14));
+	assert(Fraction(929, 14) == result);
 
 	cout << "--end left side arithmetic test--" << endl << endl;
 }

@@ -91,6 +91,10 @@ public:
 	bool Fraction::operator==(const Fraction &a_b) const {
 		return m_numerator == a_b.m_numerator && m_denominator == a_b.m_denominator;
 	}
+
+	bool Fraction::operator!=(const Fraction &a_b) const {
+		return m_numerator != a_b.m_numerator || m_denominator != a_b.m_denominator;
+	}
 };
 
 #endif // FRACTION_H
