@@ -40,6 +40,7 @@ class Application {
 	void testFractionArithmetic();
 	void testRightSideArithmetic();
 	void testLeftSideArithmetic();
+	void testBothSideArithmetic();
 	void testException();
 
 public:
@@ -62,6 +63,7 @@ int Application::run() {
 
 	testLeftSideArithmetic();
 	testRightSideArithmetic();
+	testBothSideArithmetic();
 
 	testException();
 
@@ -205,6 +207,35 @@ void Application::testLeftSideArithmetic() {
 	assert(Fraction(929, 14) == result);
 
 	cout << "--end left side arithmetic test--" << endl << endl;
+}
+
+// Testing fraction where numbers are on the left and right, and fractions
+// are in between.
+void Application::testBothSideArithmetic() {
+	Fraction result;
+
+	cout << "--begin both side arithmetic test--" << endl;
+	readEnter();
+
+	result = 5 + Fraction(61, 3) * 2;
+	cout << "Following should output \"5 + 61/3 * 2 = 137/3\", got: "
+		<< result << endl;
+	assert(result == Fraction(137, 3));
+	assert(Fraction(137, 3) == result);
+
+	result = 2 / Fraction(7, 2) * 3;
+	cout << "Following should output \"2 / 7/2 * 3 = 21/1\", got: "
+		<< result << endl;
+	assert(result == Fraction(12, 7));
+	assert(Fraction(12, 7) == result);
+
+	result = 9 * Fraction(43, 4) - 90;
+	cout << "Following should output \"9 * 43/4 - 90 = 27/4\", got: "
+		<< result << endl;
+	assert(result == Fraction(27, 4));
+	assert(Fraction(27, 4) == result);
+
+	cout << "--end both side arithmetic test--" << endl << endl;
 }
 
 // Testing exceptions for Fraction class

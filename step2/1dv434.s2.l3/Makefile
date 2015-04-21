@@ -1,5 +1,5 @@
 CXX=g++
-CFLAGS=-Wall -g -I../../include -std=c++11
+CFLAGS=-Wall -Wno-unknown-pragmas -g -I../../include -std=c++11
 LDFLAGS=
 
 OBJDIR = obj/
