@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <limits>
 #include <stdexcept>
 #include "fraction.h"
 
@@ -12,27 +13,43 @@ using std::ostream;
 using std::istream;
 using std::runtime_error;
 using std::abs;
+using std::numeric_limits;
+using std::streamsize;
+
+void Fraction::getInteger(istream &a_istream, const char *a_text,
+	int &a_temp1) {
+	bool error = false;
+
+	do {
+		cout << a_text;
+		a_istream >> a_temp1;
+		error = a_istream.fail();
+		cout << endl;
+		a_istream.clear();
+		a_istream.ignore(numeric_limits<streamsize>::max(), '\n');
+
+		if (error) {
+			cout << "invalid value, try again!" << endl;
+		}
+	} while (error);
+}
 
 #pragma region Friends
 
 #pragma region Stream
 ostream &operator<<(ostream &a_ostream, const Fraction &a_f) {
-	a_ostream << a_f.m_numerator << " / " << a_f.m_denominator;
+	a_ostream << a_f.m_numerator << "/" << a_f.m_denominator;
 
 	return a_ostream;
 }
 
 istream &operator>>(istream &a_istream, Fraction &a_f) {
 	int temp1 = 1, temp2 = 1;
-	cout << "Enter numerator: ";
-	a_istream >> temp1;
-	cout << endl;
+
 	a_istream.clear();
 
-	cout << "Enter denominator: ";
-	a_istream >> temp2;
-	cout << endl;
-	a_istream.clear();
+	Fraction::getInteger(a_istream, "Enter numerator: ", temp1);
+	Fraction::getInteger(a_istream, "Enter denominator: ", temp2);
 
 	a_f.set(temp1, temp2);
 

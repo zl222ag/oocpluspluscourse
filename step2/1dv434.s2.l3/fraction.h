@@ -40,6 +40,8 @@ class Fraction {
 	void set(int a_numerator = 1, int a_denominator = 1)
 		throw (zero_division_error);
 
+	static void getInteger(std::istream &, const char *, int &);
+
 public:
 	Fraction(int a_numerator = 1, int a_denominator = 1)
 		throw (zero_division_error) {

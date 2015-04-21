@@ -75,14 +75,36 @@ int Application::run() {
 // Testing user input.
 void Application::testUser() {
 	Fraction f1, f2;
-
+	bool tryAgain = false;
 	cout << "--begin user test--" << endl;
 	readEnter();
 
 	cout << "Input two fractions as: 2/-3 5/6 "
 		"(separated by whitespace):" << endl;
-	cin >> f1 >> f2;
-	InputOutput::readEnter();
+
+	do {
+		try {
+			cin >> f1;
+			tryAgain = false;
+		} catch (zero_division_error e) {
+			cout << e.what() << endl;
+			cout << "You'll have to write again!" << endl;
+			InputOutput::readEnter();
+			tryAgain = true;
+		}
+	} while (tryAgain);
+
+	do {
+		try {
+			cin >> f2;
+			tryAgain = false;
+		} catch (zero_division_error e) {
+			cout << e.what() << endl;
+			cout << "You'll have to write again!" << endl;
+			InputOutput::readEnter();
+			tryAgain = true;
+		}
+	} while (tryAgain);
 
 	cout << "Following should be \"2/-3\", got: " << f1 <<
 		endl;
@@ -180,6 +202,8 @@ void Application::testLeftSideArithmetic() {
 
 	cout << "Following should output \"6 * 2/7 != 13/7\", got: "
 		<< result << endl;
+	assert(!(result == Fraction(13, 7)));
+	assert(!(Fraction(13, 7) == result));
 	assert(result != Fraction(13, 7));
 	assert(Fraction(13, 7) != result);
 
@@ -193,6 +217,8 @@ void Application::testLeftSideArithmetic() {
 		<< result << endl;
 	assert(!(result == Fraction(1, 1)));
 	assert(!(Fraction(1, 1) == result));
+	assert(result != Fraction(1, 1));
+	assert(Fraction(1, 1) != result);
 
 	result = 32 - Fraction(6, 3);
 	cout << "Following should output \"32 - 6/3 = 30/1\", got: "
