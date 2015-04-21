@@ -36,6 +36,7 @@ class Application {
 		InputOutput::readEnter();
 	}
 
+	void userEnterFraction(Fraction &);
 	void testUser();
 	void testFractionArithmetic();
 	void testRightSideArithmetic();
@@ -72,39 +73,34 @@ int Application::run() {
 	return 0;
 }
 
+// Asks the user to write fraction.
+void Application::userEnterFraction(Fraction &a_f) {
+	bool tryAgain = true;
+
+	do {
+		try {
+			cin >> a_f;
+			tryAgain = false;
+		} catch (zero_division_error e) {
+			cout << e.what() << endl;
+			cout << "You'll have to write again!" << endl;
+			readEnter();
+			tryAgain = true;
+		}
+	} while (tryAgain);
+}
+
 // Testing user input.
 void Application::testUser() {
 	Fraction f1, f2;
-	bool tryAgain = false;
 	cout << "--begin user test--" << endl;
 	readEnter();
 
 	cout << "Input two fractions as: 2/-3 5/6 "
 		"(separated by whitespace):" << endl;
 
-	do {
-		try {
-			cin >> f1;
-			tryAgain = false;
-		} catch (zero_division_error e) {
-			cout << e.what() << endl;
-			cout << "You'll have to write again!" << endl;
-			InputOutput::readEnter();
-			tryAgain = true;
-		}
-	} while (tryAgain);
-
-	do {
-		try {
-			cin >> f2;
-			tryAgain = false;
-		} catch (zero_division_error e) {
-			cout << e.what() << endl;
-			cout << "You'll have to write again!" << endl;
-			InputOutput::readEnter();
-			tryAgain = true;
-		}
-	} while (tryAgain);
+	userEnterFraction(f1);
+	userEnterFraction(f2);
 
 	cout << "Following should be \"2/-3\", got: " << f1 <<
 		endl;
