@@ -217,6 +217,32 @@ void Application::testBothSideArithmetic() {
 	cout << "--begin both side arithmetic test--" << endl;
 	readEnter();
 
+	result = 99 + Fraction(32, 6) + 99;
+	cout << "Following should output \"99 + 32/6 + 99 = 610/3\", got: "
+		<< result << endl;
+	assert(result == Fraction(610, 3));
+	assert(Fraction(610, 3) == result);
+
+	result = 10 - Fraction(784, 3347) - 45;
+	cout << "Following should output \"99 + 784/3347 + 99 = -117929/3347\", "
+		"got: " << result << endl;
+	assert(result == Fraction(-117929, 3347));
+	assert(Fraction(-117929, 3347) == result);
+
+	result = 6 / Fraction(2, 1) / 3;
+	cout << "Following should output \"6 / 2/1 / 3 = 6/6\", got: "
+		<< result << endl;
+	assert(result == Fraction(6, 6));
+	assert(Fraction(6, 6) == result);
+
+	result = 100 * Fraction(34, 62) * 8;
+	cout << "Following should output \"100 * 34/62 * 8 = 27200/62\", got: "
+		<< result << endl;
+	assert(result == Fraction(27200, 62));
+	assert(Fraction(27200, 62) == result);
+
+
+
 	result = 5 + Fraction(61, 3) * 2;
 	cout << "Following should output \"5 + 61/3 * 2 = 137/3\", got: "
 		<< result << endl;
