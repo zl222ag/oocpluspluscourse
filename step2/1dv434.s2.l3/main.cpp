@@ -133,6 +133,7 @@ void Application::testUserOldTest() {
 	// Following should output "2/-3 * 5/6 = -5/9" if test case examples was used
 	cout << endl << f1 << " * " << f2 << " = " << result << endl;
 
+	// This part was modified to protect agains zero division.
 	try {
 		result = f1 / f2;
 		// Following should output "2/-3 / 5/6 = -4/5" if test case examples was used
