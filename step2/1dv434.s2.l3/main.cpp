@@ -18,7 +18,7 @@
 //			2013-04-08	Uppdate  Version 1.1 by Anne.
 //						Converted to English and VS 2012
 //			2015-03-06	Revised by Anne. Converted to VS 2013
-//			2015-04-19  Tested by Zlatko Ladan for Fraction class.
+//			2015-04-19  Update Version 2.0 by Zlatko Ladan.
 /*************************************************************************/
 
 #include <iostream>
@@ -31,19 +31,32 @@ using std::cin;
 using std::cout;
 
 class Application {
+	//asks the user to press enter, this function reads, ignores util enter is
+	// typed.
 	void readEnter() {
 		cout << "Press enter to continue...";
 		InputOutput::readEnter();
 	}
 
+	// Asks the user to write fraction.
 	void userEnterFraction(Fraction &);
+	// Testing user input.
 	void testUser();
+	// Testing fraction with two Fraction classes.
 	void testFractionArithmetic();
+	// Testing fraction where numbers are on the right and fractions
+	// are on left side.
 	void testRightSideArithmetic();
+	// Testing fraction where numbers are on the left and fractions
+	// are on right side.
 	void testLeftSideArithmetic();
+	// Testing fraction where numbers are on the left and right, and fractions
+	// are in between.
 	void testBothSideArithmetic();
-	void testInteger();
+	// Testing exceptions for Fraction class
 	void testException();
+	// tests "==" and "!=" operator for integer and Fraction comparison!
+	void testInteger();
 
 public:
 	int run();
@@ -70,8 +83,8 @@ int Application::run() {
 	testException();
 	testInteger();
 
-	cout << "Press enter to continue...";
 	readEnter();
+
 	return 0;
 }
 
@@ -265,7 +278,7 @@ void Application::testBothSideArithmetic() {
 	assert(result == Fraction(27200, 62));
 	assert(Fraction(27200, 62) == result);
 
-
+	// reverse, mixed!
 
 	result = 5 + Fraction(61, 3) * 2;
 	cout << "Following should output \"5 + 61/3 * 2 = 137/3\", got: "
@@ -303,7 +316,7 @@ void Application::testException() {
 	}
 	cout << "Threw exception on \"result = 0\"? " << (thrown ? "yes" : "no") <<
 		endl;
-	assert(thrown);
+	assert(!thrown);
 
 	thrown = false;
 	try {
@@ -326,51 +339,53 @@ void Application::testException() {
 
 	thrown = false;
 	try {
-		(1 == Fraction(6, 1));
+		Fraction(1, 0);
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"1 == 6/1\"? " <<
-		(thrown ? "yes" : "no") << endl;
-	assert(!thrown);
-
-	thrown = false;
-	try {
-		(0 == Fraction(1, 1));
-	} catch (zero_division_error) {
-		thrown = true;
-	}
-	cout << "Threw exception on \"0 == 1/1\"? " <<
+	cout << "Threw exception on \"1/0\"? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(thrown);
 
 	thrown = false;
 	try {
-		(1 != Fraction(99, 1));
+		Fraction(99, 0);
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"1 != 99/1\"? " <<
+	cout << "Threw exception on \"99/0\"? " <<
+		(thrown ? "yes" : "no") << endl;
+	assert(thrown);
+
+	thrown = false;
+	try {
+		Fraction(1, 1);
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"1/1\"? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(!thrown);
 
 	thrown = false;
 	try {
-		(0 == Fraction(5, 6));
+		Fraction(0, 0);
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"0 != 5/6\"? " <<
+	cout << "Threw exception on \"0/0\"? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(thrown);
 
 	cout << "--end exception test--" << endl << endl;
 }
 
+// tests "==" and "!=" operator for integer and Fraction comparison!
 void Application::testInteger() {
 	Fraction result;
 
 	cout << "--begin integer test--" << endl;
+	readEnter();
 
 	result = 1;
 	cout << "Following should output \"1 = 1/1\", got: "
