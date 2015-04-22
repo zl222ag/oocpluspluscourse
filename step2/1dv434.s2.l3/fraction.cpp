@@ -32,8 +32,7 @@ throw (zero_division_error) {
 
 	a_f.set(temp1, temp2);
 
-	cout << "Result for input: " << a_f.m_numerator << " / " <<
-		a_f.m_denominator << endl;
+	cout << "Result for input: " << a_f << endl;
 
 	return a_istream;
 }

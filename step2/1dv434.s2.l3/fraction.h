@@ -14,7 +14,11 @@ public:
 class Fraction {
 	friend std::ostream &operator<<(std::ostream &a_ostream,
 		const Fraction &a_f) {
-		a_ostream << a_f.m_numerator << "/" << a_f.m_denominator;
+		if (a_f.m_numerator == a_f.m_denominator) {
+			a_ostream << a_f.m_numerator;
+		} else {
+			a_ostream << a_f.m_numerator << "/" << a_f.m_denominator;
+		}
 
 		return a_ostream;
 	}
@@ -96,7 +100,7 @@ public:
 			m_denominator * 1);
 	}
 
-	Fraction operator/(int a_int) const{
+	Fraction operator/(int a_int) const {
 		return Fraction(
 			m_numerator * 1,
 			m_denominator * a_int);

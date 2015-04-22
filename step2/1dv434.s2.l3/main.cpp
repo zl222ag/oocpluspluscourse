@@ -40,8 +40,9 @@ class Application {
 
 	// Asks the user to write fraction.
 	void userEnterFraction(Fraction &);
-	// Testing user input.
-	void testUser();
+	// Testing user input. Manually.
+	// Is the test that came from Test2_3.cpp.
+	void testUserOldTest();
 	// Testing fraction with two Fraction classes.
 	void testFractionArithmetic();
 	// Testing fraction where numbers are on the right and fractions
@@ -63,18 +64,9 @@ public:
 };
 
 int Application::run() {
-	Fraction f1(3, 2);	// numerator=3, denominator=2 ("täljare"=3, "nämnare"=2)
-	Fraction f2(10);	// numerator=10, denominator=1
-	Fraction result;
+	testUserOldTest();
 
-	testUser();
 	testFractionArithmetic();
-
-	// Testing class Fraction with predefined values
-	result = (1 + f1) * (f2 - 3);
-	cout << "Following should output \"(1 + 3/2) * (10/1 - 3) = 35/2\", got: "
-		<< result << endl;
-	assert(result == Fraction(35, 2));
 
 	testLeftSideArithmetic();
 	testRightSideArithmetic();
@@ -105,28 +97,50 @@ void Application::userEnterFraction(Fraction &a_f) {
 	} while (tryAgain);
 }
 
-// Testing user input.
-void Application::testUser() {
-	Fraction f1, f2;
+// Testing user input. Manually.
+// Is the test that came from Test2_3.cpp.
+void Application::testUserOldTest() {
+	Fraction f1(3, 2);	// numerator=3, denominator=2 ("täljare"=3, "nämnare"=2)
+	Fraction f2(10);	// numerator=10, denominator=1
+	Fraction result;
 	cout << "--begin user test--" << endl;
 	readEnter();
 
-	cout << "Input two fractions as: 2/-3 5/6 "
-		"(separated by whitespace):" << endl;
 
+	// Testing class Fraction with predefined values
+	cout << "Test 1:" << endl;
+	cout << "(1 + 3/2) * (10 - 3) = ";
+
+	cout << (1 + f1) * (f2 - 3) << endl << endl;	// Should print "35/2"
+
+	// Will test arithmetic operations between two fractions, entered by the user
+	cout << "Test 2:" << endl;
+	cout << "Input two fractions as example: 2/-3 5/6 (separated by whitespace):" << endl;
+
+	// these two replaced "cin >> f1 >> f2;"
 	userEnterFraction(f1);
 	userEnterFraction(f2);
 
-	cout << "Following should be \"2/-3\", got: " << f1 <<
-		endl;
-	assert(f1 == Fraction(2, -3));
-	assert(Fraction(2, -3) == f1);
+	result = f1 + f2;
+	// Following should output "2/-3 + 5/6 = 1/6" if test case examples was used
+	cout << endl << f1 << " + " << f2 << " = " << result << endl;
 
-	cout << "Following should be \"5/6\" got: " << f2 <<
-		endl;
-	assert(f2 == Fraction(5, 6));
-	assert(Fraction(5, 6) == f2);
+	result = f1 - f2;
+	// Following should output "2/-3 - 5/6 = -3/2" if test case examples was used
+	cout << endl << f1 << " - " << f2 << " = " << result << endl;
 
+	result = f1 * f2;
+	// Following should output "2/-3 * 5/6 = -5/9" if test case examples was used
+	cout << endl << f1 << " * " << f2 << " = " << result << endl;
+
+	try {
+		result = f1 / f2;
+		// Following should output "2/-3 / 5/6 = -4/5" if test case examples was used
+		cout << endl << f1 << " / " << f2 << " = " << result << endl;
+	} catch (zero_division_error) {
+		// Necessary if the user inputs values which can crash the application.
+		cout << endl << f1 << " / " << f2 << " = zero division error!" << endl;
+	}
 	cout << "--end user test--" << endl << endl;
 }
 
@@ -135,6 +149,8 @@ void Application::testFractionArithmetic() {
 	Fraction f1(2, -3), f2(5, 6), result;
 
 	cout << "--begin fraction arithmetic test--" << endl;
+	readEnter();
+
 	result = f1 + f2;
 	cout << "Following should output \"2/-3 + 5/6 = 1/6\", got: " << result <<
 		endl;
@@ -459,7 +475,7 @@ void Application::testInteger() {
 	assert(!(9 == result));
 	assert(result == -9);
 	assert(-9 == result);
-	assert(!(result  != - 9));
+	assert(!(result != -9));
 	assert(!(-9 != result));
 
 	cout << "--end integer test--" << endl << endl;
