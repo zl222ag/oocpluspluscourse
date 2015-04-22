@@ -53,9 +53,9 @@ class Application {
 	// Testing fraction where numbers are on the left and right, and fractions
 	// are in between.
 	void testBothSideArithmetic();
-	// Testing exceptions for Fraction class
+	// Testing exceptions for Fraction class.
 	void testException();
-	// tests "==" and "!=" operator for integer and Fraction comparison!
+	// Testing "==" and "!=" operators for integer and Fraction comparison.
 	void testInteger();
 
 public:
@@ -301,7 +301,7 @@ void Application::testBothSideArithmetic() {
 	cout << "--end both side arithmetic test--" << endl << endl;
 }
 
-// Testing exceptions for Fraction class
+// Testing exceptions for Fraction class.
 void Application::testException() {
 	Fraction result;
 	bool thrown = false;
@@ -326,6 +326,27 @@ void Application::testException() {
 	}
 	cout << "Threw exception on \"result = 5 - 5/1\"? " <<
 		(thrown ? "yes" : "no") << endl;
+	assert(!thrown);
+
+	thrown = false;
+	try {
+		result = Fraction(5, 1) - Fraction(5, 1);
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"result = 5/1 - 5/1\"? " <<
+		(thrown ? "yes" : "no") << endl;
+	assert(!thrown);
+
+	thrown = false;
+	try {
+		result = Fraction(676, 1) / Fraction(0, 1);
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"result = 676/32 - 0/1\"? " <<
+		(thrown ? "yes" : "no") << endl;
+	assert(thrown);
 
 	thrown = false;
 	try {
@@ -380,7 +401,7 @@ void Application::testException() {
 	cout << "--end exception test--" << endl << endl;
 }
 
-// tests "==" and "!=" operator for integer and Fraction comparison!
+// Testing "==" and "!=" operators for integer and Fraction comparison.
 void Application::testInteger() {
 	Fraction result;
 

@@ -19,33 +19,29 @@ class Fraction {
 		return a_ostream;
 	}
 
+	// Reads user input, called by cin.
+	// May throw exception zero_divisor_error if denominator is equal to zero.
 	friend std::istream &operator>>(std::istream &, Fraction &)
 		throw (zero_division_error);
 
 	friend Fraction operator+(int a_int, const Fraction &a_f) {
 		return Fraction(
-			a_int * a_f.m_denominator +
-			a_f.m_numerator * 1,
+			a_int * a_f.m_denominator + a_f.m_numerator * 1,
 			1 * a_f.m_denominator);
 	}
 
 	friend Fraction operator-(int a_int, const Fraction &a_f) {
 		return Fraction(
-			a_int * a_f.m_denominator -
-			a_f.m_numerator * 1,
+			a_int * a_f.m_denominator - a_f.m_numerator * 1,
 			1 * a_f.m_denominator);
 	}
 
 	friend Fraction operator*(int a_int, const Fraction &a_f) {
-		return Fraction(
-			a_int * a_f.m_numerator,
-			1 * a_f.m_denominator);
+		return Fraction(a_int * a_f.m_numerator, 1 * a_f.m_denominator);
 	}
 
 	friend Fraction operator/(int a_int, const Fraction &a_f) {
-		return Fraction(
-			a_int * a_f.m_denominator,
-			1 * a_f.m_numerator);
+		return Fraction(a_int * a_f.m_denominator, 1 * a_f.m_numerator);
 	}
 
 	friend bool operator==(int a_int, const Fraction &a_f) {
@@ -55,7 +51,6 @@ class Fraction {
 	friend bool operator!=(int a_int, const Fraction &a_f) {
 		return a_int != a_f.m_numerator || 1 != a_f.m_denominator;
 	}
-
 
 	int m_numerator = 0, m_denominator = 0;
 
@@ -78,22 +73,20 @@ class Fraction {
 
 public:
 	// May throw exception zero_divisor_error if denominator is equal to zero.
-	Fraction(int a_numerator = 1, int a_denominator = 1)
+	Fraction(const int a_numerator = 1, const int a_denominator = 1)
 		throw (zero_division_error) {
 		set(a_numerator, a_denominator);
 	}
 
 	Fraction operator+(int a_int) const {
 		return Fraction(
-			m_numerator * 1 +
-			a_int * m_denominator,
+			m_numerator * 1 + a_int * m_denominator,
 			m_denominator * 1);
 	}
 
 	Fraction operator-(int a_int) const {
 		return Fraction(
-			m_numerator * 1 -
-			a_int * m_denominator,
+			m_numerator * 1 - a_int * m_denominator,
 			m_denominator * 1);
 	}
 
@@ -119,15 +112,13 @@ public:
 
 	Fraction operator+(const Fraction &a_b) const {
 		return Fraction(
-			m_numerator * a_b.m_denominator +
-			a_b.m_numerator * m_denominator,
+			m_numerator * a_b.m_denominator + a_b.m_numerator * m_denominator,
 			m_denominator * a_b.m_denominator);
 	}
 
 	Fraction operator-(const Fraction &a_b) const {
 		return Fraction(
-			m_numerator * a_b.m_denominator -
-			a_b.m_numerator * m_denominator,
+			m_numerator * a_b.m_denominator - a_b.m_numerator * m_denominator,
 			m_denominator * a_b.m_denominator);
 	}
 
@@ -151,11 +142,13 @@ public:
 	}
 
 	bool operator==(const Fraction &a_b) const {
-		return m_numerator == a_b.m_numerator && m_denominator == a_b.m_denominator;
+		return m_numerator == a_b.m_numerator &&
+			m_denominator == a_b.m_denominator;
 	}
 
 	bool operator!=(const Fraction &a_b) const {
-		return m_numerator != a_b.m_numerator || m_denominator != a_b.m_denominator;
+		return m_numerator != a_b.m_numerator ||
+			m_denominator != a_b.m_denominator;
 	}
 };
 
