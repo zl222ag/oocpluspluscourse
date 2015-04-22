@@ -42,6 +42,7 @@ class Application {
 	void testRightSideArithmetic();
 	void testLeftSideArithmetic();
 	void testBothSideArithmetic();
+	void testInteger();
 	void testException();
 
 public:
@@ -67,6 +68,7 @@ int Application::run() {
 	testBothSideArithmetic();
 
 	testException();
+	testInteger();
 
 	cout << "Press enter to continue...";
 	readEnter();
@@ -322,7 +324,89 @@ void Application::testException() {
 		(thrown ? "yes" : "no") << endl;
 	assert(!thrown);
 
+	thrown = false;
+	try {
+		(1 == Fraction(6, 1));
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"1 == 6/1\"? " <<
+		(thrown ? "yes" : "no") << endl;
+	assert(!thrown);
+
+	thrown = false;
+	try {
+		(0 == Fraction(1, 1));
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"0 == 1/1\"? " <<
+		(thrown ? "yes" : "no") << endl;
+	assert(thrown);
+
+	thrown = false;
+	try {
+		(1 != Fraction(99, 1));
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"1 != 99/1\"? " <<
+		(thrown ? "yes" : "no") << endl;
+	assert(!thrown);
+
+	thrown = false;
+	try {
+		(0 == Fraction(5, 6));
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"0 != 5/6\"? " <<
+		(thrown ? "yes" : "no") << endl;
+	assert(thrown);
+
 	cout << "--end exception test--" << endl << endl;
+}
+
+void Application::testInteger() {
+	Fraction result;
+
+	cout << "--begin integer test--" << endl;
+
+	result = 1;
+	cout << "Following should output \"1 = 1/1\", got: "
+		<< result << endl;
+	assert(result == Fraction());
+	assert(result == Fraction(1, 1));
+	assert(result == Fraction(1));
+	assert(result != Fraction(1, 2));
+	assert(!(result == Fraction(1, 2)));
+	assert(!(2 == result));
+	assert(2 != result);
+	assert(result != 2);
+
+	result = 2;
+	cout << "Following should output \"2 = 2/1\", got: "
+		<< result << endl;
+	assert(result == Fraction(2, 1));
+	assert(result == Fraction(2));
+	assert(result != Fraction(2, 2));
+	assert(!(result == Fraction(2, 2)));
+	assert(!(1 == result));
+	assert(result == 2);
+	assert(2 == result);
+
+	result = -9;
+	cout << "Following should output \"-9 = -9/1\", got: "
+		<< result << endl;
+	assert(result == Fraction(-9, 1));
+	assert(result == Fraction(-9));
+	assert(result != Fraction(-9, 2));
+	assert(!(result == Fraction(-9, 2)));
+	assert(!(9 == result));
+	assert(result == -9);
+	assert(-9 == result);
+
+	cout << "--end integer test--" << endl << endl;
 }
 
 int main() {

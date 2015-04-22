@@ -12,6 +12,8 @@ public:
 };
 
 class Fraction {
+	static const char *NUMERATOR_ZERO_ERROR_MSG;
+
 	friend std::ostream &operator<<(std::ostream &, const Fraction &);
 	friend std::istream &operator>>(std::istream &, Fraction &);
 
@@ -26,6 +28,12 @@ class Fraction {
 
 	friend Fraction operator/(const Fraction &, int);
 	friend Fraction operator/(int, const Fraction &);
+
+	friend bool operator==(const Fraction &, int);
+	friend bool operator==(int, const Fraction &);
+
+	friend bool operator!=(const Fraction &, int);
+	friend bool operator!=(int, const Fraction &);
 
 	int m_numerator = 0, m_denominator = 0;
 

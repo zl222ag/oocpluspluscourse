@@ -16,6 +16,9 @@ using std::abs;
 using std::numeric_limits;
 using std::streamsize;
 
+const char *Fraction::NUMERATOR_ZERO_ERROR_MSG = "The numerator cannot have "
+"value zero!";
+
 void Fraction::getInteger(istream &a_istream, const char *a_text,
 	int &a_temp1) {
 	bool error = false;
@@ -120,6 +123,40 @@ Fraction operator/(int a_int, const Fraction &a_f) {
 }
 #pragma endregion Division
 
+#pragma region Comparison
+bool operator==(const Fraction &a_f, int a_int) {
+	if (a_int == 0) {
+		throw zero_division_error(Fraction::NUMERATOR_ZERO_ERROR_MSG);
+	}
+
+	return a_f.m_numerator == a_int && a_f.m_denominator == 1;
+}
+
+bool operator==(int a_int, const Fraction &a_f) {
+	if (a_int == 0) {
+		throw zero_division_error(Fraction::NUMERATOR_ZERO_ERROR_MSG);
+	}
+
+	return a_int == a_f.m_numerator && 1 == a_f.m_denominator;
+}
+
+bool operator!=(const Fraction &a_f, int a_int) {
+	if (a_int == 0) {
+		throw zero_division_error(Fraction::NUMERATOR_ZERO_ERROR_MSG);
+	}
+
+	return a_f.m_numerator != a_int || a_f.m_denominator != 1;
+}
+
+bool operator!=(int a_int, const Fraction &a_f) {
+	if (a_int == 0) {
+		throw zero_division_error(Fraction::NUMERATOR_ZERO_ERROR_MSG);
+	}
+
+	return a_int != a_f.m_numerator || 1 != a_f.m_denominator;
+}
+#pragma endregion Comparison
+
 #pragma endregion Friends
 
 int Fraction::gcd(const int a_num, const int a_den) {
@@ -138,7 +175,8 @@ int Fraction::gcd(const int a_num, const int a_den) {
 void Fraction::set(int a_numerator /*= 1*/, int a_denominator/* = 1*/)
 throw (zero_division_error) {
 	if (a_numerator == 0 || a_denominator == 0) {
-		throw zero_division_error("The denominator cannot ever be zero!");
+		throw zero_division_error("The numerator nor the denominator "
+			"cannot have value zero!");
 	}
 	if (a_numerator > 0 && a_denominator < 0) {
 		a_numerator = -a_numerator;
