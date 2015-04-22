@@ -175,6 +175,9 @@ void Application::testRightSideArithmetic() {
 		<< result << endl;
 	assert(result == Fraction(9, 2));
 	assert(Fraction(9, 2) == result);
+	assert(Fraction(18, 4) == result);
+	assert(Fraction(2, 9) != result);
+	assert(!(Fraction(2, 9) == result));
 
 	result = Fraction(9, 7) - 6;
 	cout << "Following should output \"9/7 - 6 = -33/7\", got: "
@@ -189,10 +192,11 @@ void Application::testRightSideArithmetic() {
 	assert(Fraction(1, 5) == result);
 
 	result = Fraction(7, 2) * 3;
-	cout << "Following should output \"7/2 * 3 = 21/2\", got: "
+	cout << "Following should output \"7/2 * 3 = 42/4\", got: "
 		<< result << endl;
-	assert(result == Fraction(21, 2));
-	assert(Fraction(21, 2) == result);
+	assert(result == Fraction(42, 4));
+	assert(Fraction(42, 4) == result);
+	assert(!(Fraction(42, 4) != result));
 
 	cout << "--end right side arithmetic test--" << endl << endl;
 }
@@ -223,6 +227,7 @@ void Application::testLeftSideArithmetic() {
 		<< result << endl;
 	assert(result == Fraction(32, 1));
 	assert(Fraction(32, 1) == result);
+	assert(!(Fraction(32, 1) != result));
 
 	cout << "Following should output \"8 / 1/4 != 1/1\", got: "
 		<< result << endl;
@@ -242,6 +247,7 @@ void Application::testLeftSideArithmetic() {
 		<< result << endl;
 	assert(result == Fraction(929, 14));
 	assert(Fraction(929, 14) == result);
+	assert(!(Fraction(929, 14) != result));
 
 	cout << "--end left side arithmetic test--" << endl << endl;
 }
@@ -314,8 +320,8 @@ void Application::testException() {
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"result = 0\"? " << (thrown ? "yes" : "no") <<
-		endl;
+	cout << "Threw exception on \"result = 0\" (should not)? " <<
+		(thrown ? "yes" : "no") << endl;
 	assert(!thrown);
 
 	thrown = false;
@@ -324,7 +330,7 @@ void Application::testException() {
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"result = 5 - 5/1\"? " <<
+	cout << "Threw exception on \"result = 5 - 5/1\" (should not)? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(!thrown);
 
@@ -334,7 +340,7 @@ void Application::testException() {
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"result = 5/1 - 5/1\"? " <<
+	cout << "Threw exception on \"result = 5/1 - 5/1\" (should not)? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(!thrown);
 
@@ -344,9 +350,19 @@ void Application::testException() {
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"result = 676/32 - 0/1\"? " <<
+	cout << "Threw exception on \"result = 676/1 / 0/1\" (should)? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(thrown);
+
+	thrown = false;
+	try {
+		result = Fraction(0, 1) / Fraction(676, 1);
+	} catch (zero_division_error) {
+		thrown = true;
+	}
+	cout << "Threw exception on \"result = 0/1 / 676/32\" (should not)? " <<
+		(thrown ? "yes" : "no") << endl;
+	assert(!thrown);
 
 	thrown = false;
 	try {
@@ -354,47 +370,47 @@ void Application::testException() {
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"result = 1 - 3/1\"? " <<
+	cout << "Threw exception on \"result = 1 - 3/1\" (should not)? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(!thrown);
 
 	thrown = false;
 	try {
-		Fraction(1, 0);
+		result = Fraction(1, 0);
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"1/0\"? " <<
+	cout << "Threw exception on \"result = 1/0\" (should)? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(thrown);
 
 	thrown = false;
 	try {
-		Fraction(99, 0);
+		result = Fraction(99, 0);
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"99/0\"? " <<
+	cout << "Threw exception on \"result = 99/0\" (should)? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(thrown);
 
 	thrown = false;
 	try {
-		Fraction(1, 1);
+		result = Fraction(1, 1);
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"1/1\"? " <<
+	cout << "Threw exception on \"result = 1/1\" (should not)? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(!thrown);
 
 	thrown = false;
 	try {
-		Fraction(0, 0);
+		result = Fraction(0, 0);
 	} catch (zero_division_error) {
 		thrown = true;
 	}
-	cout << "Threw exception on \"0/0\"? " <<
+	cout << "Threw exception on \"result = 0/0\" (should)? " <<
 		(thrown ? "yes" : "no") << endl;
 	assert(thrown);
 
@@ -430,6 +446,8 @@ void Application::testInteger() {
 	assert(!(1 == result));
 	assert(result == 2);
 	assert(2 == result);
+	assert(!(2 != result));
+	assert(!(result != 2));
 
 	result = -9;
 	cout << "Following should output \"-9 = -9/1\", got: "
@@ -441,6 +459,8 @@ void Application::testInteger() {
 	assert(!(9 == result));
 	assert(result == -9);
 	assert(-9 == result);
+	assert(!(result  != - 9));
+	assert(!(-9 != result));
 
 	cout << "--end integer test--" << endl << endl;
 }
