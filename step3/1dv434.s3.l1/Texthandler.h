@@ -8,8 +8,11 @@
 #ifndef TEXTHANDLER_H_
 #define TEXTHANDLER_H_
 
+#include <cstring>
+
 class Texthandler {
-	static const int MAX_SIZE = 1000;
+	static const int MAX_SIZE = 10000;
+	static const char *DELIMITER /* "%%%%%" */;
 
 	char **m_texts;
 	const int m_maxSize;
@@ -23,6 +26,10 @@ public:
 		m_texts = new char*[a_maxSize];
 		m_size = 0;
 		laesFil(a_fileName);
+
+		for (int i = 0; i < a_maxSize; ++i) {
+			m_texts[i] = NULL;
+		}
 	}
 
 	int antalTexter() {
@@ -33,7 +40,21 @@ public:
 		return m_maxSize;
 	}
 
-	const char* text(int index);
+	void stringCopy(char *a_dest, const char *a_src, size_t a_size) {
+#if defined(_WIN32) || defined(_WIN64)
+		strcpy_s(a_dest, a_size, a_src);
+#endif
+		strncpy(a_dest, a_src, a_size);
+	}
+
+	void stringConcatinate(char *a_dest, const char *a_src, size_t a_size) {
+#if defined(_WIN32) || defined(_WIN64)
+		strcat_s(a_dest, a_size, a_src);
+#endif
+		strncat(a_dest, a_src, a_size);
+	}
+
+	const char* text(int pos);
 };
 
 #endif /* TEXTHANDLER_H_ */
