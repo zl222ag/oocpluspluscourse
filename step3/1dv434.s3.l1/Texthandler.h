@@ -17,8 +17,8 @@ class Texthandler {
 	typedef size_t zsize_t;
 #endif
 
-	static const int MAX_TOTAL_SIZE = 10000;
-	static const int MAX_LINE_SIZE = 256;
+	static const size_t MAX_TOTAL_SIZE = 10000;
+	static const size_t MAX_LINE_SIZE = 256;
 	static const char *DELIMITER /* "%%%%%" */;
 
 	char **m_texts = NULL;
