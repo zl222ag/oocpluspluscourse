@@ -11,28 +11,31 @@
 #include "Texthandler.h"
 
 using std::fstream;
+using std::cerr;
+using std::endl;
 
 const char *Texthandler::DELIMITER = "%%%%%";
 
-//TODO: add comment
+// Reads the file.
 void Texthandler::laesFil(const char *a_fileName) {
 	fstream stream(a_fileName);
 	char temp[MAX_LINE_SIZE];
 	bool foundDelimiter, last = false;
 	int i = 0;
 
-#if defined(WIN32) || defined(_WIN64)
+#ifdef _WINDOWS
 	char *p; // åäö fix for display! (charset win-1252)
 #endif
 
 	if (!stream || stream.eof()) {
+		cerr << "Fel: kunde inte l„sa filen \"" << a_fileName << "\"" << endl;
 		return;
 	}
 
 	stream.getline(temp, MAX_LINE_SIZE);
 
 	if (strcmp(temp, DELIMITER) != 0) {
-		std::cerr << "Fel: borde börja med " << DELIMITER << '!' << std::endl;
+		cerr << "Fel: borde b”rja med " << DELIMITER << '!' << endl;
 		return;
 	}
 
@@ -59,18 +62,18 @@ void Texthandler::laesFil(const char *a_fileName) {
 					stringCopy(m_texts[i], temp, MAX_TOTAL_SIZE);
 				} else {
 					if (strlen(m_texts[i]) + strlen(temp) >= MAX_TOTAL_SIZE) {
-						std::cerr << "Fel: Texten tar mer än "
-							<< MAX_TOTAL_SIZE << " tecken." << std::endl;
+						cerr << "Fel: Texten tar mer „n "
+							<< MAX_TOTAL_SIZE << " tecken." << endl;
 						m_size = i + 1;
 						return;
 					}
-					stringConcatinate(m_texts[i], temp, MAX_TOTAL_SIZE);
+					stringConcatenate(m_texts[i], temp, MAX_TOTAL_SIZE);
 				}
 			}
 		}
 
 		if (!last) {
-#if defined(WIN32) || defined(_WIN64)
+#ifdef _WINDOWS
 			p = m_texts[i];
 
 			while (*p) {
