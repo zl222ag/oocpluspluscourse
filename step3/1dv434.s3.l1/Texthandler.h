@@ -11,50 +11,83 @@
 #include <cstring>
 
 class Texthandler {
-	static const int MAX_SIZE = 10000;
+#if defined(_WIN32) || defined(_WIN64)
+	typedef rsize_t zsize_t;
+#else
+	typedef size_t zsize_t;
+#endif
+
+	static const int MAX_TOTAL_SIZE = 10000;
+	static const int MAX_LINE_SIZE = 256;
 	static const char *DELIMITER /* "%%%%%" */;
 
-	char **m_texts;
+	char **m_texts = NULL;
 	const int m_maxSize;
 	int m_size;
 
+	//TODO: add comment
 	void laesFil(const char *filename);
 
 public:
+	//TODO: add comment
 	Texthandler(const char *a_fileName, const int a_maxSize) :
-			m_maxSize(a_maxSize) {
+		m_maxSize(a_maxSize) {
 		m_texts = new char*[a_maxSize];
 		m_size = 0;
-		laesFil(a_fileName);
 
 		for (int i = 0; i < a_maxSize; ++i) {
 			m_texts[i] = NULL;
 		}
+
+		laesFil(a_fileName);
 	}
 
+	~Texthandler() {
+		if (m_texts != NULL) {
+			for (int i = 0; i < m_size; ++i) {
+				delete[] m_texts[i];
+			}
+
+			delete[] m_texts;
+		}
+	}
+
+	//TODO: add comment
 	int antalTexter() {
 		return m_size;
 	}
 
+	//TODO: add comment
 	int maxAntalTexter() {
 		return m_maxSize;
 	}
 
-	void stringCopy(char *a_dest, const char *a_src, size_t a_size) {
+	//TODO: add comment
+	void stringCopy(char *a_dest, const char *a_src, zsize_t a_size) {
 #if defined(_WIN32) || defined(_WIN64)
 		strcpy_s(a_dest, a_size, a_src);
-#endif
+#else
 		strncpy(a_dest, a_src, a_size);
+#endif
 	}
 
-	void stringConcatinate(char *a_dest, const char *a_src, size_t a_size) {
+	//TODO: add comment
+	void stringConcatinate(char *a_dest, const char *a_src, zsize_t a_size) {
 #if defined(_WIN32) || defined(_WIN64)
 		strcat_s(a_dest, a_size, a_src);
-#endif
+#else
 		strncat(a_dest, a_src, a_size);
+#endif
 	}
 
-	const char* text(int pos);
+	// Not index, a_pos starts at 1, NOT 0!
+	const char* text(int a_pos) {
+		if (a_pos < 1 || a_pos > m_size) {
+			return NULL;
+		}
+
+		return m_texts[a_pos - 1];
+	}
 };
 
 #endif /* TEXTHANDLER_H_ */
