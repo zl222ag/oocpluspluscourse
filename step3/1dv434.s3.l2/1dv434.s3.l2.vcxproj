@@ -80,14 +80,12 @@
   <ItemGroup>
     <ClCompile Include="CrapGame.cpp" />
     <ClCompile Include="CrapPlayer.cpp" />
-    <ClCompile Include="gamehelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="roulettegame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CrapGame.h" />
     <ClInclude Include="CrapPlayer.h" />
-    <ClInclude Include="gamehelper.h" />
     <ClInclude Include="roulettegame.h" />
     <ClInclude Include="IGame.h" />
     <ClInclude Include="IPlayer.h" />
