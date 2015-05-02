@@ -11,6 +11,7 @@
 //			2013-05-02	Uppdate  Version 1.1 by Anne. 
 //						Converted to English and VS 2012
 //			2015-03-10	Revised by Anne. Converted to VS 2013
+//			2015-04-28	Revised By Zlatko. Uses the new class "TextHandler".
 /**********************************************************************/
 
 #include <cstring>

@@ -51,6 +51,7 @@ void Texthandler::laesFil(const char *a_fileName) {
 					last = true;
 				} else {
 					// ERROR!!
+					m_size = i + 1;
 					return;
 				}
 			} else if (!foundDelimiter) {
