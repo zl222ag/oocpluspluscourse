@@ -5,6 +5,7 @@
 #include "CrapGame.h"
 #include "CrapPlayer.h"
 #include "roulettegame.h"
+#include "wrapper.h"
 
 using std::locale;
 
@@ -143,7 +144,7 @@ void App::getIntegerFromUser(const char *a_text, int a_min, int &a_value) {
 int main() {
 	// Start with a player that has 1000 Kr
 	CrapPlayer *player = new CrapPlayer(1000);
-	CrapGame game;
+	Wrapper game;
 	App app(player, &game);
 	return	app.run();
 }

@@ -90,6 +90,7 @@
     <ClInclude Include="roulettegame.h" />
     <ClInclude Include="IGame.h" />
     <ClInclude Include="IPlayer.h" />
+    <ClInclude Include="wrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\lib\zlib.lib" />
