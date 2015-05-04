@@ -35,7 +35,6 @@ private:
 	int m_playTimes = 1;
 	int m_startingMoney = 1000;
 
-
 	void replay() {
 		m_player->play(m_playTimes);
 		cout << "Efter " << m_player->getBetCount() <<
@@ -64,7 +63,7 @@ private:
 
 	void setStartingMoney();
 	// Reads a number from the user (repeated until it's not an error).
-	void getIntegerFromUser(const char *text, int min, int &value);
+	static void getIntegerFromUser(const char *text, int min, int &value);
 };
 
 const locale App::APP_LOCALE = locale("swedish");
