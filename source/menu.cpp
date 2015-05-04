@@ -11,6 +11,9 @@ using std::cin;
 using std::endl;
 using std::numeric_limits;
 using std::streamsize;
+using std::locale;
+
+const locale Menu::SWEDISH_LOCALE = locale("swedish");
 
 /* Shows the menu.
  * Returns -1 on error.
@@ -20,12 +23,18 @@ int Menu::showMenu(int a_menu) const {
 		return -1; // TODO: THROW EXCEPTION
 	}
 
+	bool swedish = cout.getloc() == SWEDISH_LOCALE;
 	MenuHolder currentMenu = m_menus[a_menu];
+
 	cout << currentMenu.header << endl << endl;
 	cout << "-------------------------------------" << endl;
-	cout << "       Choose an item!" << endl << endl;
-
-	cout << "0) Show menu again." << endl;
+	if (swedish) {
+		cout << "     Välj ett alternativ!" << endl << endl;
+		cout << "0) Visa menyn igen." << endl;
+	} else {
+		cout << "       Choose an item!" << endl << endl;
+		cout << "0) Show menu again." << endl;
+	}
 
 	for (int i = 0; i < currentMenu.length; ++i) {
 		cout << i + 1 << ") " << currentMenu.item[i] << endl;
@@ -43,17 +52,25 @@ int Menu::select(int a_menu) const {
 		return -1; // TODO: THROW EXCEPTION
 	}
 
+	bool swedish = cout.getloc() == SWEDISH_LOCALE;
 	MenuHolder currentMenu = m_menus[a_menu];
+
 	if (currentMenu.length < 1) {
 		return -1; // TODO: THROW EXCEPTION
 	}
+
 	int returnValue;
 	showMenu(a_menu);
 
 	do {
 		returnValue = -1;
-		cout << endl << "Write in a number from 0 - " << currentMenu.length <<
-			" and press ENTER: ";
+		if (swedish) {
+			cout << endl << "Skriv in ett nummer från 0 - " <<
+				currentMenu.length << " och tryck sedan på RETUR: ";
+		} else {
+			cout << endl << "Write in a number from 0 - " <<
+				currentMenu.length << " and press ENTER: ";
+		}
 		cin >> returnValue;
 		cin.clear();
 		InputOutput::readEnter();

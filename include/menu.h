@@ -1,11 +1,12 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include <cstdlib>
+#include <locale>
 
 class Menu {
 	static const int MAX_MENU_ITEMS = 100;
 	static const int MAX_MENUES = 50;
+	static const std::locale SWEDISH_LOCALE /* locale("swedish") */;
 
 	struct MenuHolder {
 		const char *header = NULL;
