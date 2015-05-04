@@ -5,9 +5,9 @@
 
 #include <cstdlib>
 #include <ctime>
+#include "IGame.h"
 
-
-class CrapGame {
+class CrapGame : public IGame {
 public:
 	CrapGame() : _rnd(1, 6) {}
 	virtual int play(char* bet, int amount);		// Place amount money on position bet and return winnings

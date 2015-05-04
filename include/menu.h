@@ -4,13 +4,6 @@
 #include <cstdlib>
 
 class Menu {
-public:
-	Menu();
-	int select(int) const;
-	int addMenu(const char *);
-	int addMenuItem(int, const char *);
-
-private:
 	static const int MAX_MENU_ITEMS = 100;
 	static const int MAX_MENUES = 50;
 
@@ -22,7 +15,27 @@ private:
 
 	MenuHolder m_menus[MAX_MENUES];
 	int m_length = 0;
-	void showMenu(int) const;
+
+	/* Shows the menu.
+	 * Returns -1 on error.
+	 */
+	int showMenu(int) const;
+public:
+	Menu() {}
+
+	/* Shows a selected menu.
+	 * Reads cin from user and returns item.
+	 * Returns -1 on error.
+	 */
+	int select(int) const;
+	/* Adds a menu.
+	 * returns -1 on error (if it reached the limit).
+	 */
+	int addMenu(const char *);
+	/* Adds a menu item to an existing menu.
+	 * Returns -1 on error.
+	 */
+	int addMenuItem(int, const char *);
 };
 
 #endif // MENU_H

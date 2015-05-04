@@ -12,10 +12,32 @@ using std::endl;
 using std::numeric_limits;
 using std::streamsize;
 
-Menu::Menu() {
+/* Shows the menu.
+ * Returns -1 on error.
+ */
+int Menu::showMenu(int a_menu) const {
+	if (a_menu < 0 || a_menu >= m_length) {
+		return -1; // TODO: THROW EXCEPTION
+	}
 
+	MenuHolder currentMenu = m_menus[a_menu];
+	cout << currentMenu.header << endl << endl;
+	cout << "-------------------------------------" << endl;
+	cout << "       Choose an item!" << endl << endl;
+
+	cout << "0) Show menu again." << endl;
+
+	for (int i = 0; i < currentMenu.length; ++i) {
+		cout << i + 1 << ") " << currentMenu.item[i] << endl;
+	}
+
+	return 0;
 }
 
+/* Shows a selected menu.
+ * Reads cin from user and returns item.
+ * Returns -1 on error.
+ */
 int Menu::select(int a_menu) const {
 	if (a_menu < 0 || a_menu >= m_length) {
 		return -1; // TODO: THROW EXCEPTION
@@ -47,6 +69,9 @@ int Menu::select(int a_menu) const {
 	return --returnValue;
 }
 
+/* Adds a menu.
+ * returns -1 on error (if it reached the limit).
+ */
 int Menu::addMenu(const char *a_header) {
 	if (m_length >= MAX_MENUES) {
 		return -1;
@@ -56,6 +81,9 @@ int Menu::addMenu(const char *a_header) {
 	return m_length++;
 }
 
+/* Adds a menu item to an existing menu.
+ * Returns -1 on error.
+ */
 int Menu::addMenuItem(int a_menu, const char *a_itemText) {
 	if (a_menu < 0 || a_menu >= m_length) {
 		return -1; // TODO: THROW EXCEPTION
@@ -66,19 +94,6 @@ int Menu::addMenuItem(int a_menu, const char *a_itemText) {
 
 	m_menus[a_menu].item[m_menus[a_menu].length] = a_itemText;
 	return m_menus[a_menu].length++;
-}
-
-void Menu::showMenu(int a_menu) const {
-	MenuHolder currentMenu = m_menus[a_menu];
-	cout << currentMenu.header << endl << endl;
-	cout << "-------------------------------------" << endl;
-	cout << "       Choose an item!" << endl << endl;
-
-	cout << "0) Show menu again." << endl;
-
-	for (int i = 0; i < currentMenu.length; ++i) {
-		cout << i + 1 << ") " << currentMenu.item[i] << endl;
-	}
 }
 
 #endif // MENU_CPP
