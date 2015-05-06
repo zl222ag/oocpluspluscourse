@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include "Texthandler.h"
+#include <stdexcept>
 
 using std::fstream;
 using std::cerr;
@@ -28,18 +29,16 @@ void Texthandler::laesFil(const char *a_fileName) {
 #endif
 
 	if (!stream || stream.eof()) {
-		cerr << "Fel: kunde inte l„sa filen \"" << a_fileName << "\"" << endl;
-		return;
+		throw std::runtime_error("Fel: kunde inte l„sa filen!");
 	}
 
 	stream.getline(temp, MAX_LINE_SIZE);
 
 	if (strcmp(temp, DELIMITER) != 0) {
-		cerr << "Fel: borde b”rja med " << DELIMITER << '!' << endl;
-		return;
+		throw std::runtime_error("Fel: borde b”rja med DELIMITER!");
 	}
 
-	while (!stream.eof() && i < m_maxSize && !last) {
+	while (!stream.eof() && i < MAX_SIZE && !last) {
 		foundDelimiter = false;
 
 		while (!stream.eof() && !foundDelimiter && !last) {
@@ -63,10 +62,8 @@ void Texthandler::laesFil(const char *a_fileName) {
 					stringCopy(m_texts[i], temp, MAX_TOTAL_SIZE);
 				} else {
 					if (strlen(m_texts[i]) + strlen(temp) >= MAX_TOTAL_SIZE) {
-						cerr << "Fel: Texten tar mer „n "
-							<< MAX_TOTAL_SIZE << " tecken." << endl;
 						m_size = i + 1;
-						return;
+						throw std::runtime_error("Fel: Texten tar mer „n max antal tecken.");
 					}
 					stringConcatenate(m_texts[i], temp, MAX_TOTAL_SIZE);
 				}

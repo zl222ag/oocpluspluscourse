@@ -26,7 +26,7 @@ class Texthandler {
 	static const char *DELIMITER /* "%%%%%" */;
 
 	char **m_texts = NULL;
-	const int m_maxSize;
+	const int MAX_SIZE;
 	int m_size;
 
 	// Reads the file.
@@ -36,9 +36,7 @@ public:
 	// a_fileName: the filename!
 	// a_maxSize: the size limitation for texts.
 	Texthandler(const char *a_fileName, const int a_maxSize) :
-		m_maxSize(a_maxSize) {
-		m_texts = new char*[a_maxSize];
-		m_size = 0;
+		MAX_SIZE(a_maxSize), m_texts(new char*[a_maxSize]), m_size(0) {
 
 		for (int i = 0; i < a_maxSize; ++i) {
 			m_texts[i] = NULL;
@@ -58,17 +56,17 @@ public:
 	}
 
 	// Returns the amount of texts.
-	int antalTexter() {
+	int antalTexter() const {
 		return m_size;
 	}
 
 	// Returns the limit of the amount of texts.
-	int maxAntalTexter() {
-		return m_maxSize;
+	int maxAntalTexter() const {
+		return MAX_SIZE;
 	}
 
 	// Safe string copying.
-	void stringCopy(char *a_dest, const char *a_src, zsize_t a_size) {
+	static void stringCopy(char *a_dest, const char *a_src, zsize_t a_size) {
 #ifdef _WINDOWS
 		strcpy_s(a_dest, a_size, a_src);
 #else
@@ -77,7 +75,7 @@ public:
 	}
 
 	// Safe string concatenation.
-	void stringConcatenate(char *a_dest, const char *a_src, zsize_t a_size) {
+	static void stringConcatenate(char *a_dest, const char *a_src, zsize_t a_size) {
 #ifdef _WINDOWS
 		strcat_s(a_dest, a_size, a_src);
 #else
@@ -87,7 +85,7 @@ public:
 
 	// Not index, a_pos starts at 1, NOT 0!
 	// if a_pos is not within the right range, then NULL is returned.
-	const char* text(int a_pos) {
+	const char* text(int a_pos) const {
 		if (a_pos < 1 || a_pos > m_size) {
 			return NULL;
 		}

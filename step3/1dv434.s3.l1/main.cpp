@@ -19,6 +19,8 @@
  using std::cin;
  using std::cout;
  using std::endl;
+#include <stdexcept>
+ using std::runtime_error;
 #include "Texthandler.h"
 
 
@@ -34,7 +36,7 @@ int App::run()
 	int check[] = {7, 141, 246, 1157, 125, 84, 113, 9};		// För test-syfte
 
 	try {
-		Texthandler th("Historier.txt", maxAntalPlatser);	// Förutsätter textfilen i projektmappen
+		Texthandler th("Historier.txt_", maxAntalPlatser);	// Förutsätter textfilen i projektmappen
 					 
 		if (th.antalTexter() != check[0]) {
 			cout << "Antal sparade historier „r " << th.antalTexter()
@@ -74,9 +76,9 @@ int App::run()
 		char buf[20];
 		cin.getline(buf, 20);
 	}
-	catch (...){
+	catch (runtime_error e){
 		// Fångar allt... Om något undantag kastas från TextHandler-klassen, fångas det här.
-		cout << "An error occured during program execution. Program ended!" << endl;
+		cout << "An error occured during program execution: " << endl << "\"" << e.what() << "\". Program ended!" << endl;
 		return 1;		
 	}
 	return 0;
