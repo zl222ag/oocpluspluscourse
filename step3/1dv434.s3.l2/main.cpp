@@ -61,7 +61,6 @@ private:
 	Menu m_menu;
 
 	int m_playTimes = 1;
-	int m_startingMoney = 1000;
 
 	void replay() {
 		m_player->play(m_playTimes);
