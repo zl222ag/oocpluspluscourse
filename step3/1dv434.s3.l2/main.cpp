@@ -5,23 +5,49 @@
 #include "CrapGame.h"
 #include "CrapPlayer.h"
 #include "roulettegame.h"
+#include "rouletteplayer.h"
 #include "wrapper.h"
 
 using std::locale;
 
+namespace Main {
+	enum Menu {
+		CRAPS = 0,
+		RUSSIAN_ROULETTE = 1,
+		QUIT = 2
+	};
+}
+
+namespace Craps {
+	enum Menu {
+		REPLAY = 0,
+		AMOUNT_REPLAY = 1,
+		STARTING_MONEY = 2,
+		QUIT = 3
+	};
+}
+
+namespace RussianRoulette {
+	enum Menu {
+		SHOOT = 0,
+		RELOAD = 1,
+		STARTING_MONEY = 2,
+		QUIT = 3
+	};
+}
+
 class App {
 public:
-	App(IPlayer* a_player, IGame* a_game) :
-		m_player(a_player), m_game(a_game) {
-	}
+	App() : m_player(NULL), m_game(NULL) {}
 
 	int run();
 
 private:
-	static const int MENU_CHOICE_REPLAY = 0;
-	static const int MENU_CHOICE_AMOUNT_REPLAY = 1;
-	static const int MENU_CHOICE_STARTING_MONEY = 2;
-	static const int MENU_CHOICE_QUIT = 3;
+	enum GameType {
+		CRAPS,
+		RUSSIAN_ROULETTE
+	};
+
 	static const locale APP_LOCALE /* locale("swedish") */;
 
 	static void readEnter() {
@@ -30,8 +56,9 @@ private:
 		cout << endl;
 	}
 
-	IPlayer* m_player;
-	IGame*   m_game;
+	IPlayer *m_player;
+	IGame *m_game;
+	Menu m_menu;
 
 	int m_playTimes = 1;
 	int m_startingMoney = 1000;
@@ -51,18 +78,10 @@ private:
 		readEnter();
 	}
 
-	void setMenu(Menu &a_menu) {
-		a_menu.addMenu("Gamble++");
-		a_menu.addMenuItem(0, "Spela angivet antal omgångar och "
-			"presentera resultatet.");
-		a_menu.addMenuItem(0, "Bestäm antalet omgångar som ska "
-			"spelas i alternativ 1.");
-		a_menu.addMenuItem(0, "Bestäm hur mycket pengar spelaren "
-			"ska ha från början.");
-		a_menu.addMenuItem(0, "Avsluta programmet.");
-	}
-
-	void setStartingMoney();
+	void playCraps();
+	void playRussianRoulette();
+	void buildMenu();
+	void setStartingMoney(GameType);
 	// Reads a number from the user (repeated until it's not an error).
 	static void getIntegerFromUser(const char *text, int min, int &value);
 };
@@ -70,7 +89,6 @@ private:
 const locale App::APP_LOCALE = locale("swedish");
 
 int App::run() {
-	Menu menu;
 	int choice;
 	bool continuePlaying = true;
 
@@ -78,26 +96,21 @@ int App::run() {
 	cout.imbue(APP_LOCALE);
 	cin.imbue(APP_LOCALE);
 
-	m_player->setGame(m_game);
-	setMenu(menu);
+	buildMenu();
 
-	while (m_player->getMoney() > 0 && continuePlaying) {
-		choice = menu.select(0);
+	while (continuePlaying) {
+		choice = m_menu.select(0);
 
 		switch (choice) {
-		case MENU_CHOICE_REPLAY:
-			replay();
+		case Main::Menu::CRAPS:
+			playCraps();
 			break;
 
-		case MENU_CHOICE_AMOUNT_REPLAY:
-			setReplayAmount();
+		case Main::Menu::RUSSIAN_ROULETTE:
+			playRussianRoulette();
 			break;
 
-		case MENU_CHOICE_STARTING_MONEY:
-			setStartingMoney();
-			break;
-
-		default: // MENU_CHOICE_QUIT:
+		default:// Main::Menu::CRAPS:
 			continuePlaying = false;
 			break;
 		}
@@ -109,7 +122,149 @@ int App::run() {
 	return EXIT_SUCCESS;
 }
 
-void App::setStartingMoney() {
+void App::playCraps() {
+	bool continuePlaying = true;
+	int choice;
+
+	if (m_player != NULL) {
+		delete m_player;
+		m_player = NULL;
+	}
+
+	if (m_game != NULL) {
+		delete m_game;
+		m_game = NULL;
+	}
+
+	m_game = new Wrapper();
+
+	while (continuePlaying) {
+		choice = m_menu.select(1);
+
+		switch (choice) {
+		case Craps::Menu::REPLAY:
+			if (m_player == NULL) {
+				cout << "Du måste välja alternativ 3. först!" << endl;
+				readEnter();
+				break;
+			}
+
+			replay();
+			break;
+
+		case Craps::Menu::AMOUNT_REPLAY:
+			setReplayAmount();
+			break;
+
+		case Craps::Menu::STARTING_MONEY:
+			setStartingMoney(GameType::CRAPS);
+			break;
+
+		default: // Craps::Menu::QUIT:
+			continuePlaying = false;
+			break;
+		}
+
+		if (m_player != NULL && m_player->getMoney() <= 0) {
+			delete m_player;
+			m_player = NULL;
+			cout << "Verkar som att du förlorade!" << endl;
+			readEnter();
+		}
+	}
+}
+
+void App::playRussianRoulette() {
+	bool continuePlaying = true;
+	int choice;
+
+	if (m_player != NULL) {
+		delete m_player;
+		m_player = NULL;
+	}
+
+	if (m_game != NULL) {
+		delete m_game;
+		m_game = NULL;
+	}
+
+	m_game = new RouletteGame();
+
+	while (continuePlaying) {
+		choice = m_menu.select(2);
+
+		switch (choice) {
+		case RussianRoulette::Menu::SHOOT:
+			if (m_player == NULL) {
+				cout << "Du måste välja alternativ 3. först!" << endl;
+				readEnter();
+				break;
+			}
+
+			m_player->play(0);
+
+			if (m_player->getMoney() <= 0) {
+				delete m_player;
+				m_player = NULL;
+				cout << "Verkar som att du dog!" << endl <<
+					"Välj summa för att börja om" << endl;
+			} else {
+				cout << "Du lever fortfarande och du har nu " <<
+					m_player->getMoney() << " kr!" << endl <<
+					"Du har klarat dig i " << m_player->getBetCount() <<
+					" rundor!" << endl;
+			}
+			readEnter();
+			break;
+
+		case RussianRoulette::Menu::RELOAD:
+			if (m_player == NULL) {
+				cout << "Du måste välja alternativ 3. först!" << endl;
+				readEnter();
+				break;
+			}
+
+			m_player->play(1);
+
+			cout << "Snurrade magasinet!" << endl;
+			readEnter();
+			break;
+
+		case RussianRoulette::Menu::STARTING_MONEY:
+			setStartingMoney(GameType::RUSSIAN_ROULETTE);
+			break;
+
+		default: // RussianRoulette::Menu::QUIT:
+			continuePlaying = false;
+			break;
+		}
+	}
+}
+
+void App::buildMenu() {
+	m_menu.addMenu("Gamble++: Välj spel! Eller avsluta?");
+	m_menu.addMenuItem(0, "Craps.");
+	m_menu.addMenuItem(0, "Rysk roulette.");
+	m_menu.addMenuItem(0, "Avsluta programmet.");
+
+	m_menu.addMenu("Craps");
+	m_menu.addMenuItem(1, "Spela angivet antal omgångar och "
+		"presentera resultatet.");
+	m_menu.addMenuItem(1, "Bestäm antalet omgångar som ska "
+		"spelas i alternativ 1.");
+	m_menu.addMenuItem(1, "Bestäm hur mycket pengar spelaren "
+		"ska ha från början.");
+	m_menu.addMenuItem(1, "Avsluta spelet.");
+
+	m_menu.addMenu("Rysk roulette");
+	m_menu.addMenuItem(2, "Skjut");
+	m_menu.addMenuItem(2, "Ladda om");
+	m_menu.addMenuItem(2, "Bestäm hur mycket pengar spelaren "
+		"ska ha från början.");
+	m_menu.addMenuItem(2, "Avsluta spelet.");
+}
+
+void App::setStartingMoney(GameType a_type) {
 	int amount;
 
 	getIntegerFromUser("Hur många kronor (min 1)?", 1, amount);
@@ -118,9 +273,17 @@ void App::setStartingMoney() {
 		delete m_player;
 	}
 
-	m_player = new CrapPlayer(amount);
-	cout << "Du kommer att ha " << m_playTimes << " kr att spela för" <<
+	if (a_type == GameType::CRAPS) {
+		m_player = new CrapPlayer(amount);
+		m_player->setGame(m_game);
+	} else { // GameType::RUSSIAN_ROULETTE
+		m_player = new RoulettePlayer(amount);
+		m_player->setGame(m_game);
+	}
+
+	cout << "Du kommer att ha " << amount << " kr att spela för" <<
 		endl;
+
 	readEnter();
 }
 
@@ -142,9 +305,6 @@ void App::getIntegerFromUser(const char *a_text, int a_min, int &a_value) {
 }
 
 int main() {
-	// Start with a player that has 1000 Kr
-	CrapPlayer *player = new CrapPlayer(1000);
-	Wrapper game;
-	App app(player, &game);
-	return	app.run();
+	App app;
+	return app.run();
 }

@@ -83,6 +83,7 @@
     <ClCompile Include="CrapPlayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="roulettegame.cpp" />
+    <ClCompile Include="rouletteplayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CrapGame.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="roulettegame.h" />
     <ClInclude Include="IGame.h" />
     <ClInclude Include="IPlayer.h" />
+    <ClInclude Include="rouletteplayer.h" />
     <ClInclude Include="wrapper.h" />
   </ItemGroup>
   <ItemGroup>

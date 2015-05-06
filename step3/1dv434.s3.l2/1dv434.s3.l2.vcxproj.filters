@@ -27,6 +27,9 @@
     <ClCompile Include="roulettegame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rouletteplayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CrapPlayer.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rouletteplayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
