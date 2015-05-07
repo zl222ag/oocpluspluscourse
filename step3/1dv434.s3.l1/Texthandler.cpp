@@ -14,11 +14,14 @@
 using std::fstream;
 using std::cerr;
 using std::endl;
+using std::length_error;
+using std::invalid_argument;
 
 const char *Texthandler::DELIMITER = "%%%%%";
 
 // Reads the file.
-void Texthandler::laesFil(const char *a_fileName) {
+void Texthandler::laesFil(const char *a_fileName) throw(invalid_argument,
+		length_error) {
 	fstream stream(a_fileName);
 	char temp[MAX_LINE_SIZE];
 	bool foundDelimiter, last = false;
@@ -29,13 +32,13 @@ void Texthandler::laesFil(const char *a_fileName) {
 #endif
 
 	if (!stream || stream.eof()) {
-		throw std::runtime_error("Fel: kunde inte l„sa filen!");
+		throw invalid_argument("Fel: kunde inte l„sa filen!");
 	}
 
 	stream.getline(temp, MAX_LINE_SIZE);
 
 	if (strcmp(temp, DELIMITER) != 0) {
-		throw std::runtime_error("Fel: borde b”rja med DELIMITER!");
+		throw invalid_argument("Fel: borde b”rja med DELIMITER!");
 	}
 
 	while (!stream.eof() && i < MAX_SIZE && !last) {
@@ -49,9 +52,9 @@ void Texthandler::laesFil(const char *a_fileName) {
 				if (m_texts[i] == NULL) {
 					last = true;
 				} else {
-					// ERROR!!
 					m_size = i + 1;
-					return;
+					throw invalid_argument("Fel: sista raden m†ste sluta med "
+							"DELIMITER.");
 				}
 			} else if (!foundDelimiter) {
 				temp[stream.gcount() - 1] = '\n';
@@ -61,10 +64,13 @@ void Texthandler::laesFil(const char *a_fileName) {
 					m_texts[i] = new char[MAX_TOTAL_SIZE];
 					stringCopy(m_texts[i], temp, MAX_TOTAL_SIZE);
 				} else {
-					if (strlen(m_texts[i]) + strlen(temp) >= MAX_TOTAL_SIZE) {
+					if (strlen(m_texts[i]) + strlen(temp) >=
+							MAX_TOTAL_SIZE - 1) {
 						m_size = i + 1;
-						throw std::runtime_error("Fel: Texten tar mer „n max antal tecken.");
+						throw length_error("Fel: texten tar mer „n max "
+								"antal tecken.");
 					}
+
 					stringConcatenate(m_texts[i], temp, MAX_TOTAL_SIZE);
 				}
 			}

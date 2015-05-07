@@ -13,6 +13,7 @@
 #define TEXTHANDLER_H_
 
 #include <cstring>
+#include <stdexcept>
 
 class Texthandler {
 #ifdef _WINDOWS
@@ -21,22 +22,24 @@ class Texthandler {
 	typedef size_t zsize_t;
 #endif
 
-	static const size_t MAX_TOTAL_SIZE = 10000;
-	static const size_t MAX_LINE_SIZE = 256;
+	static const zsize_t MAX_TOTAL_SIZE = 10000;
+	static const zsize_t MAX_LINE_SIZE = 256;
 	static const char *DELIMITER /* "%%%%%" */;
 
-	char **m_texts = NULL;
 	const int MAX_SIZE;
+	char **m_texts;
 	int m_size;
 
 	// Reads the file.
-	void laesFil(const char *filename);
+	void laesFil(const char *filename) throw (std::invalid_argument,
+			std::length_error);
 
 public:
 	// a_fileName: the filename!
 	// a_maxSize: the size limitation for texts.
-	Texthandler(const char *a_fileName, const int a_maxSize) :
-		MAX_SIZE(a_maxSize), m_texts(new char*[a_maxSize]), m_size(0) {
+	Texthandler(const char *a_fileName, const int a_maxSize)
+			throw (std::invalid_argument, std::length_error) :
+			MAX_SIZE(a_maxSize), m_texts(new char*[a_maxSize]), m_size(0) {
 
 		for (int i = 0; i < a_maxSize; ++i) {
 			m_texts[i] = NULL;
@@ -75,7 +78,8 @@ public:
 	}
 
 	// Safe string concatenation.
-	static void stringConcatenate(char *a_dest, const char *a_src, zsize_t a_size) {
+	static void stringConcatenate(char *a_dest, const char *a_src,
+			zsize_t a_size) {
 #ifdef _WINDOWS
 		strcat_s(a_dest, a_size, a_src);
 #else
@@ -94,4 +98,4 @@ public:
 	}
 };
 
-#endif /* TEXTHANDLER_H_ */
+#endif // TEXTHANDLER_H_
