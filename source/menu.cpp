@@ -13,7 +13,15 @@ using std::numeric_limits;
 using std::streamsize;
 using std::locale;
 
+#if defined(_WIN32) || defined(_WIN64)
+#define _WINDOWS
+#endif
+
+#ifdef _WINDOWS
 const locale Menu::SWEDISH_LOCALE = locale("swedish");
+#else
+const locale Menu::SWEDISH_LOCALE = locale("sv_SE.UTF-8");
+#endif
 
 /* Shows the menu.
  * Returns -1 on error.

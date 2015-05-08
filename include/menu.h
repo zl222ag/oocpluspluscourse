@@ -6,7 +6,8 @@
 class Menu {
 	static const int MAX_MENU_ITEMS = 100;
 	static const int MAX_MENUES = 50;
-	static const std::locale SWEDISH_LOCALE /* locale("swedish") */;
+	static const std::locale SWEDISH_LOCALE /* locale("swedish") ||
+	 locale("sv_SE.UTF-8")*/;
 
 	struct MenuHolder {
 		const char *header = NULL;
