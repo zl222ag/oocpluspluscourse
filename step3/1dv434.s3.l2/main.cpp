@@ -40,6 +40,14 @@ namespace RussianRoulette {
 	};
 }
 
+namespace {
+	enum MenuType {
+		MAIN = 0,
+		CRAPS = 1,
+		RUSSIAN_ROULETTE = 2
+	};
+}
+
 class App {
 public:
 	App() : m_player(NULL), m_game(NULL) {}
@@ -117,7 +125,7 @@ int App::run() {
 	buildMenu();
 
 	while (continuePlaying) {
-		choice = m_menu.select(0);
+		choice = m_menu.select(MenuType::MAIN);
 
 		switch (choice) {
 		case Main::Menu::CRAPS:
@@ -156,7 +164,7 @@ void App::playCraps() {
 	m_game = new Wrapper();
 
 	while (continuePlaying) {
-		choice = m_menu.select(1);
+		choice = m_menu.select(MenuType::CRAPS);
 
 		switch (choice) {
 		case Craps::Menu::REPLAY:
@@ -207,7 +215,7 @@ void App::playRussianRoulette() {
 	m_game = new RouletteGame();
 
 	while (continuePlaying) {
-		choice = m_menu.select(2);
+		choice = m_menu.select(MenuType::RUSSIAN_ROULETTE);
 
 		switch (choice) {
 		case RussianRoulette::Menu::SHOOT:
@@ -259,25 +267,25 @@ void App::playRussianRoulette() {
 
 void App::buildMenu() {
 	m_menu.addMenu("Gamble++: Välj spel! Eller avsluta?");
-	m_menu.addMenuItem(0, "Craps.");
-	m_menu.addMenuItem(0, "Rysk roulette.");
-	m_menu.addMenuItem(0, "Avsluta programmet.");
+	m_menu.addMenuItem(MenuType::MAIN, "Craps.");
+	m_menu.addMenuItem(MenuType::MAIN, "Rysk roulette.");
+	m_menu.addMenuItem(MenuType::MAIN, "Avsluta programmet.");
 
 	m_menu.addMenu("Craps");
-	m_menu.addMenuItem(1, "Spela angivet antal omgångar och "
+	m_menu.addMenuItem(MenuType::CRAPS, "Spela angivet antal omgångar och "
 		"presentera resultatet.");
-	m_menu.addMenuItem(1, "Bestäm antalet omgångar som ska "
+	m_menu.addMenuItem(MenuType::CRAPS, "Bestäm antalet omgångar som ska "
 		"spelas i alternativ 1.");
-	m_menu.addMenuItem(1, "Bestäm hur mycket pengar spelaren "
+	m_menu.addMenuItem(MenuType::CRAPS, "Bestäm hur mycket pengar spelaren "
 		"ska ha från början.");
-	m_menu.addMenuItem(1, "Avsluta spelet.");
+	m_menu.addMenuItem(MenuType::CRAPS, "Avsluta spelet.");
 
 	m_menu.addMenu("Rysk roulette");
-	m_menu.addMenuItem(2, "Skjut");
-	m_menu.addMenuItem(2, "Ladda om");
-	m_menu.addMenuItem(2, "Bestäm hur mycket pengar spelaren "
+	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Skjut");
+	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Ladda om");
+	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Bestäm hur mycket pengar spelaren "
 		"ska ha från början.");
-	m_menu.addMenuItem(2, "Avsluta spelet.");
+	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Avsluta spelet.");
 }
 
 void App::setStartingMoney(GameType a_type) {
