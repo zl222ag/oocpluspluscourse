@@ -1,6 +1,6 @@
 // rouletteplayer.cpp
 
-#include "RoulettePlayer.h"
+#include "rouletteplayer.h"
 
 bool RoulettePlayer::setGame(IGame* a_game) {// Sets the specific game for this player to play
 	if (a_game->getID() != ROULETTE_ID) {

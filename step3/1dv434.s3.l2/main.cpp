@@ -8,6 +8,10 @@
 #include "rouletteplayer.h"
 #include "wrapper.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#define _WINDOWS
+#endif
+
 using std::locale;
 
 namespace Main {
@@ -40,6 +44,16 @@ class App {
 public:
 	App() : m_player(NULL), m_game(NULL) {}
 
+	~App() {
+		if (m_game != NULL) {
+			delete m_game;
+		}
+
+		if (m_player != NULL) {
+			delete m_game;
+		}
+	}
+
 	int run();
 
 private:
@@ -48,7 +62,8 @@ private:
 		RUSSIAN_ROULETTE
 	};
 
-	static const locale APP_LOCALE /* locale("swedish") */;
+	static const locale APP_LOCALE /* locale("swedish") ||
+	 locale("sv_SE.UTF-8")*/;
 
 	static void readEnter() {
 		cout << "Tryck på retur för att fortsätta...";
@@ -85,7 +100,11 @@ private:
 	static void getIntegerFromUser(const char *text, int min, int &value);
 };
 
+#ifdef _WINDOWS
 const locale App::APP_LOCALE = locale("swedish");
+#else
+const locale App::APP_LOCALE = locale("sv_SE.UTF-8");
+#endif
 
 int App::run() {
 	int choice;
@@ -132,7 +151,6 @@ void App::playCraps() {
 
 	if (m_game != NULL) {
 		delete m_game;
-		m_game = NULL;
 	}
 
 	m_game = new Wrapper();
@@ -184,7 +202,6 @@ void App::playRussianRoulette() {
 
 	if (m_game != NULL) {
 		delete m_game;
-		m_game = NULL;
 	}
 
 	m_game = new RouletteGame();

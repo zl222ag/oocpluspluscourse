@@ -13,6 +13,7 @@ public:
 	RoulettePlayer(int a_money) : m_game(NULL), m_money(a_money),
 		m_betCount(0) {
 	}
+
 	// Gives the player a game object to use
 	virtual bool setGame(IGame *game);
 	// Tells player to play the game with choice times
