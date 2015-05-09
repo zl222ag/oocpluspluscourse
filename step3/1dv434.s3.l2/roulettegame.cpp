@@ -25,7 +25,7 @@ int RouletteGame::play(char* a_bet, int a_amount) {
 		}
 		++m_shootCount;
 
-		return a_amount * m_shootCount * 1.5f;
+		return (int) (a_amount * m_shootCount * 1.5f);
 	}
 
 	return a_amount;

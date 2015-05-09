@@ -120,6 +120,10 @@ const locale App::APP_LOCALE = locale("sv_SE.UTF-8");
 #endif
 
 int App::run() {
+	locale::global(APP_LOCALE);
+	cout.imbue(APP_LOCALE);
+	cin.imbue(APP_LOCALE);
+
 #ifdef _DEBUG
 	{
 		char chr = 'n';
@@ -139,10 +143,6 @@ int App::run() {
 
 	int choice;
 	bool continuePlaying = true;
-
-	locale::global(APP_LOCALE);
-	cout.imbue(APP_LOCALE);
-	cin.imbue(APP_LOCALE);
 
 	buildMenu();
 
@@ -180,7 +180,7 @@ void App::testCode() {
 	cout << "Testar Roulette game revolver (" << GAME_PLAY_LOOPS
 			<< " gånger), 6 kammare i detta fallet!" << endl;
 
-	cout << "Loops: " << endl;
+	cout << "Iterationer: " << endl;
 
 	for (int i = 0; i < GAME_PLAY_LOOPS; ++i) {
 		loops = 0;
