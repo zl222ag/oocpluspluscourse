@@ -2,32 +2,37 @@
 
 #include "rouletteplayer.h"
 
-bool RoulettePlayer::setGame(IGame* a_game) {// Sets the specific game for this player to play
+// Sets the specific game for this player to play.
+bool RoulettePlayer::setGame(IGame* a_game) {
+	// If the game specified is other than Roulette - return error
 	if (a_game->getID() != ROULETTE_ID) {
-		return false;				// If the game specified is other than Roulette - return error
+		return false;
 	}
 
+	// If occupied by other game and not equal - delete it
 	if (m_game != NULL && m_game != a_game) {
-		delete m_game;				// If occupied by other game and not equal - delete it
+		delete m_game;
 	}
 
 	m_game = a_game;
 	return true;
 }
 
-
-bool RoulettePlayer::play(int a_choice) {// Tells player to play the game numberOfTimes times
-	if (m_money < 0) {		// If no money left...
+// Tells player to play the game with choice times
+bool RoulettePlayer::play(int a_choice) {
+	// If no money left...
+	if (m_money < 0) {
 		return false;
 	}
 
-	if (a_choice == 0) {
+	if (a_choice == RouletteChoice::SHOOT) {
 		m_money = m_game->play("shoot", m_money);
 		++m_betCount;
 		return true;
 	}
 
-	if (a_choice == 1) {
+	if (a_choice == RouletteChoice::RELOAD) {
+		// Reloading ignores the amount of money!
 		m_game->play("reload", 0);
 		return true;
 	}

@@ -14,6 +14,7 @@
 
 using std::locale;
 
+// namespaces are neccessary since there are similar names!
 namespace Main {
 	enum Menu {
 		CRAPS = 0,
@@ -58,7 +59,7 @@ public:
 		}
 
 		if (m_player != NULL) {
-			delete m_game;
+			delete m_player;
 		}
 	}
 
@@ -73,6 +74,7 @@ private:
 	static const locale APP_LOCALE /* locale("swedish") ||
 	 locale("sv_SE.UTF-8")*/;
 
+	// Writes a message and requires the user to input enter.
 	static void readEnter() {
 		cout << "Tryck på retur för att fortsätta...";
 		InputOutput::readEnter();
@@ -85,6 +87,7 @@ private:
 
 	int m_playTimes = 1;
 
+	// "Plays" the actual game of craps.
 	void replay() {
 		m_player->play(m_playTimes);
 		cout << "Efter " << m_player->getBetCount() <<
@@ -93,6 +96,7 @@ private:
 		readEnter();
 	}
 
+	// Asks the user for times for replay
 	void setReplayAmount() {
 		getIntegerFromUser("Hur många gånger (min 1)?", 1, m_playTimes);
 		cout << "Du kommer att spela " << m_playTimes << " gånger!" <<
@@ -100,9 +104,14 @@ private:
 		readEnter();
 	}
 
+	// Starts the craps game
 	void playCraps();
+	// Starts the russian roulette game
 	void playRussianRoulette();
+	// Builds the menus for the selection of games and for the games: russian
+	// roulette, and craps.
 	void buildMenu();
+	// Sets the starting money for the selected game
 	void setStartingMoney(GameType);
 	// Reads a number from the user (repeated until it's not an error).
 	static void getIntegerFromUser(const char *text, int min, int &value);
@@ -136,7 +145,7 @@ int App::run() {
 			playRussianRoulette();
 			break;
 
-		default:// Main::Menu::CRAPS:
+		default:	// Main::Menu::CRAPS:
 			continuePlaying = false;
 			break;
 		}
@@ -148,6 +157,7 @@ int App::run() {
 	return EXIT_SUCCESS;
 }
 
+// Starts the craps game
 void App::playCraps() {
 	bool continuePlaying = true;
 	int choice;
@@ -199,6 +209,7 @@ void App::playCraps() {
 	}
 }
 
+// Starts the russian roulette game
 void App::playRussianRoulette() {
 	bool continuePlaying = true;
 	int choice;
@@ -225,18 +236,18 @@ void App::playRussianRoulette() {
 				break;
 			}
 
-			m_player->play(0);
+			m_player->play(RoulettePlayer::RouletteChoice::SHOOT);
 
 			if (m_player->getMoney() <= 0) {
 				delete m_player;
 				m_player = NULL;
-				cout << "Verkar som att du dog!" << endl <<
-					"Välj summa för att börja om" << endl;
+				cout << "Verkar som att du dog!" << endl
+						<< "Välj summa för att börja om" << endl;
 			} else {
-				cout << "Du lever fortfarande och du har nu " <<
-					m_player->getMoney() << " kr!" << endl <<
-					"Du har klarat dig i " << m_player->getBetCount() <<
-					" rundor!" << endl;
+				cout << "Du lever fortfarande och du har nu "
+						<< m_player->getMoney() << " kr!" << endl
+						<< "Du har klarat dig i " << m_player->getBetCount()
+						<< " rundor!" << endl;
 			}
 			readEnter();
 			break;
@@ -248,7 +259,7 @@ void App::playRussianRoulette() {
 				break;
 			}
 
-			m_player->play(1);
+			m_player->play(RoulettePlayer::RouletteChoice::RELOAD);
 
 			cout << "Snurrade magasinet!" << endl;
 			readEnter();
@@ -265,6 +276,8 @@ void App::playRussianRoulette() {
 	}
 }
 
+// Builds the menus for the selection of games and for the games: russian
+// roulette, and craps.
 void App::buildMenu() {
 	m_menu.addMenu("Gamble++: Välj spel! Eller avsluta?");
 	m_menu.addMenuItem(MenuType::MAIN, "Craps.");
@@ -288,6 +301,7 @@ void App::buildMenu() {
 	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Avsluta spelet.");
 }
 
+// Sets the starting money for the selected game
 void App::setStartingMoney(GameType a_type) {
 	int amount;
 

@@ -20,6 +20,7 @@ public:
 		randomizeCurrentChamber();
 	}
 
+	// Randomizes the "current gun chamber".
 	void randomizeCurrentChamber() {
 		m_currentChamber = (unsigned char) rand() % NUMBER_OF_CHAMBERS;
 		m_shootCount = (unsigned char) 0;

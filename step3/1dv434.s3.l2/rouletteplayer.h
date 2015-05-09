@@ -10,11 +10,16 @@
 
 class RoulettePlayer : public IPlayer {
 public:
+	enum RouletteChoice {
+		SHOOT = 0,
+		RELOAD = 1
+	};
+
 	RoulettePlayer(int a_money) : m_game(NULL), m_money(a_money),
 		m_betCount(0) {
 	}
 
-	// Gives the player a game object to use
+	// Sets the specific game for this player to play.
 	virtual bool setGame(IGame *game);
 	// Tells player to play the game with choice times
 	virtual bool play(int choice);
@@ -32,8 +37,8 @@ public:
 
 private:
 	IGame *m_game; // Points out the game to use (should be a Roulette Game)
-	int	m_money; // Shows the current amount of money available for playing
-	int	m_betCount; // Shows the number of bets placed so far
+	int m_money; // Shows the current amount of money available for playing
+	int m_betCount; // Shows the number of bets placed so far
 	static const int ROULETTE_ID = 21935; // ID assigned to the Roulette game
 };
 
