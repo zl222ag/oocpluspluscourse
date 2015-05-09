@@ -32,8 +32,8 @@ bool RoulettePlayer::play(int a_choice) {
 	}
 
 	if (a_choice == RouletteChoice::RELOAD) {
-		// Reloading ignores the amount of money!
-		m_game->play("reload", 0);
+		// Reloading, gives necessary amount of money!
+		m_game->play("reload", 1);
 		return true;
 	}
 

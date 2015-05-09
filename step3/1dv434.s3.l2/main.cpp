@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include <menu.h>
 #include <inputoutput.h>
+#ifdef _DEBUG
+#include <cassert>
+#endif
 #include "CrapGame.h"
 #include "CrapPlayer.h"
 #include "roulettegame.h"
@@ -14,44 +17,36 @@
 
 using std::locale;
 
-// namespaces are neccessary since there are similar names!
+// namespaces are necessary since there are similar names!
 namespace Main {
-	enum Menu {
-		CRAPS = 0,
-		RUSSIAN_ROULETTE = 1,
-		QUIT = 2
-	};
+enum Menu {
+	CRAPS = 0, RUSSIAN_ROULETTE = 1, QUIT = 2
+};
 }
 
 namespace Craps {
-	enum Menu {
-		REPLAY = 0,
-		AMOUNT_REPLAY = 1,
-		STARTING_MONEY = 2,
-		QUIT = 3
-	};
+enum Menu {
+	REPLAY = 0, AMOUNT_REPLAY = 1, STARTING_MONEY = 2, QUIT = 3
+};
 }
 
 namespace RussianRoulette {
-	enum Menu {
-		SHOOT = 0,
-		RELOAD = 1,
-		STARTING_MONEY = 2,
-		QUIT = 3
-	};
+enum Menu {
+	SHOOT = 0, RELOAD = 1, STARTING_MONEY = 2, QUIT = 3
+};
 }
 
 namespace {
-	enum MenuType {
-		MAIN = 0,
-		CRAPS = 1,
-		RUSSIAN_ROULETTE = 2
-	};
+enum MenuType {
+	MAIN = 0, CRAPS = 1, RUSSIAN_ROULETTE = 2
+};
 }
 
 class App {
 public:
-	App() : m_player(NULL), m_game(NULL) {}
+	App() :
+			m_player(NULL), m_game(NULL) {
+	}
 
 	~App() {
 		if (m_game != NULL) {
@@ -65,10 +60,13 @@ public:
 
 	int run();
 
+#ifdef _DEBUG
+	void testCode();
+#endif
+
 private:
 	enum GameType {
-		CRAPS,
-		RUSSIAN_ROULETTE
+		CRAPS, RUSSIAN_ROULETTE
 	};
 
 	static const locale APP_LOCALE /* locale("swedish") ||
@@ -90,17 +88,15 @@ private:
 	// "Plays" the actual game of craps.
 	void replay() {
 		m_player->play(m_playTimes);
-		cout << "Efter " << m_player->getBetCount() <<
-			" spel har spelaren " << m_player->getMoney() <<
-			" kronor kvar!" << endl;
+		cout << "Efter " << m_player->getBetCount() << " spel har spelaren "
+				<< m_player->getMoney() << " kronor kvar!" << endl;
 		readEnter();
 	}
 
 	// Asks the user for times for replay
 	void setReplayAmount() {
 		getIntegerFromUser("Hur många gånger (min 1)?", 1, m_playTimes);
-		cout << "Du kommer att spela " << m_playTimes << " gånger!" <<
-			endl;
+		cout << "Du kommer att spela " << m_playTimes << " gånger!" << endl;
 		readEnter();
 	}
 
@@ -124,6 +120,23 @@ const locale App::APP_LOCALE = locale("sv_SE.UTF-8");
 #endif
 
 int App::run() {
+#ifdef _DEBUG
+	{
+		char chr = 'n';
+
+		do {
+			cout << "Testa koden istället för att köra spelet? ";
+			InputOutput::readChar(chr);
+			chr = tolower(chr);
+		} while (chr != 'j' && chr != 'n');
+
+		if (chr == 'j') {
+			testCode();
+			return EXIT_SUCCESS;
+		}
+	}
+#endif
+
 	int choice;
 	bool continuePlaying = true;
 
@@ -156,6 +169,116 @@ int App::run() {
 
 	return EXIT_SUCCESS;
 }
+
+#ifdef _DEBUG
+void App::testCode() {
+	const int GAME_PLAY_LOOPS = 100;
+	int loops, res;
+	bool allLoopsEq1 = true;
+	m_game = new RouletteGame();
+
+	cout << "Testar Roulette game revolver (" << GAME_PLAY_LOOPS
+			<< " gånger), 6 kammare i detta fallet!" << endl;
+
+	cout << "Loops: " << endl;
+
+	for (int i = 0; i < GAME_PLAY_LOOPS; ++i) {
+		loops = 0;
+
+		do {
+			res = m_game->play("shoot", 100);
+			++loops;
+		} while (res != 0);
+
+		cout << " " << loops;
+
+		if (allLoopsEq1 && loops != 1) {
+			allLoopsEq1 = false;
+		}
+
+		if (i % 10 == 9) {
+			cout << endl;
+		}
+
+		assert(loops <= 6);
+	}
+
+	assert(!allLoopsEq1);
+	cout << endl;
+
+	cout << "Testar Roulette game, skjuter och laddar (NULL med) "
+			"med negativa och ingen summa pengar!" << endl;
+
+	assert(m_game->play("shoot", 0) == 0);
+	assert(m_game->play("shoot", -100) == 0);
+	assert(m_game->play("reload", 0) == 0);
+	assert(m_game->play("reload", -1234) == 0);
+	assert(m_game->play(NULL, 0) == 0);
+
+	cout << endl;
+
+	m_player = new RoulettePlayer(10);
+	assert(m_player->getMoney() == 10);
+
+	cout << "Testar Roulette player, kan hen spela Roulette? (ja)" << endl;
+	assert(m_player->setGame(m_game));
+
+	cout << "Testar Roulette player, kan hen ladda om? (ja)" << endl;
+	assert(m_player->play(RoulettePlayer::RouletteChoice::RELOAD));
+
+	cout << "Testar Roulette player, kan hen skjuta? (ja)" << endl;
+	assert(m_player->play(RoulettePlayer::RouletteChoice::SHOOT));
+
+	loops = 1;
+
+	while (m_player->getMoney() > 0 && loops <= 6) {
+		assert(m_player->play(RoulettePlayer::RouletteChoice::SHOOT));
+		++loops;
+	}
+
+	cout << "Testar Roulette player, kan hen ha skjutit mindre än 7 gånger? "
+			"(ja)" << endl;
+	assert(loops <= 6);
+
+	cout << "Testar Roulette player, är antalet satsningar (betCount) "
+			"lika med antalet iterationer? (ja)" << endl;
+	assert(loops == m_player->getBetCount());
+
+	delete m_player;
+	m_player = new CrapPlayer(1000);
+
+	cout << endl;
+	cout << "Testar Craps player, kan hen spela Roulette? (nej)" << endl;
+	assert(!m_player->setGame(m_game));
+
+	delete m_game;
+	m_game = new Wrapper();
+
+	cout << "Testar Craps player, kan hen spela Craps? (ja)" << endl;
+	assert(m_player->setGame(m_game));
+
+	cout << "Testar Craps player, spelat noll gånger? (ja)" << endl;
+	assert(m_player->getBetCount() == 0);
+
+	cout << "Testar Craps player, om hen förlorar, får spelaren då behålla "
+			"pengarna och borde antalet iterationer vara samma som antalet "
+			"satsningar (betCount)? (nej, ja)" << endl;
+	loops = 0;
+
+	while (m_player->getMoney() > 0) {
+		if (!m_player->play(10)) {
+			assert(m_player->getMoney() == 0);
+			break;
+		}
+
+		loops += 10;
+		assert(m_player->getBetCount() == loops);
+	}
+
+	cout << "Spelaren spelade " << loops << " rundor (om det heter så)."
+			<< endl;
+}
+#endif
 
 // Starts the craps game
 void App::playCraps() {
@@ -286,18 +409,19 @@ void App::buildMenu() {
 
 	m_menu.addMenu("Craps");
 	m_menu.addMenuItem(MenuType::CRAPS, "Spela angivet antal omgångar och "
-		"presentera resultatet.");
+			"presentera resultatet.");
 	m_menu.addMenuItem(MenuType::CRAPS, "Bestäm antalet omgångar som ska "
-		"spelas i alternativ 1.");
+			"spelas i alternativ 1.");
 	m_menu.addMenuItem(MenuType::CRAPS, "Bestäm hur mycket pengar spelaren "
-		"ska ha från början.");
+			"ska ha från början.");
 	m_menu.addMenuItem(MenuType::CRAPS, "Avsluta spelet.");
 
 	m_menu.addMenu("Rysk roulette");
 	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Skjut");
 	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Ladda om");
-	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Bestäm hur mycket pengar spelaren "
-		"ska ha från början.");
+	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE,
+			"Bestäm hur mycket pengar spelaren "
+					"ska ha från början.");
 	m_menu.addMenuItem(MenuType::RUSSIAN_ROULETTE, "Avsluta spelet.");
 }
 
@@ -319,8 +443,7 @@ void App::setStartingMoney(GameType a_type) {
 		m_player->setGame(m_game);
 	}
 
-	cout << "Du kommer att ha " << amount << " kr att spela för" <<
-		endl;
+	cout << "Du kommer att ha " << amount << " kr att spela för" << endl;
 
 	readEnter();
 }

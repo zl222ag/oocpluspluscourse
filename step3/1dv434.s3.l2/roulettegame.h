@@ -26,10 +26,11 @@ public:
 		m_shootCount = (unsigned char) 0;
 	}
 
-	// "reload", "shoot", what's more to it?
+	// reload, shoot, what more to it?
 	// returns 0 on losing.
-	// returns a_amount back when reloading.
-	// player profits if not dead after shooting.
+	// returns a_amount back when reloading and reloads (unless a_amount < 0).
+	// player profits if not dead after shooting (otherwise 0)
+	// (if a_amount > 0).
 	/* virtual */ int play(char* a_bet, int a_amount);
 
 	/* virtual */ int getID() const {

@@ -1,5 +1,5 @@
 CXX=g++
-CFLAGS=-Wall -Wno-unknown-pragmas -Wno-delete-non-virtual-dtor -Wno-write-strings -g -I../../include -std=c++11
+CFLAGS=-Wall -Wno-unknown-pragmas -Wno-delete-non-virtual-dtor -Wno-write-strings -D_DEBUG -g -I../../include -std=c++11
 LDFLAGS=
 
 OBJDIR = obj/

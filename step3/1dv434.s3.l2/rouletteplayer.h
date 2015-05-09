@@ -7,16 +7,14 @@
 #include "IPlayer.h"
 #include "IGame.h"
 
-
-class RoulettePlayer : public IPlayer {
+class RoulettePlayer: public IPlayer {
 public:
 	enum RouletteChoice {
-		SHOOT = 0,
-		RELOAD = 1
+		SHOOT = 0, RELOAD = 1
 	};
 
-	RoulettePlayer(int a_money) : m_game(NULL), m_money(a_money),
-		m_betCount(0) {
+	RoulettePlayer(int a_money) :
+			m_game(NULL), m_money(a_money), m_betCount(0) {
 	}
 
 	// Sets the specific game for this player to play.
@@ -25,7 +23,7 @@ public:
 	virtual bool play(int choice);
 
 	// Returns the amount of money still available for game
-	virtual int	getMoney() const {
+	virtual int getMoney() const {
 		return m_money;
 	}
 
