@@ -95,7 +95,7 @@ private:
 
 	// Asks the user for times for replay
 	void setReplayAmount() {
-		getIntegerFromUser("Hur många gånger (min 1)?", 1, m_playTimes);
+		getIntegerFromUser("Hur många gånger (min 1)? ", 1, m_playTimes);
 		cout << "Du kommer att spela " << m_playTimes << " gånger!" << endl;
 		readEnter();
 	}
@@ -326,7 +326,7 @@ void App::playCraps() {
 		if (m_player != NULL && m_player->getMoney() <= 0) {
 			delete m_player;
 			m_player = NULL;
-			cout << "Verkar som att du förlorade!" << endl;
+			cout << "Verkar som att spelaren förlorade!" << endl;
 			readEnter();
 		}
 	}
@@ -364,10 +364,10 @@ void App::playRussianRoulette() {
 			if (m_player->getMoney() <= 0) {
 				delete m_player;
 				m_player = NULL;
-				cout << "Verkar som att du dog!" << endl
+				cout << "Verkar som att spelaren dog!" << endl
 						<< "Välj summa för att börja om" << endl;
 			} else {
-				cout << "Du lever fortfarande och du har nu "
+				cout << "Du lever fortfarande och spelaren har nu "
 						<< m_player->getMoney() << " kr!" << endl
 						<< "Du har klarat dig i " << m_player->getBetCount()
 						<< " rundor!" << endl;
@@ -429,7 +429,7 @@ void App::buildMenu() {
 void App::setStartingMoney(GameType a_type) {
 	int amount;
 
-	getIntegerFromUser("Hur många kronor (min 1)?", 1, amount);
+	getIntegerFromUser("Hur många kronor (min 1)? ", 1, amount);
 
 	if (m_player != NULL) {
 		delete m_player;
