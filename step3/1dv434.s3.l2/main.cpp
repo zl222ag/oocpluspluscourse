@@ -1,3 +1,8 @@
+// 1dv434.s3.l2/main.cpp
+// Datum: 2015-05-03
+// Programmerare: Zlatko Ladan
+// Kort beskrivning: Skapa program som utnyttjar polymorfism och där man kan
+// spela hasardspel.
 #include <iostream>
 #include <cstdlib>
 #include <menu.h>
