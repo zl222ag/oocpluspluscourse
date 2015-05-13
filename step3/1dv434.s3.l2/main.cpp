@@ -88,27 +88,29 @@ private:
 	IGame *m_game;
 	Menu m_menu;
 
-	int m_playTimes = 1;
-
 	// "Plays" the actual game of craps.
-	void replay() {
-		m_player->play(m_playTimes);
+	void replayCraps(int a_playTimes) {
+		m_player->play(a_playTimes);
 		cout << "Efter " << m_player->getBetCount() << " spel har spelaren "
 				<< m_player->getMoney() << " kronor kvar!" << endl;
 		readEnter();
 	}
 
 	// Asks the user for times for replay
-	void setReplayAmount() {
-		getIntegerFromUser("Hur många gånger (min 1)? ", 1, m_playTimes);
-		cout << "Du kommer att spela " << m_playTimes << " gånger!" << endl;
+	int getUserReplayAmount() {
+		int playTimes = 0;
+		getIntegerFromUser("Hur många gånger (min 1)? ", 1, playTimes);
+		cout << "Du kommer att spela " << playTimes << " gånger!" << endl;
 		readEnter();
+		return playTimes;
 	}
 
 	// Starts the craps game
 	void playCraps();
 	// Starts the russian roulette game
 	void playRussianRoulette();
+	// Plays a round of roulette, handles "death".
+	void rouletteShoot();
 	// Builds the menus for the selection of games and for the games: russian
 	// roulette, and craps.
 	void buildMenu();
@@ -289,6 +291,7 @@ void App::testCode() {
 void App::playCraps() {
 	bool continuePlaying = true;
 	int choice;
+	int playTimes = 1;
 
 	if (m_player != NULL) {
 		delete m_player;
@@ -312,11 +315,11 @@ void App::playCraps() {
 				break;
 			}
 
-			replay();
+			replayCraps(playTimes);
 			break;
 
 		case Craps::Menu::AMOUNT_REPLAY:
-			setReplayAmount();
+			playTimes = getUserReplayAmount();
 			break;
 
 		case Craps::Menu::STARTING_MONEY:
@@ -364,20 +367,7 @@ void App::playRussianRoulette() {
 				break;
 			}
 
-			m_player->play(RoulettePlayer::RouletteChoice::SHOOT);
-
-			if (m_player->getMoney() <= 0) {
-				delete m_player;
-				m_player = NULL;
-				cout << "Verkar som att spelaren dog!" << endl
-						<< "Välj summa för att börja om" << endl;
-			} else {
-				cout << "Du lever fortfarande och spelaren har nu "
-						<< m_player->getMoney() << " kr!" << endl
-						<< "Du har klarat dig i " << m_player->getBetCount()
-						<< " rundor!" << endl;
-			}
-			readEnter();
+			rouletteShoot();
 			break;
 
 		case RussianRoulette::Menu::RELOAD:
@@ -402,6 +392,25 @@ void App::playRussianRoulette() {
 			break;
 		}
 	}
+}
+
+// Plays a round of roulette, handles "death".
+void App::rouletteShoot() {
+	m_player->play(RoulettePlayer::RouletteChoice::SHOOT);
+
+	if (m_player->getMoney() <= 0) {
+		delete m_player;
+		m_player = NULL;
+		cout << "Verkar som att spelaren dog!" << endl
+			<< "Välj summa för att börja om" << endl;
+	} else {
+		cout << "Du lever fortfarande och spelaren har nu "
+			<< m_player->getMoney() << " kr!" << endl
+			<< "Du har klarat dig i " << m_player->getBetCount()
+			<< " rundor!" << endl;
+	}
+
+	readEnter();
 }
 
 // Builds the menus for the selection of games and for the games: russian
