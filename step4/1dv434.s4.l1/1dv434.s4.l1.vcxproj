@@ -80,9 +80,11 @@
   <ItemGroup>
     <ClCompile Include="basemedia.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mediaregister.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basemedia.h" />
+    <ClInclude Include="mediaregister.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
