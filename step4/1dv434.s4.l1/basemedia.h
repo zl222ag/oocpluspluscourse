@@ -9,7 +9,9 @@
 #define BASEMEDIA_H_
 
 class BaseMedia {
-
+	virtual ~BaseMedia();
+	virtual void show();
+	virtual int getID();
 };
 
 #endif // BASEMEDIA_H_
