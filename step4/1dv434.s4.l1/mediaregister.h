@@ -14,7 +14,7 @@
 #include "basemedia.h"
 
 class MediaRegister {
-	std::vector<BaseMedia> m_media;
+	std::vector<BaseMedia *> m_media;
 	const char *m_dbFile;
 
 public:
@@ -27,9 +27,11 @@ public:
 		emptyReg();
 	}
 
-	void addMedia(BaseMedia media);
+	void addMedia(BaseMedia *media);
 	void removeMedia(const BaseMedia &media);
-	BaseMedia *findMedia(){return NULL;} //FIXME FIX!
+	BaseMedia *findMedia() {
+		return NULL; // FIXME FIX!
+	}
 	void showMedia();
 	void sortMedia();
 

@@ -18,6 +18,6 @@ void MediaDbReader::open(const char *a_filename) {
 	m_reader.open(a_filename);
 }
 
-BaseMedia *MediaDbReader::read() {
+BaseMedia *MediaDbReader::readNext() {
 	return NULL;
 }

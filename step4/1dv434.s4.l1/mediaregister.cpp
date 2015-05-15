@@ -4,15 +4,17 @@
  *  Created on: 13 maj 2015
  *      Author: Zlatko Ladan
  */
+#include <vector>
 #include <stdexcept>
 #include "mediaregister.h"
 #include "basemedia.h"
 #include "mediadbreader.h"
 
+using std::vector;
 using std::invalid_argument;
 
-void MediaRegister::addMedia(BaseMedia a_media) {
-	if (findMedia() == NULL) { // TODO FIX THIS!!!
+void MediaRegister::addMedia(BaseMedia *a_media) {
+	if (findMedia() != NULL) { // TODO FIX THIS!!!
 		throw NULL; // TODO FIX THIS TOO!!!
 	}
 
@@ -29,8 +31,18 @@ void MediaRegister::saveReg() {
 
 void MediaRegister::loadReg() {
 	if (m_dbFile == NULL) {
-		return;
+		throw invalid_argument("the database filename cannot be NULL!");
 	}
 
-	MediaDbReader reader(m_dbFile);
+	MediaDbReader *reader = NULL;
+	try {
+		reader = new MediaDbReader(m_dbFile);
+	} catch (...) {
+		return;
+	}
+	BaseMedia *media = NULL;
+
+	while ((media = reader->readNext()) != NULL) {
+		addMedia(media);
+	}
 }

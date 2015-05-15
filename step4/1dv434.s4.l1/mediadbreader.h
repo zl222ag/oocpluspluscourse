@@ -27,7 +27,7 @@ public:
 		m_reader.close();
 	}
 
-	BaseMedia *read();
+	BaseMedia *readNext();
 };
 
 #endif /* MEDIADBREADER_H_ */
