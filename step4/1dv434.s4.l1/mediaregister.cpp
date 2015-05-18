@@ -4,6 +4,7 @@
  *  Created on: 13 maj 2015
  *      Author: Zlatko Ladan
  */
+
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
@@ -13,14 +14,6 @@
 
 using std::vector;
 using std::invalid_argument;
-
-void MediaRegister::addMedia(BaseMedia *a_media) {
-	if (findMedia() != NULL) { // TODO FIX THIS!!!
-		throw NULL; // TODO FIX THIS TOO!!!
-	}
-
-	m_media.push_back(a_media);
-}
 
 void MediaRegister::saveReg() {
 

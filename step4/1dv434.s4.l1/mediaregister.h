@@ -36,7 +36,7 @@ public:
 		m_media.push_back(a_media);
 	}
 
-	void removeMedia(const BaseMedia &a_media) {
+	void removeMedia(const BaseMedia *a_media) {
 		std::remove(m_media.begin(), m_media.end(), a_media);
 	}
 
