@@ -12,8 +12,8 @@ class BaseMedia {
 public:
 	virtual ~BaseMedia() {
 	}
-	virtual void show() = 0;
-	virtual int getId() = 0;
+	virtual void show() const = 0;
+	virtual int getId() const = 0;
 };
 
 #endif // BASEMEDIA_H_

@@ -41,6 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath);C:\Users\Zlatkow\libs\include;..\..\include\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -78,13 +79,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="basemedia.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mediadbreader.cpp" />
     <ClCompile Include="mediaregister.cpp" />
+    <ClCompile Include="musicalbummedia.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basemedia.h" />
+    <ClInclude Include="mediadbreader.h" />
     <ClInclude Include="mediaregister.h" />
+    <ClInclude Include="musicalbummedia.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\lib\zlib.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

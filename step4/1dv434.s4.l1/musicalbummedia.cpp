@@ -6,7 +6,3 @@
  */
 
 #include "musicalbummedia.h"
-
-void MusicAlbumMedia::show() {
-
-}

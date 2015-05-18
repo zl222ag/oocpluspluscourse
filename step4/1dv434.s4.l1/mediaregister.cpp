@@ -5,6 +5,7 @@
  *      Author: Zlatko Ladan
  */
 #include <vector>
+#include <algorithm>
 #include <stdexcept>
 #include "mediaregister.h"
 #include "basemedia.h"
@@ -21,17 +22,13 @@ void MediaRegister::addMedia(BaseMedia *a_media) {
 	m_media.push_back(a_media);
 }
 
-void MediaRegister::removeMedia(const BaseMedia &a_media) {
-
-}
-
 void MediaRegister::saveReg() {
 
 }
 
 void MediaRegister::loadReg() {
 	if (m_dbFile == NULL) {
-		throw invalid_argument("the database filename cannot be NULL!");
+		throw invalid_argument("The database filename cannot be NULL!");
 	}
 
 	MediaDbReader *reader = NULL;
