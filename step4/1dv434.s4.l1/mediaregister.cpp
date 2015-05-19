@@ -15,21 +15,26 @@
 using std::vector;
 using std::invalid_argument;
 
-void MediaRegister::saveReg() {
-
+void MediaRegister::saveReg(const char *a_dbFile /* "media.dat" */) {
+	if (a_dbFile == NULL) {
+		throw invalid_argument("The database filename cannot be NULL!");
+	}
+	//TODO ADD MORE CONTENT!!!
 }
 
-void MediaRegister::loadReg() {
-	if (m_dbFile == NULL) {
+void MediaRegister::loadReg(const char *a_dbFile /* "media.dat" */) {
+	if (a_dbFile == NULL) {
 		throw invalid_argument("The database filename cannot be NULL!");
 	}
 
 	MediaDbReader *reader = NULL;
+
 	try {
-		reader = new MediaDbReader(m_dbFile);
-	} catch (...) {
+		reader = new MediaDbReader(a_dbFile);
+	} catch (...) { // TODO CATCH PROPERLY!!!
 		return;
 	}
+
 	BaseMedia *media = NULL;
 
 	while ((media = reader->readNext()) != NULL) {

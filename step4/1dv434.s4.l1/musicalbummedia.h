@@ -13,24 +13,26 @@
 #include <iostream>
 #include "basemedia.h"
 
-class MusicAlbumMedia : BaseMedia {
+class MusicAlbumMedia : public BaseMedia {
 	char *m_artistName, *m_albumName;
 	short m_releaseYear;
 
+	virtual std::ostream &print(std::ostream &a_ostream) const {
+		return a_ostream << "Artist: " << m_artistName << ", album: " << m_albumName <<
+			", released: " << m_releaseYear << '.';
+	}
+
 public:
+	static const int IDENTIFICATION = 10654;
+
 	MusicAlbumMedia() :
 		m_artistName(NULL), m_albumName(NULL), m_releaseYear(0) {
 	}
 
-	MusicAlbumMedia(const char *a_artistName, const char *a_albumName,
-			short a_releaseYear) :
-				m_releaseYear(a_releaseYear) {
-		m_artistName = new char[strlen(a_artistName) + 1];
-		strcpy(m_artistName, a_artistName);
+	MusicAlbumMedia(const MusicAlbumMedia &a_media);
 
-		m_albumName = new char[strlen(a_albumName) + 1];
-		strcpy(m_albumName, a_albumName);
-	}
+	MusicAlbumMedia(const char *artistName, const char *albumName,
+		short releaseYear);
 
 	virtual ~MusicAlbumMedia() {
 		if (m_artistName != NULL) {
@@ -42,17 +44,32 @@ public:
 		}
 	}
 
-	virtual void show() const {
-		std::cout << "Artist: " << m_artistName << ", album: " << m_albumName <<
-			", released: " << m_releaseYear << '.' << std::endl;
+	virtual int getId() const {
+		return IDENTIFICATION;
 	}
 
-	virtual int getId() const {
-		return 0;
+	const char *getArtistName() {
+		return m_artistName;
 	}
+
+	const char *getAlbumName() {
+		return m_albumName;
+	}
+
+	MusicAlbumMedia operator=(const MusicAlbumMedia &a_media);
 
 	bool operator==(const MusicAlbumMedia &a_other) const {
-		return getId() == a_other.getId();
+		return m_artistName == a_other.m_artistName &&
+			m_albumName == a_other.m_albumName &&
+			m_releaseYear == a_other.m_releaseYear;
+	}
+
+	virtual bool operator==(const BaseMedia &a_other) const {
+		if (getId() != a_other.getId()) {
+			return false;
+		}
+
+		return *this == *(MusicAlbumMedia *) &a_other;
 	}
 
 	// Sorts by the artist's name, then its album name.
@@ -64,6 +81,15 @@ public:
 		}
 
 		return strcmp(m_albumName, a_other.m_albumName) < 0;
+	}
+
+	// Sorts by the artist's name, then its album name.
+	virtual bool operator<(const BaseMedia &a_other) const {
+		if (getId() != a_other.getId()) {
+			return false;
+		}
+
+		return *this < *(MusicAlbumMedia *) &a_other;
 	}
 };
 

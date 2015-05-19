@@ -8,12 +8,22 @@
 #ifndef BASEMEDIA_H_
 #define BASEMEDIA_H_
 
+#include <iostream>
+
 class BaseMedia {
+	virtual std::ostream &print(std::ostream &) const = 0;
+
 public:
+	friend std::ostream &operator<<(std::ostream &a_ostream,
+			const BaseMedia &a_media) {
+		return a_media.print(a_ostream);
+	}
+
 	virtual ~BaseMedia() {
 	}
-	virtual void show() const = 0;
 	virtual int getId() const = 0;
+	virtual bool operator==(const BaseMedia &) const = 0;
+	virtual bool operator<(const BaseMedia &) const = 0;
 };
 
 #endif // BASEMEDIA_H_

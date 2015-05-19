@@ -13,19 +13,26 @@
 #include <algorithm>
 #include <filereader.h>
 #include "basemedia.h"
+#include "musicalbummedia.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 class MediaRegister {
 	std::vector<BaseMedia *> m_media;
-	const char *m_dbFile;
 
 	static void show(BaseMedia *a_media) {
-		a_media->show();
+		cout << *a_media << endl;
+	}
+
+	// is there a better way? (Not a rhetorical question)
+	static bool sorter(BaseMedia *a_amedia, BaseMedia *a_bmedia) {
+		return *a_amedia < *a_bmedia;
 	}
 
 public:
-	MediaRegister(int a_startSize = 8, const char *a_dbFile = "media.dat") :
-			m_media(std::vector<BaseMedia *>(a_startSize)), m_dbFile(a_dbFile) {
-		loadReg();
+	MediaRegister() {
 	}
 
 	~MediaRegister() {
@@ -40,24 +47,35 @@ public:
 		std::remove(m_media.begin(), m_media.end(), a_media);
 	}
 
-	BaseMedia *findMedia() {
-		return NULL; // FIXME FIX!
+	BaseMedia *findMedia(const char *a_artistName, const char *a_albumName) {
+		//std::find(m_media.begin(), m_media.end(), )
+		
+		return *std::find_if(m_media.begin(), m_media.end(), [&](BaseMedia *a_media) {
+			if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
+				return false;
+			}
+
+			MusicAlbumMedia *data = (MusicAlbumMedia *) a_media;
+			return strcmp(a_artistName, data->getArtistName()) == 0 &&
+				strcmp(a_albumName, data->getAlbumName()) == 0;
+		});
 	}
 
 	void showMedia() {
-		std::for_each(m_media.begin(), m_media.end(), MediaRegister::show);
+		std::for_each(m_media.begin(), m_media.end(), show);
 	}
 
 	void sortMedia() {
-		std::sort(m_media.begin(), m_media.end());
+		// Is there a better way? (Not a rhetorical question)
+		std::sort(m_media.begin(), m_media.end(), sorter);
 	}
 
 	void emptyReg() {
 		m_media.empty();
 	}
 
-	void saveReg();
-	void loadReg();
+	void saveReg(const char *a_dbFile = "media.dat");
+	void loadReg(const char *a_dbFile = "media.dat");
 };
 
 #endif // MEDIAREGISTER_H_

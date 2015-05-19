@@ -45,4 +45,7 @@
   <ItemGroup>
     <Library Include="..\..\lib\zlib.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="media.dat" />
+  </ItemGroup>
 </Project>

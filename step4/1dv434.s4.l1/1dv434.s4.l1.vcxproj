@@ -93,6 +93,9 @@
   <ItemGroup>
     <Library Include="..\..\lib\zlib.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="media.dat" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

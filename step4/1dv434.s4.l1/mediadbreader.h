@@ -9,11 +9,14 @@
 #define MEDIADBREADER_H_
 
 #include <fstream>
+#include <istream>
 
 class BaseMedia;
 
 class MediaDbReader {
-	static const char DELIMITER = '|';
+	static const int ARTIST_NAME_MAX_LENGTH = 128;
+	static const int ALBUM_NAME_MAX_LENGTH = 128;
+	static const int YEAR_CHAR_MAX_LENGTH = 10;
 	std::ifstream m_reader;
 
 public:
