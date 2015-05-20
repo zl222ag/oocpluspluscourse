@@ -46,6 +46,7 @@ int MediaApplication::run() {
 	return EXIT_SUCCESS;
 }
 
+#ifdef _DEBUG
 void MediaApplication::test() {
 	m_register.loadReg();
 	m_register.saveReg("wabjers");
@@ -87,6 +88,7 @@ void MediaApplication::test() {
 			"back to back");
 	assert(media == NULL);
 }
+#endif
 
 int main() {
 	MediaApplication app;
