@@ -22,6 +22,7 @@ using std::endl;
 class MediaRegister {
 	std::vector<BaseMedia *> m_media;
 
+	// Is used together with showMedia's for_each!
 	static void show(BaseMedia *a_media) {
 		cout << *a_media << endl;
 	}
@@ -31,35 +32,29 @@ class MediaRegister {
 		return *a_amedia < *a_bmedia;
 	}
 
+	static void empty(BaseMedia *a_media) {
+		delete a_media;
+	}
+
 public:
 	MediaRegister() {
 	}
 
 	~MediaRegister() {
-		emptyReg();
+		emptyReg(); // NOT REALLY NECESSARY
 	}
 
+	// Adds media (creates copy)!
 	void addMedia(BaseMedia *a_media) {
 		m_media.push_back(a_media);
 	}
 
+	// Removes a media!
 	void removeMedia(const BaseMedia *a_media) {
 		std::remove(m_media.begin(), m_media.end(), a_media);
 	}
 
-	BaseMedia *findMedia(const char *a_artistName, const char *a_albumName) {
-		//std::find(m_media.begin(), m_media.end(), )
-		
-		return *std::find_if(m_media.begin(), m_media.end(), [&](BaseMedia *a_media) {
-			if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
-				return false;
-			}
-
-			MusicAlbumMedia *data = (MusicAlbumMedia *) a_media;
-			return strcmp(a_artistName, data->getArtistName()) == 0 &&
-				strcmp(a_albumName, data->getAlbumName()) == 0;
-		});
-	}
+	BaseMedia *findMedia(const char *artistName, const char *albumName);
 
 	void showMedia() {
 		std::for_each(m_media.begin(), m_media.end(), show);
@@ -71,6 +66,7 @@ public:
 	}
 
 	void emptyReg() {
+		std::for_each(m_media.begin(), m_media.end(), empty);
 		m_media.empty();
 	}
 

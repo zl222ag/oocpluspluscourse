@@ -9,6 +9,8 @@
 #include "mediadbreader.h"
 #include "musicalbummedia.h"
 
+using std::atoi;
+
 void MediaDbReader::open(const char *a_filename) {
 	if (m_reader.is_open()) {
 		close();
@@ -17,11 +19,11 @@ void MediaDbReader::open(const char *a_filename) {
 	m_reader.open(a_filename);
 }
 
-BaseMedia *MediaDbReader::readNext() {
+BaseMedia *MediaDbReader::readNext() throw(std::invalid_argument) {
 	char *artist = new char[ARTIST_NAME_MAX_LENGTH],
 		*album, *year;
 
-	m_reader.getline(artist, ARTIST_NAME_MAX_LENGTH, '|');
+	m_reader.getline(artist, ARTIST_NAME_MAX_LENGTH, DELIMITER);
 
 	if (m_reader.gcount() < 1) {
 		delete[] artist;
@@ -29,12 +31,12 @@ BaseMedia *MediaDbReader::readNext() {
 	}
 
 	album = new char[ALBUM_NAME_MAX_LENGTH];
-	m_reader.getline(album, ALBUM_NAME_MAX_LENGTH, '|');
+	m_reader.getline(album, ALBUM_NAME_MAX_LENGTH, DELIMITER);
 
 	if (m_reader.gcount() < 1) {
 		delete[] artist;
 		delete[] album;
-		return NULL;
+		throw std::invalid_argument("Album name could not be read!");
 	}
 
 	year = new char[YEAR_CHAR_MAX_LENGTH];
@@ -44,15 +46,15 @@ BaseMedia *MediaDbReader::readNext() {
 		delete[] artist;
 		delete[] album;
 		delete[] year;
-		return NULL;
+		throw std::invalid_argument("Year could not be read!");
 	}
 
-	MusicAlbumMedia *s = new MusicAlbumMedia(artist, album,
-			(short) std::atoi(year));
+	BaseMedia *tmp = new MusicAlbumMedia(artist, album,
+			(short) atoi(year));
 
 	delete[] artist;
 	delete[] album;
 	delete[] year;
 
-	return (BaseMedia *) s;
+	return tmp;
 }

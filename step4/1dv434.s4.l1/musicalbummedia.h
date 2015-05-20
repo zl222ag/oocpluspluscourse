@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <compare.h>
 #include "basemedia.h"
 
 class MusicAlbumMedia : public BaseMedia {
@@ -48,20 +49,33 @@ public:
 		return IDENTIFICATION;
 	}
 
+	// The artist.
 	const char *getArtistName() {
 		return m_artistName;
 	}
 
+	// the album name.
 	const char *getAlbumName() {
 		return m_albumName;
+	}
+
+	// Year the album got released.
+	const short getReleaseYear() {
+		return m_releaseYear;
 	}
 
 	MusicAlbumMedia operator=(const MusicAlbumMedia &a_media);
 
 	bool operator==(const MusicAlbumMedia &a_other) const {
-		return m_artistName == a_other.m_artistName &&
-			m_albumName == a_other.m_albumName &&
+		return Compare::equali(m_artistName, a_other.m_artistName) &&
+			Compare::equali(m_albumName, a_other.m_albumName) &&
 			m_releaseYear == a_other.m_releaseYear;
+	}
+
+	bool operator!=(const MusicAlbumMedia &a_other) const {
+		return !Compare::equali(m_artistName, a_other.m_artistName) ||
+			!Compare::equali(m_albumName, a_other.m_albumName) ||
+			m_releaseYear != a_other.m_releaseYear;
 	}
 
 	virtual bool operator==(const BaseMedia &a_other) const {
@@ -70,6 +84,14 @@ public:
 		}
 
 		return *this == *(MusicAlbumMedia *) &a_other;
+	}
+
+	virtual bool operator!=(const BaseMedia &a_other) const {
+		if (getId() != a_other.getId()) {
+			return false;
+		}
+
+		return *this != *(MusicAlbumMedia *) &a_other;
 	}
 
 	// Sorts by the artist's name, then its album name.
