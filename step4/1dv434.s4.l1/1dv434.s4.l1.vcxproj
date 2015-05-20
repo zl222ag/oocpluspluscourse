@@ -81,12 +81,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mediadbreader.cpp" />
+    <ClCompile Include="mediadbwriter.cpp" />
     <ClCompile Include="mediaregister.cpp" />
     <ClCompile Include="musicalbummedia.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basemedia.h" />
     <ClInclude Include="mediadbreader.h" />
+    <ClInclude Include="mediadbwriter.h" />
     <ClInclude Include="mediaregister.h" />
     <ClInclude Include="musicalbummedia.h" />
   </ItemGroup>

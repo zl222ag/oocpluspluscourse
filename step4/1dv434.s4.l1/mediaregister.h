@@ -41,7 +41,7 @@ public:
 	}
 
 	~MediaRegister() {
-		emptyReg(); // NOT REALLY NECESSARY
+		emptyReg();
 	}
 
 	// Adds media (creates copy)!

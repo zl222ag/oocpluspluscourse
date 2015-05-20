@@ -14,13 +14,14 @@ using std::endl;
 class MediaApplication {
 	MediaRegister m_register;
 
+#ifdef _DEBUG
+	void runTests();
+	void testRegister();
+	void testMusicAlbumMedia();
+#endif
 public:
 	MediaApplication() {
 	}
-
-#ifdef _DEBUG
-	void test();
-#endif
 
 	int run();
 };
@@ -38,7 +39,7 @@ int MediaApplication::run() {
 		} while (choice != 'n' && choice != 'y');
 
 		if (choice == 'y') {
-			test();
+			runTests();
 		}
 	}
 #endif
@@ -47,9 +48,13 @@ int MediaApplication::run() {
 }
 
 #ifdef _DEBUG
-void MediaApplication::test() {
+void MediaApplication::runTests() {
+	testRegister();
+	testMusicAlbumMedia();
+}
+
+void MediaApplication::testRegister() {
 	m_register.loadReg();
-	m_register.saveReg("wabjers");
 
 	cout << "Check media: " << endl;
 	m_register.showMedia();
@@ -60,6 +65,14 @@ void MediaApplication::test() {
 	m_register.showMedia();
 	cout << endl << endl;
 
+	cout << "Trying to save to file wabjers (should work)!" << endl;
+	m_register.saveReg("wabjers");
+	std::ifstream file("wabjers");
+	assert(file.good());
+	cout << endl << endl;
+}
+
+void MediaApplication::testMusicAlbumMedia() {
 	cout << "Is Rush's permanent waves on the \"shelf\"? (yes)" << endl;
 	BaseMedia *media = m_register.findMedia("rUsh", "permanenT waVes");
 	assert(media->getId() == MusicAlbumMedia::IDENTIFICATION);
@@ -74,14 +87,20 @@ void MediaApplication::test() {
 	BaseMedia *media2 = (BaseMedia *) new MusicAlbumMedia("rush",
 		"permanent waves", 1980);
 	assert(musicMedia == *media2);
+	assert(*media2 == musicMedia);
 	assert(*media == *media2);
+	assert(*media2 == *media);
 
-	media2 = (BaseMedia *) new MusicAlbumMedia("oscar peterson",
-		"soft sands", 1957);
+	media2 = (BaseMedia *) m_register.findMedia("oscar peterson",
+		"soft sands");
+	assert(media2 != NULL);
 
 	assert(!(*media == *media2));
+	assert(!(*media2 == *media));
 	assert(*media != *media2);
+	assert(*media2 != *media);
 
+	cout << endl << endl;
 	cout << "Is the album \"Back to back\" with Duke Ellington and "
 			"Johnny Hodges on the \"shelf\"? (no)" << endl;
 	media = m_register.findMedia("duke ellington & johnny hodges",

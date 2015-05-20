@@ -9,7 +9,6 @@
 #define MEDIADBREADER_H_
 
 #include <fstream>
-#include <istream>
 #include <stdexcept>
 
 class BaseMedia;
