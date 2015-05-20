@@ -10,6 +10,7 @@
 
 #include <fstream>
 #include <istream>
+#include <stdexcept>
 
 class BaseMedia;
 
