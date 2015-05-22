@@ -14,27 +14,31 @@
 #include <compare.h>
 #include "basemedia.h"
 
-class MusicAlbumMedia : public BaseMedia {
+class MusicAlbumMedia: public BaseMedia {
 	char *m_artistName, *m_albumName;
 	short m_releaseYear;
 
 	virtual std::ostream &print(std::ostream &a_ostream) const {
-		return a_ostream << "Artist: " << m_artistName << ", album: " << m_albumName <<
-			", released: " << m_releaseYear << '.';
+		return a_ostream << "Artist: " << m_artistName << ", album: "
+				<< m_albumName << ", released: " << m_releaseYear << '.';
 	}
 
 public:
 	static const int IDENTIFICATION = 10654;
 
+	// Vectors or STL's require this.
 	MusicAlbumMedia() :
-		m_artistName(NULL), m_albumName(NULL), m_releaseYear(0) {
+			m_artistName(NULL), m_albumName(NULL), m_releaseYear(0) {
 	}
 
+	// The copy constructor.
 	MusicAlbumMedia(const MusicAlbumMedia &a_media);
 
+	// "Normal" constructor.
 	MusicAlbumMedia(const char *artistName, const char *albumName,
-		short releaseYear);
+			short releaseYear);
 
+	// Removal.
 	virtual ~MusicAlbumMedia() {
 		if (m_artistName != NULL) {
 			delete[] m_artistName;
@@ -45,16 +49,19 @@ public:
 		}
 	}
 
+	// The class's id (polymorhism).
 	virtual int getId() const {
 		return IDENTIFICATION;
 	}
 
-	// The artist.
+	// The artist's name.
+	// Do not delete.
 	const char *getArtistName() {
 		return m_artistName;
 	}
 
-	// the album name.
+	// The album name.
+	// Do not delete.
 	const char *getAlbumName() {
 		return m_albumName;
 	}
@@ -64,20 +71,24 @@ public:
 		return m_releaseYear;
 	}
 
+	// Needed when not an initialization, but assignment.
 	MusicAlbumMedia operator=(const MusicAlbumMedia &a_media);
 
+	// Normal operator
 	bool operator==(const MusicAlbumMedia &a_other) const {
-		return Compare::equali(m_artistName, a_other.m_artistName) &&
-			Compare::equali(m_albumName, a_other.m_albumName) &&
-			m_releaseYear == a_other.m_releaseYear;
+		return Compare::equali(m_artistName, a_other.m_artistName)
+				&& Compare::equali(m_albumName, a_other.m_albumName)
+				&& m_releaseYear == a_other.m_releaseYear;
 	}
 
+	// Normal operator
 	bool operator!=(const MusicAlbumMedia &a_other) const {
-		return !Compare::equali(m_artistName, a_other.m_artistName) ||
-			!Compare::equali(m_albumName, a_other.m_albumName) ||
-			m_releaseYear != a_other.m_releaseYear;
+		return !Compare::equali(m_artistName, a_other.m_artistName)
+				|| !Compare::equali(m_albumName, a_other.m_albumName)
+				|| m_releaseYear != a_other.m_releaseYear;
 	}
 
+	// Normal operator (from base).
 	virtual bool operator==(const BaseMedia &a_other) const {
 		if (getId() != a_other.getId()) {
 			return false;
@@ -86,6 +97,7 @@ public:
 		return *this == *(MusicAlbumMedia *) &a_other;
 	}
 
+	// Normal operator (from base).
 	virtual bool operator!=(const BaseMedia &a_other) const {
 		if (getId() != a_other.getId()) {
 			return false;
@@ -105,12 +117,13 @@ public:
 		return strcmp(m_albumName, a_other.m_albumName) < 0;
 	}
 
-	// Sorts by the artist's name, then its album name.
+	// Sorts by the artist's name, then its album name (if same class).
 	virtual bool operator<(const BaseMedia &a_other) const {
 		if (getId() != a_other.getId()) {
 			return false;
 		}
 
+		// calls other non-base operator
 		return *this < *(MusicAlbumMedia *) &a_other;
 	}
 };

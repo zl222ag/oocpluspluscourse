@@ -31,9 +31,11 @@ void MediaRegister::saveReg(const char *a_dbFile /* "media.dat" */) {
 	}
 
 	for (vector<BaseMedia *>::iterator i = m_media.begin(); i != m_media.end();
-		++i) {
+			++i) {
 		writer->writeNext(*i);
 	}
+
+	delete writer;
 }
 
 void MediaRegister::loadReg(const char *a_dbFile /* "media.dat" */) {
@@ -54,20 +56,23 @@ void MediaRegister::loadReg(const char *a_dbFile /* "media.dat" */) {
 	while ((media = reader->readNext()) != NULL) {
 		addMedia(media);
 	}
+
+	delete reader;
 }
 
-BaseMedia *MediaRegister::findMedia(const char *a_artistName, const char *a_albumName) {
-	vector<BaseMedia *>::iterator tmp =
-		std::find_if(m_media.begin(), m_media.end(), [&](BaseMedia *a_media) {
-		if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
-			return false;
-		}
+BaseMedia *MediaRegister::findMedia(const char *a_artistName,
+		const char *a_albumName) {
+	vector<BaseMedia *>::iterator tmp = std::find_if(m_media.begin(),
+			m_media.end(), [&](BaseMedia *a_media) {
+				if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
+					return false;
+				}
 
-		MusicAlbumMedia *data = (MusicAlbumMedia *) a_media;
+				MusicAlbumMedia *data = (MusicAlbumMedia *) a_media;
 
-		return Compare::equali(a_artistName, data->getArtistName()) &&
-			Compare::equali(a_albumName, data->getAlbumName());
-	});
+				return Compare::equali(a_artistName, data->getArtistName()) &&
+				Compare::equali(a_albumName, data->getAlbumName());
+			});
 
 	// No such item found.
 	if (tmp == m_media.end()) {

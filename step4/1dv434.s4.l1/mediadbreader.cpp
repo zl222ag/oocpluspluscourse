@@ -19,9 +19,8 @@ void MediaDbReader::open(const char *a_filename) {
 	m_reader.open(a_filename);
 }
 
-BaseMedia *MediaDbReader::readNext() throw(std::invalid_argument) {
-	char *artist = new char[ARTIST_NAME_MAX_LENGTH],
-		*album, *year;
+BaseMedia *MediaDbReader::readNext() throw (std::invalid_argument) {
+	char *artist = new char[ARTIST_NAME_MAX_LENGTH], *album, *year;
 
 	m_reader.getline(artist, ARTIST_NAME_MAX_LENGTH, DELIMITER);
 
@@ -49,8 +48,7 @@ BaseMedia *MediaDbReader::readNext() throw(std::invalid_argument) {
 		throw std::invalid_argument("Year could not be read!");
 	}
 
-	BaseMedia *tmp = new MusicAlbumMedia(artist, album,
-			(short) atoi(year));
+	BaseMedia *tmp = new MusicAlbumMedia(artist, album, (short) atoi(year));
 
 	delete[] artist;
 	delete[] album;

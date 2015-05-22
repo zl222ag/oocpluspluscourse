@@ -90,14 +90,15 @@ void MediaApplication::testMusicAlbumMedia() {
 	assert(musicMedia == MusicAlbumMedia("RuSH", "perManent WaVeS", 1980));
 
 	BaseMedia *media2 = (BaseMedia *) new MusicAlbumMedia("rush",
-		"permanent waves", 1980);
+			"permanent waves", 1980);
 	assert(musicMedia == *media2);
 	assert(*media2 == musicMedia);
 	assert(*media == *media2);
 	assert(*media2 == *media);
 
-	media2 = (BaseMedia *) m_register.findMedia("oscar peterson",
-		"soft sands");
+	delete media2;
+
+	media2 = (BaseMedia *) m_register.findMedia("oscar peterson", "soft sands");
 	assert(media2 != NULL);
 
 	assert(!(*media == *media2));

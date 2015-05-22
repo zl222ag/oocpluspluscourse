@@ -7,9 +7,17 @@
 
 #include "musicalbummedia.h"
 
+// The copy constructor.
+// c++11 supports this (delagating constructor)!
+MusicAlbumMedia::MusicAlbumMedia(const MusicAlbumMedia &a_media) :
+		MusicAlbumMedia(a_media.m_artistName, a_media.m_albumName,
+				a_media.m_releaseYear) {
+}
+
+// "Normal" constructor.
 MusicAlbumMedia::MusicAlbumMedia(const char *a_artistName,
-	const char *a_albumName, short a_releaseYear) :
-	m_releaseYear(a_releaseYear) {
+		const char *a_albumName, short a_releaseYear) :
+		m_releaseYear(a_releaseYear) {
 	if (a_artistName != NULL) {
 		m_artistName = new char[strlen(a_artistName) + 1];
 		strcpy(m_artistName, a_artistName);
@@ -21,12 +29,7 @@ MusicAlbumMedia::MusicAlbumMedia(const char *a_artistName,
 	}
 }
 
-// c++11 supports this!
-MusicAlbumMedia::MusicAlbumMedia(const MusicAlbumMedia &a_media) :
-		MusicAlbumMedia(a_media.m_artistName, a_media.m_albumName,
-		a_media.m_releaseYear) {
-}
-
+// Needed when not an initialization, but assignment.
 MusicAlbumMedia MusicAlbumMedia::operator=(const MusicAlbumMedia &a_media) {
 	if (m_artistName != NULL) {
 		delete[] m_artistName;
