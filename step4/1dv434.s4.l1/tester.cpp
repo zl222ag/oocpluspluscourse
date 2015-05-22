@@ -16,12 +16,7 @@ using std::cout;
 using std::endl;
 using std::invalid_argument;
 
-void Tester::runTests() {
-	testRegister();
-	testMusicAlbumMedia();
-	testMediaReader();
-}
-
+// Runs the tests for the media register class.
 void Tester::testRegister() {
 	MediaRegister m_register;
 	const char tmpJunkFile[] = "wabjers.tmp";
@@ -112,7 +107,9 @@ void Tester::testRegister() {
 	std::remove(tmpJunkFile);
 }
 
+// Runs tests for the music album media class.
 void Tester::testMusicAlbumMedia() {
+	bool thrown;
 	MediaRegister m_register;
 	m_register.loadReg();
 
@@ -153,9 +150,45 @@ void Tester::testMusicAlbumMedia() {
 	media = m_register.findMedia("duke ellington & johnny hodges",
 			"back to back");
 	assert(media == NULL);
+
+	cout << endl << "Does no album equal no album?" << endl;
+	assert(MusicAlbumMedia() == MusicAlbumMedia());
+	assert(!(MusicAlbumMedia() != MusicAlbumMedia()));
+
+	cout << endl << "Testing to set a field to NULL (should cause exception)"
+			<< endl;
+
+	try {
+		thrown = false;
+		MusicAlbumMedia(NULL, NULL, 0);
+	} catch (const std::invalid_argument &e) {
+		thrown = true;
+	}
+
+	assert(thrown);
+
+	try {
+		thrown = false;
+		MusicAlbumMedia("testing", NULL, 0);
+	} catch (const std::invalid_argument &e) {
+		thrown = true;
+	}
+
+	assert(thrown);
+
+	try {
+		thrown = false;
+		MusicAlbumMedia(NULL, "testing", 0);
+	} catch (const std::invalid_argument &e) {
+		thrown = true;
+	}
+
+	assert(thrown);
+
 	cout << endl;
 }
 
+// Runs the tests for the media reader class!
 void Tester::testMediaReader() {
 	MediaDbReader reader;
 	int i = 0;
@@ -231,11 +264,12 @@ void Tester::testMediaReader() {
 	media = reader.readNext();
 	assert(*media == MusicAlbumMedia("judas priest", "killing machine", 1978));
 	assert(
-			Compare::equali(((MusicAlbumMedia * ) media)->getArtistName(),
+			Compare::equal(((MusicAlbumMedia * ) media)->getArtistName(),
 					"judas priest"));
 	assert(
-			Compare::equali(((MusicAlbumMedia * ) media)->getAlbumName(),
+			Compare::equal(((MusicAlbumMedia * ) media)->getAlbumName(),
 					"killing machine"));
+	assert((((MusicAlbumMedia * ) media)->getReleaseYear()) == 1978);
 	delete media;
 
 	media = reader.readNext();
@@ -280,6 +314,21 @@ void Tester::testMediaReader() {
 			*media
 					== MusicAlbumMedia("pink floyd", "dark side of the moon",
 							1973));
+	assert(*media != MusicAlbumMedia("pink floyd", "animals", 1977));
+	assert(MusicAlbumMedia("pink floyd", "animals", 1977) != *media);
+	assert(MusicAlbumMedia() != *media);
+	assert(*media != MusicAlbumMedia());
+	assert(
+			!(MusicAlbumMedia("pink floyd", "dark side of the moon", 1973)
+					!= *media));
+	assert(
+			!(*media
+					!= MusicAlbumMedia("pink floyd", "dark side of the moon",
+							1973)));
+	assert(
+			!(MusicAlbumMedia("pink floyd", "dark side of the moon", 1973)
+					!= *media));
+
 	delete media;
 
 	try {
@@ -293,3 +342,9 @@ void Tester::testMediaReader() {
 	cout << endl;
 }
 
+// Runs all the tests!
+void Tester::runTests() {
+	testRegister();
+	testMusicAlbumMedia();
+	testMediaReader();
+}

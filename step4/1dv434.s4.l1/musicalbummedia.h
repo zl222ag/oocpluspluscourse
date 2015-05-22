@@ -30,7 +30,7 @@ public:
 
 	// C++ STL's require this.
 	MusicAlbumMedia() :
-			m_artistName(NULL), m_albumName(NULL), m_releaseYear(0) {
+			MusicAlbumMedia("", "", 0) {
 	}
 
 	// The copy constructor.
@@ -69,7 +69,7 @@ public:
 	}
 
 	// Year the album got released.
-	const short getReleaseYear() const {
+	short getReleaseYear() const {
 		return m_releaseYear;
 	}
 
