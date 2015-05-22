@@ -41,15 +41,7 @@ public:
 			short releaseYear);
 
 	// Removal.
-	virtual ~MusicAlbumMedia() {
-		if (m_artistName != NULL) {
-			delete[] m_artistName;
-		}
-
-		if (m_albumName != NULL) {
-			delete[] m_albumName;
-		}
-	}
+	virtual ~MusicAlbumMedia();
 
 	// The class's id (polymorhism).
 	virtual int getId() const {
@@ -91,45 +83,16 @@ public:
 	}
 
 	// Normal operator (from base).
-	virtual bool operator==(const BaseMedia &a_other) const {
-		if (getId() != a_other.getId()) {
-			return false;
-		}
-
-		// Calls other non-base operator
-		return *this == *(MusicAlbumMedia *) &a_other;
-	}
+	virtual bool operator==(const BaseMedia &a_other) const;
 
 	// Normal operator (from base).
-	virtual bool operator!=(const BaseMedia &a_other) const {
-		if (getId() != a_other.getId()) {
-			return false;
-		}
-
-		// Calls other non-base operator
-		return *this != *(MusicAlbumMedia *) &a_other;
-	}
+	virtual bool operator!=(const BaseMedia &a_other) const;
 
 	// Sorts by the artist's name, then its album name.
-	bool operator<(const MusicAlbumMedia &a_other) const {
-		int nameVal = strcmp(m_artistName, a_other.m_artistName);
-
-		if (nameVal != 0) {
-			return nameVal < 0;
-		}
-
-		return strcmp(m_albumName, a_other.m_albumName) < 0;
-	}
+	bool operator<(const MusicAlbumMedia &a_other) const;
 
 	// Sorts by the artist's name, then its album name (if same class).
-	virtual bool operator<(const BaseMedia &a_other) const {
-		if (getId() != a_other.getId()) {
-			return false;
-		}
-
-		// Calls other non-base operator
-		return *this < *(MusicAlbumMedia *) &a_other;
-	}
+	virtual bool operator<(const BaseMedia &a_other) const;
 };
 
 #endif /* MUSICALBUMMEDIA_H_ */

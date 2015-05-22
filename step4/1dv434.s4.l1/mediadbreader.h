@@ -19,6 +19,7 @@ class MediaDbReader {
 			YEAR_CHAR_MAX_LENGTH = 10;
 	std::ifstream m_reader;
 
+	// Makes a string lowercase.
 	static void lowerer(char *a_chr) {
 		for (char *i = a_chr; *i; ++i) {
 			*i = tolower(*i);
@@ -29,6 +30,7 @@ public:
 	MediaDbReader() {
 	}
 
+	// Opens a file
 	MediaDbReader(const char *a_filename) {
 		open(a_filename);
 	}
