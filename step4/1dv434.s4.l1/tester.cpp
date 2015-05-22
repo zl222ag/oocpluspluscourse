@@ -18,30 +18,30 @@ using std::invalid_argument;
 
 // Runs the tests for the media register class.
 void Tester::testRegister() {
-	MediaRegister m_register;
+	MediaRegister mediaRegister;
 	const char tmpJunkFile[] = "wabjers.tmp";
-	m_register.loadReg();
+	mediaRegister.loadReg();
 
 	cout << "Check media: " << endl;
-	m_register.showMedia();
+	mediaRegister.showMedia();
 	cout << endl;
 
-	m_register.sortMedia();
+	mediaRegister.sortMedia();
 	cout << "Check sorted: " << endl;
-	m_register.showMedia();
+	mediaRegister.showMedia();
 	cout << endl;
 
 	cout << "Trying to save to file \"" << tmpJunkFile << "\" (should work)!"
 			<< endl;
-	m_register.saveReg(tmpJunkFile);
+	mediaRegister.saveReg(tmpJunkFile);
 	std::ifstream file(tmpJunkFile);
 	assert(file.good());
 	file.close();
 	cout << endl;
 
 	cout << "Emptying register, should be empty" << endl << "--start--" << endl;
-	m_register.emptyReg();
-	m_register.showMedia();
+	mediaRegister.emptyReg();
+	mediaRegister.showMedia();
 	cout << "--end--" << endl << endl;
 
 	cout << "Testing newly saved wabjers!" << endl << endl;
@@ -110,11 +110,11 @@ void Tester::testRegister() {
 // Runs tests for the music album media class.
 void Tester::testMusicAlbumMedia() {
 	bool thrown;
-	MediaRegister m_register;
-	m_register.loadReg();
+	MediaRegister mediaRegister;
+	mediaRegister.loadReg();
 
 	cout << "Is Rush's permanent waves on the \"shelf\"? (yes)" << endl;
-	BaseMedia *media = m_register.findMedia("rUsh", "permanenT waVes");
+	BaseMedia *media = mediaRegister.findMedia("rUsh", "permanenT waVes");
 	assert(media != NULL);
 	assert(media->getId() == MusicAlbumMedia::IDENTIFICATION);
 
@@ -137,7 +137,7 @@ void Tester::testMusicAlbumMedia() {
 	cout << "Checking difference between Rush's Permanent Waves and"
 			"Oscar Peterson's Soft Sands!" << endl;
 
-	media2 = (BaseMedia *) m_register.findMedia("oscar peterson", "soft sands");
+	media2 = (BaseMedia *) mediaRegister.findMedia("oscar peterson", "soft sands");
 	assert(media2 != NULL);
 
 	assert(!(*media == *media2));
@@ -147,7 +147,7 @@ void Tester::testMusicAlbumMedia() {
 
 	cout << endl << "Is the album \"Back to back\" with Duke Ellington and "
 			"Johnny Hodges on the \"shelf\"? (no)" << endl;
-	media = m_register.findMedia("duke ellington & johnny hodges",
+	media = mediaRegister.findMedia("duke ellington & johnny hodges",
 			"back to back");
 	assert(media == NULL);
 
