@@ -47,14 +47,12 @@ void MediaRegister::saveReg(const char *a_dbFile /* "media.dat" */)
 		throw invalid_argument("The database filename cannot be NULL!");
 	}
 
-	MediaDbWriter *writer = new MediaDbWriter(a_dbFile);
+	MediaDbWriter writer(a_dbFile);
 
 	for (vector<BaseMedia *>::iterator i = m_media.begin(); i != m_media.end();
 			++i) {
-		writer->writeNext(*i);
+		writer.writeNext(*i);
 	}
-
-	delete writer;
 }
 
 // Loads register from file.
@@ -64,13 +62,11 @@ void MediaRegister::loadReg(const char *a_dbFile /* "media.dat" */)
 		throw invalid_argument("The database filename cannot be NULL!");
 	}
 
-	MediaDbReader *reader = new MediaDbReader(a_dbFile);
+	MediaDbReader reader(a_dbFile);
 
 	BaseMedia *media = NULL;
 
-	while ((media = reader->readNext()) != NULL) {
+	while ((media = reader.readNext()) != NULL) {
 		addMedia(media);
 	}
-
-	delete reader;
 }

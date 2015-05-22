@@ -18,6 +18,8 @@ class MusicAlbumMedia: public BaseMedia {
 	char *m_artistName, *m_albumName;
 	short m_releaseYear;
 
+	// For output with cout or a file. Is used by friend std::operator
+	// (base class).
 	virtual std::ostream &print(std::ostream &a_ostream) const {
 		return a_ostream << "Artist: " << m_artistName << ", album: "
 				<< m_albumName << ", released: " << m_releaseYear << '.';
@@ -26,7 +28,7 @@ class MusicAlbumMedia: public BaseMedia {
 public:
 	static const int IDENTIFICATION = 10654;
 
-	// Vectors or STL's require this.
+	// C++ STL's require this.
 	MusicAlbumMedia() :
 			m_artistName(NULL), m_albumName(NULL), m_releaseYear(0) {
 	}
@@ -94,6 +96,7 @@ public:
 			return false;
 		}
 
+		// Calls other non-base operator
 		return *this == *(MusicAlbumMedia *) &a_other;
 	}
 
@@ -103,6 +106,7 @@ public:
 			return false;
 		}
 
+		// Calls other non-base operator
 		return *this != *(MusicAlbumMedia *) &a_other;
 	}
 
@@ -123,7 +127,7 @@ public:
 			return false;
 		}
 
-		// calls other non-base operator
+		// Calls other non-base operator
 		return *this < *(MusicAlbumMedia *) &a_other;
 	}
 };

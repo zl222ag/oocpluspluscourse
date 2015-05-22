@@ -70,7 +70,7 @@ public:
 	// Removes all data from register.
 	void emptyReg() {
 		std::for_each(m_media.begin(), m_media.end(), empty);
-		m_media.empty();
+		m_media.clear();
 	}
 
 	// Saves register to file.
