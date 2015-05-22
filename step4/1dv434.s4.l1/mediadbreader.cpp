@@ -12,6 +12,7 @@
 using std::atoi;
 using std::invalid_argument;
 
+// Opens a file, closes if one is already opened.
 void MediaDbReader::open(const char *a_filename) {
 	if (m_reader.is_open()) {
 		close();
@@ -20,6 +21,9 @@ void MediaDbReader::open(const char *a_filename) {
 	m_reader.open(a_filename);
 }
 
+// Reads next line that has data, returns NULL otherwise.
+// May throw invalid_argument if no file is opened, or
+// if album name or release year could not be read.
 BaseMedia *MediaDbReader::readNext() throw (invalid_argument) {
 	if (!m_reader.is_open()) {
 		throw invalid_argument("No file was opened!");

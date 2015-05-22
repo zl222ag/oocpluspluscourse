@@ -58,18 +58,18 @@ public:
 
 	// The artist's name.
 	// Do not delete.
-	const char *getArtistName() {
+	const char *getArtistName() const {
 		return m_artistName;
 	}
 
 	// The album name.
 	// Do not delete.
-	const char *getAlbumName() {
+	const char *getAlbumName() const {
 		return m_albumName;
 	}
 
 	// Year the album got released.
-	const short getReleaseYear() {
+	const short getReleaseYear() const {
 		return m_releaseYear;
 	}
 
