@@ -37,11 +37,11 @@ public:
 
 	virtual ~MusicAlbumMedia() {
 		if (m_artistName != NULL) {
-			delete m_artistName;
+			delete[] m_artistName;
 		}
 
 		if (m_albumName != NULL) {
-			delete m_albumName;
+			delete[] m_albumName;
 		}
 	}
 

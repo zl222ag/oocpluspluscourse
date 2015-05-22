@@ -1,8 +1,13 @@
+// main.cpp
+// Datum: 2015-04-12
+// Programmerare: Zlatko Ladan
+// Kort beskrivning: Fixa en mediabibliotekshanterare.
+
 #include <cstdlib>
 #include <iostream>
 #ifdef _DEBUG
 #include <cstring>
-#include<cassert>
+#include <cassert>
 #endif
 #include <inputoutput.h>
 #include <compare.h>
