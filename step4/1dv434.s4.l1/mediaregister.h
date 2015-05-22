@@ -11,10 +11,11 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <stdexcept>
 #include <filereader.h>
 #include "basemedia.h"
 #include "musicalbummedia.h"
-#include <iostream>
 
 class MediaRegister {
 	std::vector<BaseMedia *> m_media;
@@ -44,7 +45,11 @@ public:
 	}
 
 	// Adds media (creates copy)!
-	void addMedia(BaseMedia *a_media) {
+	void addMedia(BaseMedia *a_media) throw (std::invalid_argument) {
+		if (a_media == NULL) {
+			throw std::invalid_argument("a_media cannot be NULL!");
+		}
+
 		m_media.push_back(a_media);
 	}
 
@@ -54,10 +59,10 @@ public:
 	}
 
 	// Finds the specified media.
-	BaseMedia *findMedia(const char *artistName, const char *albumName);
+	BaseMedia *findMedia(const char *artistName, const char *albumName) const;
 
 	// Shows data for media.
-	void showMedia() {
+	void showMedia() const {
 		std::for_each(m_media.begin(), m_media.end(), show);
 	}
 
@@ -74,7 +79,7 @@ public:
 	}
 
 	// Saves register to file.
-	void saveReg(const char *a_dbFile = "media.dat")
+	void saveReg(const char *a_dbFile = "media.dat") const
 			throw (std::invalid_argument);
 	// Loads register from file.
 	void loadReg(const char *a_dbFile = "media.dat")

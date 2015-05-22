@@ -19,8 +19,8 @@ using std::invalid_argument;
 
 // Finds the specified media.
 BaseMedia *MediaRegister::findMedia(const char *a_artistName,
-		const char *a_albumName) {
-	vector<BaseMedia *>::iterator tmp = std::find_if(m_media.begin(),
+		const char *a_albumName) const {
+	vector<BaseMedia *>::const_iterator tmp = std::find_if(m_media.begin(),
 			m_media.end(), [&](BaseMedia *a_media) {
 				if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
 					return false;
@@ -41,7 +41,7 @@ BaseMedia *MediaRegister::findMedia(const char *a_artistName,
 }
 
 // Saves register to file.
-void MediaRegister::saveReg(const char *a_dbFile /* "media.dat" */)
+void MediaRegister::saveReg(const char *a_dbFile /* "media.dat" */) const
 		throw (invalid_argument) {
 	if (a_dbFile == NULL) {
 		throw invalid_argument("The database filename cannot be NULL!");
@@ -49,8 +49,8 @@ void MediaRegister::saveReg(const char *a_dbFile /* "media.dat" */)
 
 	MediaDbWriter writer(a_dbFile);
 
-	for (vector<BaseMedia *>::iterator i = m_media.begin(); i != m_media.end();
-			++i) {
+	for (vector<BaseMedia *>::const_iterator i = m_media.begin();
+			i != m_media.end(); ++i) {
 		writer.writeNext(*i);
 	}
 }

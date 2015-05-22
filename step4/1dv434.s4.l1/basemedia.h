@@ -8,7 +8,7 @@
 #ifndef BASEMEDIA_H_
 #define BASEMEDIA_H_
 
-#include <iostream>
+#include <ostream>
 
 class BaseMedia {
 	// For output with cout or a file. Is used by friend std::operator.
