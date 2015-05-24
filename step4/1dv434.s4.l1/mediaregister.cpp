@@ -17,6 +17,27 @@
 using std::vector;
 using std::invalid_argument;
 
+// Adds media!
+// May throw invalid_argument if a_media is NULL or if the element
+// has already been added.
+void MediaRegister::addMedia(BaseMedia *a_media) throw (invalid_argument) {
+	if (a_media == NULL) {
+		throw std::invalid_argument("a_media cannot be NULL!");
+	}
+
+	if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
+		return;
+	}
+
+	MusicAlbumMedia *media = (MusicAlbumMedia *) a_media;
+
+	if (findMedia(media->getArtistName(), media->getAlbumName()) != NULL) {
+		throw std::invalid_argument("a_media has already been added!");
+	}
+
+	m_media.push_back(a_media);
+}
+
 // Finds the specified media by artist name and album name.
 // May return NULL if the specified media was not found.
 BaseMedia *MediaRegister::findMedia(const char *a_artistName,
@@ -33,7 +54,7 @@ BaseMedia *MediaRegister::findMedia(const char *a_artistName,
 				Compare::equali(a_albumName, data->getAlbumName());
 			});
 
-	// Return null if not found!
+	// Return NULL if not found!
 	return ((tmp == m_media.end()) ? NULL : *tmp);
 }
 

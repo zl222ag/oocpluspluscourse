@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <stdexcept>
 #include <compare.h>
 #include "basemedia.h"
 
@@ -29,6 +30,7 @@ public:
 	static const int IDENTIFICATION = 10654;
 
 	// C++ STL's require this.
+	// C++11 supports this (delegating constructors).
 	MusicAlbumMedia() :
 			MusicAlbumMedia("", "", 0) {
 	}
@@ -37,8 +39,9 @@ public:
 	MusicAlbumMedia(const MusicAlbumMedia &a_media);
 
 	// "Normal" constructor.
+	// May throw invalid_argument if one parameter is NULL.
 	MusicAlbumMedia(const char *artistName, const char *albumName,
-			short releaseYear);
+			short releaseYear) throw (std::invalid_argument);
 
 	// Removal.
 	virtual ~MusicAlbumMedia();
@@ -66,7 +69,7 @@ public:
 	}
 
 	// Needed when not an initialization, but assignment.
-	MusicAlbumMedia operator=(const MusicAlbumMedia &a_media);
+	MusicAlbumMedia operator=(const MusicAlbumMedia &);
 
 	// Normal operator
 	bool operator==(const MusicAlbumMedia &a_other) const {
@@ -83,16 +86,16 @@ public:
 	}
 
 	// Normal operator (from base).
-	virtual bool operator==(const BaseMedia &a_other) const;
+	virtual bool operator==(const BaseMedia &) const;
 
 	// Normal operator (from base).
-	virtual bool operator!=(const BaseMedia &a_other) const;
+	virtual bool operator!=(const BaseMedia &) const;
 
 	// Sorts by the artist's name, then its album name.
-	bool operator<(const MusicAlbumMedia &a_other) const;
+	bool operator<(const MusicAlbumMedia &) const;
 
 	// Sorts by the artist's name, then its album name (if same class).
-	virtual bool operator<(const BaseMedia &a_other) const;
+	virtual bool operator<(const BaseMedia &) const;
 };
 
 #endif /* MUSICALBUMMEDIA_H_ */

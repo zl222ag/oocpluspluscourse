@@ -22,6 +22,7 @@ using std::invalid_argument;
 void Tester::testRegister() {
 	MediaRegister mediaRegister;
 	const char tmpJunkFile[] = "wabjers.tmp";
+	bool thrown;
 	mediaRegister.loadReg();
 
 	cout << "Check media: " << endl;
@@ -106,7 +107,7 @@ void Tester::testRegister() {
 
 	std::remove(tmpJunkFile);
 
-	cout << endl << "Rushing to find rush (should be 3 elements)" << endl;
+	cout << endl << "Rushing to find rush (should be 3 elements)." << endl;
 	mediaRegister.loadReg();
 
 	vector<BaseMedia *> mediaVec = mediaRegister.findMedia("rush");
@@ -115,7 +116,7 @@ void Tester::testRegister() {
 	assert(*mediaVec[1] == MusicAlbumMedia("Rush", "Permanent waves", 1980));
 	assert(*mediaVec[2] == MusicAlbumMedia("Rush", "Moving Pictures", 1981));
 
-	cout << endl << "checking for Judas Priest (should be 1 element)" << endl;
+	cout << endl << "Checking for Judas Priest (should be 1 element)." << endl;
 
 	mediaVec = mediaRegister.findMedia("JUDAS priest");
 	assert(mediaVec.size() == 1);
@@ -124,6 +125,19 @@ void Tester::testRegister() {
 					== MusicAlbumMedia("Judas Priest", "killing machine",
 							1978));
 
+	cout << endl << "Trying to add Judas Priest - Killing Machine "
+			"(should throw invalid_argument)." << endl;
+
+	mediaRegister.showMedia();
+	try {
+		thrown = false;
+		mediaRegister.addMedia(
+				new MusicAlbumMedia("Judas Priest", "killing machine", 1978));
+	} catch (const invalid_argument &e) {
+		thrown = true;
+	}
+
+	assert(thrown);
 }
 
 // Runs tests for the music album media class.

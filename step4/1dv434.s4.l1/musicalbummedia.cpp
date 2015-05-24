@@ -16,8 +16,10 @@ MusicAlbumMedia::MusicAlbumMedia(const MusicAlbumMedia &a_media) :
 }
 
 // "Normal" constructor.
+// May throw invalid_argument if one parameter is NULL.
 MusicAlbumMedia::MusicAlbumMedia(const char *a_artistName,
-		const char *a_albumName, short a_releaseYear) :
+		const char *a_albumName, short a_releaseYear)
+				throw (std::invalid_argument) :
 		m_releaseYear(a_releaseYear) {
 	if (a_artistName == NULL || a_albumName == NULL) {
 		throw std::invalid_argument("Artist name nor album name can be NULL!");

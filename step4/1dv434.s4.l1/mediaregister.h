@@ -26,7 +26,7 @@ class MediaRegister {
 	}
 
 	// Is there a better way? (Not a rhetorical question)
-	// Compares media
+	// Compares media, whats lower.
 	static bool sorter(BaseMedia *a_aMedia, BaseMedia *a_bMedia) {
 		return *a_aMedia < *a_bMedia;
 	}
@@ -44,14 +44,10 @@ public:
 		emptyReg();
 	}
 
-	// Adds media (creates copy)!
-	void addMedia(BaseMedia *a_media) throw (std::invalid_argument) {
-		if (a_media == NULL) {
-			throw std::invalid_argument("a_media cannot be NULL!");
-		}
-
-		m_media.push_back(a_media);
-	}
+	// Adds media!
+	// May throw invalid_argument if a_media is NULL or if the element
+	// has already been added.
+	void addMedia(BaseMedia *a_media) throw (std::invalid_argument);
 
 	// Removes a media!
 	void removeMedia(const BaseMedia *a_media) {
