@@ -33,6 +33,8 @@ public:
 	virtual bool operator!=(const BaseMedia &) const = 0;
 	// Good to have for sorting.
 	virtual bool operator<(const BaseMedia &) const = 0;
+	// Clone function
+	virtual BaseMedia *clone() const = 0;
 };
 
 #endif // BASEMEDIA_H_

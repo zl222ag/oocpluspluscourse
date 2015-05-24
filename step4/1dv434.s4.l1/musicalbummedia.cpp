@@ -25,16 +25,6 @@ MusicAlbumMedia::MusicAlbumMedia(const char *a_artistName,
 	setAlbumName(a_albumName);
 }
 
-MusicAlbumMedia::~MusicAlbumMedia() {
-	if (m_artistName != NULL) {
-		delete[] m_artistName;
-	}
-
-	if (m_albumName != NULL) {
-		delete[] m_albumName;
-	}
-}
-
 // The artist's name.
 // Makes copy.
 // May throw invalid_argument if artistName is NULL.
@@ -44,7 +34,6 @@ void MusicAlbumMedia::setArtistName(const char *a_artistName)
 		throw std::invalid_argument("Artist name cannot be NULL!");
 	}
 
-	m_artistName = new char[strlen(a_artistName) + 1];
 	strcpy(m_artistName, a_artistName);
 }
 
@@ -57,7 +46,6 @@ void MusicAlbumMedia::setAlbumName(const char *a_albumName)
 		throw std::invalid_argument("Album name cannot be NULL!");
 	}
 
-	m_albumName = new char[strlen(a_albumName) + 1];
 	strcpy(m_albumName, a_albumName);
 }
 
@@ -65,6 +53,7 @@ void MusicAlbumMedia::setAlbumName(const char *a_albumName)
 MusicAlbumMedia MusicAlbumMedia::operator=(const MusicAlbumMedia &a_media) {
 	setArtistName(a_media.m_artistName);
 	setAlbumName(a_media.m_albumName);
+	m_releaseYear = a_media.m_releaseYear;
 	return *this;
 }
 

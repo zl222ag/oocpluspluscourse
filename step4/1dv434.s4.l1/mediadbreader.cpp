@@ -35,9 +35,9 @@ BaseMedia *MediaDbReader::readNext() throw (invalid_argument) {
 		throw invalid_argument("No file was opened!");
 	}
 
-	char *artist = new char[ARTIST_NAME_MAX_LENGTH], *album, *year;
+	char *artist = new char[MusicAlbumMedia::CHARS_LIMIT], *album, *year;
 
-	m_reader.getline(artist, ARTIST_NAME_MAX_LENGTH, DELIMITER);
+	m_reader.getline(artist, MusicAlbumMedia::CHARS_LIMIT, DELIMITER);
 
 	if (m_reader.gcount() < 1 || !m_reader.good()) {
 		delete[] artist;
@@ -47,8 +47,8 @@ BaseMedia *MediaDbReader::readNext() throw (invalid_argument) {
 
 	lowerer(artist);
 
-	album = new char[ALBUM_NAME_MAX_LENGTH];
-	m_reader.getline(album, ALBUM_NAME_MAX_LENGTH, DELIMITER);
+	album = new char[MusicAlbumMedia::CHARS_LIMIT];
+	m_reader.getline(album, MusicAlbumMedia::CHARS_LIMIT, DELIMITER);
 
 	if (m_reader.gcount() < 1 || !m_reader.good()) {
 		delete[] artist;

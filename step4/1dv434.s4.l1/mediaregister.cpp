@@ -18,24 +18,35 @@ using std::vector;
 using std::invalid_argument;
 
 // Adds media!
-// May throw invalid_argument if a_media is NULL or if the element
-// has already been added.
-void MediaRegister::addMedia(BaseMedia *a_media) throw (invalid_argument) {
-	if (a_media == NULL) {
-		throw std::invalid_argument("a_media cannot be NULL!");
-	}
-
-	if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
+// May throw invalid_argument if a_media has already been added.
+void MediaRegister::addMedia(const BaseMedia &a_media) throw (invalid_argument) {
+	if (a_media.getId() != MusicAlbumMedia::IDENTIFICATION) {
 		return;
 	}
 
-	MusicAlbumMedia *media = (MusicAlbumMedia *) a_media;
+	const MusicAlbumMedia *media = (MusicAlbumMedia *) &a_media;
+	BaseMedia * tmp;
 
-	if (findMedia(media->getArtistName(), media->getAlbumName()) != NULL) {
+	if ((tmp = findMedia(media->getArtistName(), media->getAlbumName())) != NULL) {
+		delete tmp;
 		throw std::invalid_argument("a_media has already been added!");
 	}
 
-	m_media.push_back(a_media);
+	m_media.push_back(a_media.clone());
+}
+
+// Removes a media!
+bool MediaRegister::removeMedia(const BaseMedia &a_media) {
+	std::vector<BaseMedia *>::iterator tmp = std::remove_if(m_media.begin(),
+			m_media.end(), [&](BaseMedia *a_current) {
+				return *a_current == a_media;
+			});
+	if (tmp == m_media.end()) {
+		return false;
+	}
+
+	m_media.erase(tmp);
+	return true;
 }
 
 // Finds the specified media by artist name and album name.
@@ -55,7 +66,7 @@ BaseMedia *MediaRegister::findMedia(const char *a_artistName,
 			});
 
 	// Return NULL if not found!
-	return ((tmp == m_media.end()) ? NULL : *tmp);
+	return ((tmp == m_media.end()) ? NULL : (*tmp)->clone());
 }
 
 // Finds the specified media's by artist's name.
@@ -72,7 +83,7 @@ vector<BaseMedia *> MediaRegister::findMedia(const char *a_artistName) const {
 		return Compare::equali(a_artistName,
 				((MusicAlbumMedia *) a_media)->getArtistName());
 	})) != m_media.end()) {
-		out.push_back(*tmp);
+		out.push_back((*tmp)->clone());
 
 		if (tmp != m_media.end()) {
 			pos = tmp + 1;
@@ -80,6 +91,20 @@ vector<BaseMedia *> MediaRegister::findMedia(const char *a_artistName) const {
 	}
 
 	return out;
+}
+
+bool MediaRegister::replaceMedia(const BaseMedia &a_from,
+		const BaseMedia &a_to) {
+	for (std::vector<BaseMedia*>::iterator i = m_media.begin();
+			i != m_media.end(); ++i) {
+		if (**i == a_from) {
+			delete *i;
+			*i = a_to.clone();
+			return true;
+		}
+	}
+
+	return false;
 }
 
 // Saves register to file.
@@ -112,6 +137,7 @@ void MediaRegister::loadReg(const char *a_dbFile /* "media.dat" */)
 	BaseMedia *media = NULL;
 
 	while ((media = reader.readNext()) != NULL) {
-		addMedia(media);
+		addMedia(*media);
+		delete media;
 	}
 }

@@ -115,6 +115,9 @@ void Tester::testRegister() {
 	assert(*mediaVec[0] == MusicAlbumMedia("Rush", "Hemispheres", 1978));
 	assert(*mediaVec[1] == MusicAlbumMedia("Rush", "Permanent waves", 1980));
 	assert(*mediaVec[2] == MusicAlbumMedia("Rush", "Moving Pictures", 1981));
+	delete mediaVec[0];
+	delete mediaVec[1];
+	delete mediaVec[2];
 
 	cout << endl << "Checking for Judas Priest (should be 1 element)." << endl;
 
@@ -124,20 +127,46 @@ void Tester::testRegister() {
 			*mediaVec[0]
 					== MusicAlbumMedia("Judas Priest", "killing machine",
 							1978));
+	delete mediaVec[0];
 
 	cout << endl << "Trying to add Judas Priest - Killing Machine "
 			"(should throw invalid_argument)." << endl;
 
-	mediaRegister.showMedia();
 	try {
 		thrown = false;
 		mediaRegister.addMedia(
-				new MusicAlbumMedia("Judas Priest", "killing machine", 1978));
+				MusicAlbumMedia("Judas Priest", "killing machine", 1978));
 	} catch (const invalid_argument &e) {
 		thrown = true;
 	}
 
 	assert(thrown);
+
+	cout << endl << "Replacing Judas priest's killing machine, with "
+			"learning machine." << endl;
+	mediaRegister.replaceMedia(
+			MusicAlbumMedia("Judas Priest", "killing machine", 1978),
+			MusicAlbumMedia("Judas Priest", "learning machine", 1978));
+	assert(
+			(media = mediaRegister.findMedia("judas priest", "learning machine")) != NULL);
+	delete media;
+
+	cout << "Replacing Rush's Hemispheres with Stratospheres." << endl;
+
+	mediaRegister.replaceMedia(MusicAlbumMedia("rush", "hemispheres", 1978),
+			 MusicAlbumMedia("RUSH", "stratospheres", 1976));
+	assert((media = mediaRegister.findMedia("RuSH", "StratosPHeres")) != NULL);
+	delete media;
+
+	cout << "Removing Rush's Stratospheres." << endl;
+	assert(
+			mediaRegister.removeMedia(
+					MusicAlbumMedia("RUSH", "stratospheres", 1976)));
+	try {
+		assert(mediaRegister.findMedia("RuSH", "StratosPHeres") == NULL);
+	} catch (...) {
+		cout << "pork" << endl;
+	}
 }
 
 // Runs tests for the music album media class.
@@ -179,8 +208,11 @@ void Tester::testMusicAlbumMedia() {
 	assert(*media != *media2);
 	assert(*media2 != *media);
 
+	delete media2;
+
 	cout << endl << "Is the album \"Back to back\" with Duke Ellington and "
 			"Johnny Hodges on the \"shelf\"? (no)" << endl;
+	delete media;
 	media = mediaRegister.findMedia("duke ellington & johnny hodges",
 			"back to back");
 	assert(media == NULL);

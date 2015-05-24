@@ -16,18 +16,9 @@
 #include "basemedia.h"
 
 class MusicAlbumMedia: public BaseMedia {
-	char *m_artistName = NULL, *m_albumName = NULL;
-	short m_releaseYear;
-
-	// For output with cout or a file. Is used by friend std::operator
-	// (base class).
-	virtual std::ostream &print(std::ostream &a_ostream) const {
-		return a_ostream << "Artist: " << m_artistName << ", album: "
-				<< m_albumName << ", released: " << m_releaseYear << '.';
-	}
-
 public:
 	static const int IDENTIFICATION = 10654;
+	static const int CHARS_LIMIT = 128;
 
 	// C++ STL's require this.
 	// C++11 supports this (delegating constructors).
@@ -42,9 +33,6 @@ public:
 	// May throw invalid_argument if one parameter is NULL.
 	MusicAlbumMedia(const char *artistName, const char *albumName,
 			short releaseYear) throw (std::invalid_argument);
-
-	// Removal.
-	virtual ~MusicAlbumMedia();
 
 	// The class's id (polymorhism).
 	virtual int getId() const {
@@ -111,6 +99,22 @@ public:
 
 	// Sorts by the artist's name, then its album name (if same class).
 	virtual bool operator<(const BaseMedia &) const;
+
+	// Cloning function derived from base class
+	virtual MusicAlbumMedia *clone() const {
+		return new MusicAlbumMedia(*this);
+	}
+
+private:
+	char m_artistName[CHARS_LIMIT], m_albumName[CHARS_LIMIT];
+	short m_releaseYear;
+
+	// For output with cout or a file. Is used by friend std::operator
+	// (base class).
+	virtual std::ostream &print(std::ostream &a_ostream) const {
+		return a_ostream << "Artist: " << m_artistName << ", album: "
+				<< m_albumName << ", released: " << m_releaseYear << '.';
+	}
 };
 
 #endif /* MUSICALBUMMEDIA_H_ */

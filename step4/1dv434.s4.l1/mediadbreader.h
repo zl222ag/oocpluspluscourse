@@ -15,8 +15,7 @@ class BaseMedia;
 
 class MediaDbReader {
 	static const char DELIMITER = '|';
-	static const int ARTIST_NAME_MAX_LENGTH = 128, ALBUM_NAME_MAX_LENGTH = 128,
-			YEAR_CHAR_MAX_LENGTH = 10;
+	static const int YEAR_CHAR_MAX_LENGTH = 10;
 	std::ifstream m_reader;
 
 	// Makes a string lowercase.

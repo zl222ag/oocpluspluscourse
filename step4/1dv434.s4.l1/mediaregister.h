@@ -33,6 +33,7 @@ class MediaRegister {
 
 	// Deletes a media from register (to be used with for loop).
 	static void empty(BaseMedia *a_media) {
+		std::cout << *a_media << std::endl;
 		delete a_media;
 	}
 
@@ -47,20 +48,10 @@ public:
 	// Adds media!
 	// May throw invalid_argument if a_media is NULL or if the element
 	// has already been added.
-	void addMedia(BaseMedia *a_media) throw (std::invalid_argument);
+	void addMedia(const BaseMedia &a_media) throw (std::invalid_argument);
 
 	// Removes a media!
-	bool removeMedia(const BaseMedia *a_media) {
-		std::vector<BaseMedia *>::iterator tmp = std::remove(m_media.begin(),
-				m_media.end(), a_media);
-		if (tmp == m_media.end()) {
-			return false;
-		}
-
-		delete *tmp;
-		m_media.erase(tmp);
-		return true;
-	}
+	bool removeMedia(const BaseMedia &);
 
 	// Finds the specified media by artist name and album name.
 	// May return NULL if the specified media was not found.
@@ -79,6 +70,9 @@ public:
 		// Is there a better way? (Not a rhetorical question)
 		std::sort(m_media.begin(), m_media.end(), sorter);
 	}
+
+	// Replaces media
+	bool replaceMedia(const BaseMedia &from, const BaseMedia &to);
 
 	// Removes all data from register.
 	void emptyReg() {

@@ -51,11 +51,10 @@ class MediaApplication {
 	Menu m_menu;
 
 	void initMenus();
-	void addAlbum() throw (invalid_argument);
-	void editAlbum(MusicAlbumMedia *) throw (invalid_argument);
-	void removeAlbum(MusicAlbumMedia *) throw (runtime_error);
+	MusicAlbumMedia createAlbum() throw (invalid_argument);
+	void removeAlbum(const MusicAlbumMedia &) throw (runtime_error);
 	MusicAlbumMedia *findAlbum();
-	void manageAlbum(MusicAlbumMedia *album);
+	void manageAlbum(MusicAlbumMedia album);
 	void showArtistAlbums();
 
 public:
@@ -96,59 +95,45 @@ void MediaApplication::initMenus() {
 	m_menu.addMenuItem(1, "Exit this menu");
 }
 
-void MediaApplication::addAlbum() throw (invalid_argument) {
-	char artistName[128];
-	char albumName[128];
+MusicAlbumMedia MediaApplication::createAlbum() throw (invalid_argument) {
+	char artistName[MusicAlbumMedia::CHARS_LIMIT];
+	char albumName[MusicAlbumMedia::CHARS_LIMIT];
 	int releaseYear = 0;
 
-	readLine("Enter the artist's name: ", artistName, 128);
-	readLine("Enter the album name: ", albumName, 128);
+	readLine("Enter the artist's name: ", artistName,
+			MusicAlbumMedia::CHARS_LIMIT);
+	readLine("Enter the album name: ", albumName, MusicAlbumMedia::CHARS_LIMIT);
 	InputOutput::readInteger("Enter the album's release year: ", releaseYear,
 			-3000, 3000);
 
-	m_register.addMedia(
-			new MusicAlbumMedia(artistName, albumName, (short) releaseYear));
+	return MusicAlbumMedia(artistName, albumName, (short) releaseYear);
 }
 
-void MediaApplication::editAlbum(MusicAlbumMedia *a_album)
-		throw (invalid_argument) {
-	char artistName[128];
-	char albumName[128];
-	int releaseYear = 0;
-
-	readLine("Enter the artist's name: ", artistName, 128);
-	readLine("Enter the album name: ", albumName, 128);
-	InputOutput::readInteger("Enter the album's release year: ", releaseYear,
-			-3000, 3000);
-
-	a_album->setArtistName(artistName);
-	a_album->setAlbumName(albumName);
-	a_album->setReleaseYear(releaseYear);
-}
-
-void MediaApplication::removeAlbum(MusicAlbumMedia *a_album)
+void MediaApplication::removeAlbum(const MusicAlbumMedia &a_album)
 		throw (runtime_error) {
-	MusicAlbumMedia album = *a_album;
 
 	if (!m_register.removeMedia(a_album)) {
 		throw runtime_error("Something went wrong when removing the album!");
 	}
 
-	cout << "The album " << album << " was removed." << endl;
+	cout << "The album " << a_album << " was removed." << endl;
 }
 
 MusicAlbumMedia *MediaApplication::findAlbum() {
-	char artistName[128], albumName[128];
+	char artistName[MusicAlbumMedia::CHARS_LIMIT],
+			albumName[MusicAlbumMedia::CHARS_LIMIT];
 
-	readLine("Enter the artist's name: ", artistName, 128);
-	readLine("Enter the album name: ", albumName, 128);
+	readLine("Enter the artist's name: ", artistName,
+			MusicAlbumMedia::CHARS_LIMIT);
+	readLine("Enter the album name: ", albumName, MusicAlbumMedia::CHARS_LIMIT);
 
 	return (MusicAlbumMedia *) m_register.findMedia(artistName, albumName);
 }
 
 void MediaApplication::showArtistAlbums() {
-	char artistName[128];
-	readLine("What's the artist's name?: ", artistName, 128);
+	char artistName[MusicAlbumMedia::CHARS_LIMIT];
+	readLine("What's the artist's name?: ", artistName,
+			MusicAlbumMedia::CHARS_LIMIT);
 	std::vector<BaseMedia *> media = m_register.findMedia(artistName);
 
 	if (media.size() < 1) {
@@ -159,11 +144,13 @@ void MediaApplication::showArtistAlbums() {
 	for (std::vector<BaseMedia *>::const_iterator i = media.begin();
 			i != media.end(); ++i) {
 		cout << **i << endl;
+		delete *i;
 	}
 }
 
 int MediaApplication::run() {
 	char choice = '\0';
+	choice = 'y';
 	MusicAlbumMedia *album = NULL;
 
 #ifdef _DEBUG
@@ -171,7 +158,7 @@ int MediaApplication::run() {
 
 		do {
 			cout << "Run test first?: ";
-			InputOutput::readChar(choice);
+			//InputOutput::readChar(choice);
 			choice = tolower(choice);
 			cout << endl;
 		} while (choice != 'n' && choice != 'y');
@@ -221,7 +208,9 @@ int MediaApplication::run() {
 			break;
 
 		case Main::MenuItems::ADD_ALBUM:
-			addAlbum();
+			m_register.addMedia(createAlbum());
+			cout << "Album was added!" << endl;
+			readEnter();
 			break;
 
 		case Main::MenuItems::MANAGE_ALBUM:
@@ -233,7 +222,8 @@ int MediaApplication::run() {
 				break;
 			}
 
-			manageAlbum(album);
+			manageAlbum(*album);
+			delete album;
 			break;
 
 		case Main::MenuItems::SHOW_ARTIST_ALBUMS:
@@ -251,8 +241,9 @@ int MediaApplication::run() {
 	return EXIT_SUCCESS;
 }
 
-void MediaApplication::manageAlbum(MusicAlbumMedia *a_album) {
+void MediaApplication::manageAlbum(MusicAlbumMedia a_album) {
 	int choice = 0;
+	MusicAlbumMedia tmpAlbum;
 
 	do {
 		choice = m_menu.select(1);
@@ -264,7 +255,9 @@ void MediaApplication::manageAlbum(MusicAlbumMedia *a_album) {
 			break;
 
 		case Album::MenuItems::EDIT:
-			editAlbum(a_album);
+			tmpAlbum = createAlbum();
+			m_register.replaceMedia(a_album, tmpAlbum);
+			a_album = tmpAlbum;
 			break;
 
 		case Album::MenuItems::REMOVE:
