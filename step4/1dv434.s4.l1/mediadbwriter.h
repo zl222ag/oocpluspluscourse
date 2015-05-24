@@ -33,7 +33,8 @@ public:
 	}
 
 	// Opens a file, closes if one is already opened.
-	void open(const char *filename);
+	// May throw invalid_argument if an error occured while opening the file.
+	void open(const char *filename) throw (std::invalid_argument);
 
 	// If a file currently opened.
 	bool isOpened() {
@@ -42,7 +43,7 @@ public:
 
 	// Closes a file (may throw invalid_argument if a file is not
 	// already opened.
-	void close() {
+	void close() throw(std::invalid_argument) {
 		if (!m_writer.is_open()) {
 			throw std::invalid_argument("No file was opened!");
 		}
@@ -53,7 +54,7 @@ public:
 	// Writes a line of data.
 	// May throw invalid_argument if a_media is not MusicAlbumMedia,
 	// if a_media is NULL, or if an error occurs during the writing of the file.
-	void writeNext(const BaseMedia *) throw (std::invalid_argument);
+	void write(const BaseMedia *) throw (std::invalid_argument);
 };
 
 #endif // MEDIADBWRITER_H_

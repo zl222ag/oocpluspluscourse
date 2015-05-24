@@ -27,24 +27,29 @@ char *MediaDbWriter::lowerer(const char *a_chr) {
 }
 
 // Opens a file, closes if one is already opened.
-void MediaDbWriter::open(const char *a_filename) {
+// May throw invalid_argument if an error occured while opening the file.
+void MediaDbWriter::open(const char *a_filename) throw (invalid_argument) {
 	if (m_writer.is_open()) {
 		close();
 	}
 
 	m_writer.open(a_filename);
+
+	if (!m_writer.good()) {
+		throw invalid_argument("Couldn't open the file.");
+	}
 }
 
 // Writes a line of data.
 // May throw invalid_argument if a_media is not MusicAlbumMedia,
 // if a_media is NULL, or if an error occurs during the writing of the file.
-void MediaDbWriter::writeNext(const BaseMedia *a_media) throw (invalid_argument) {
+void MediaDbWriter::write(const BaseMedia *a_media) throw (invalid_argument) {
 	if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
 		throw invalid_argument("Only music album media is supported!");
 	}
 
 	if (a_media == NULL) {
-		throw invalid_argument("a_media was null!");
+		throw invalid_argument("a_media was NULL!");
 	}
 
 	MusicAlbumMedia *media = (MusicAlbumMedia *) a_media;

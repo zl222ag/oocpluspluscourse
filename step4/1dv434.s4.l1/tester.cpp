@@ -8,12 +8,14 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
+#include <vector>
 #include "tester.h"
 #include "mediaregister.h"
 #include "mediadbreader.h"
 
 using std::cout;
 using std::endl;
+using std::vector;
 using std::invalid_argument;
 
 // Runs the tests for the media register class.
@@ -24,27 +26,25 @@ void Tester::testRegister() {
 
 	cout << "Check media: " << endl;
 	mediaRegister.showMedia();
-	cout << endl;
 
 	mediaRegister.sortMedia();
-	cout << "Check sorted: " << endl;
+	cout << endl << "Check sorted: " << endl;
 	mediaRegister.showMedia();
-	cout << endl;
 
-	cout << "Trying to save to file \"" << tmpJunkFile << "\" (should work)!"
-			<< endl;
+	cout << endl << "Trying to save to file \"" << tmpJunkFile
+			<< "\" (should work)!" << endl;
 	mediaRegister.saveReg(tmpJunkFile);
 	std::ifstream file(tmpJunkFile);
 	assert(file.good());
 	file.close();
-	cout << endl;
 
-	cout << "Emptying register, should be empty" << endl << "--start--" << endl;
+	cout << endl << "Emptying register, should be empty" << endl << "--start--"
+			<< endl;
 	mediaRegister.emptyReg();
 	mediaRegister.showMedia();
-	cout << "--end--" << endl << endl;
+	cout << "--end--" << endl;
 
-	cout << "Testing newly saved wabjers!" << endl << endl;
+	cout << endl << "Testing newly saved wabjers!" << endl;
 	MediaDbReader reader(tmpJunkFile);
 	BaseMedia *media = NULL;
 
@@ -105,6 +105,25 @@ void Tester::testRegister() {
 	assert(media == NULL);
 
 	std::remove(tmpJunkFile);
+
+	cout << endl << "Rushing to find rush (should be 3 elements)" << endl;
+	mediaRegister.loadReg();
+
+	vector<BaseMedia *> mediaVec = mediaRegister.findMedia("rush");
+	assert(mediaVec.size() == 3);
+	assert(*mediaVec[0] == MusicAlbumMedia("Rush", "Hemispheres", 1978));
+	assert(*mediaVec[1] == MusicAlbumMedia("Rush", "Permanent waves", 1980));
+	assert(*mediaVec[2] == MusicAlbumMedia("Rush", "Moving Pictures", 1981));
+
+	cout << endl << "checking for Judas Priest (should be 1 element)" << endl;
+
+	mediaVec = mediaRegister.findMedia("JUDAS priest");
+	assert(mediaVec.size() == 1);
+	assert(
+			*mediaVec[0]
+					== MusicAlbumMedia("Judas Priest", "killing machine",
+							1978));
+
 }
 
 // Runs tests for the music album media class.
@@ -113,7 +132,7 @@ void Tester::testMusicAlbumMedia() {
 	MediaRegister mediaRegister;
 	mediaRegister.loadReg();
 
-	cout << "Is Rush's permanent waves on the \"shelf\"? (yes)" << endl;
+	cout << endl << "Is Rush's permanent waves on the \"shelf\"? (yes)" << endl;
 	BaseMedia *media = mediaRegister.findMedia("rUsh", "permanenT waVes");
 	assert(media != NULL);
 	assert(media->getId() == MusicAlbumMedia::IDENTIFICATION);
@@ -134,10 +153,11 @@ void Tester::testMusicAlbumMedia() {
 
 	delete media2;
 
-	cout << "Checking difference between Rush's Permanent Waves and"
+	cout << "Checking difference between Rush's Permanent Waves and "
 			"Oscar Peterson's Soft Sands!" << endl;
 
-	media2 = (BaseMedia *) mediaRegister.findMedia("oscar peterson", "soft sands");
+	media2 = (BaseMedia *) mediaRegister.findMedia("oscar peterson",
+			"soft sands");
 	assert(media2 != NULL);
 
 	assert(!(*media == *media2));

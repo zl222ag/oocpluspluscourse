@@ -58,8 +58,12 @@ public:
 		std::remove(m_media.begin(), m_media.end(), a_media);
 	}
 
-	// Finds the specified media.
+	// Finds the specified media by artist name and album name.
+	// May return NULL if the specified media was not found.
 	BaseMedia *findMedia(const char *artistName, const char *albumName) const;
+
+	// Finds the specified media's by artist's name.
+	std::vector<BaseMedia *> findMedia(const char *artistName) const;
 
 	// Shows data for media.
 	void showMedia() const {
@@ -79,9 +83,12 @@ public:
 	}
 
 	// Saves register to file.
+	// May throw invalid_argument if a_dbFile is NULL.
 	void saveReg(const char *a_dbFile = "media.dat") const
 			throw (std::invalid_argument);
 	// Loads register from file.
+	// May throw invalid_argument if a_dbFile is NULL or
+	// if an error occurs during the reading of the file.
 	void loadReg(const char *a_dbFile = "media.dat")
 			throw (std::invalid_argument);
 };
