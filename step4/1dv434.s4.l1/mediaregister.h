@@ -50,8 +50,16 @@ public:
 	void addMedia(BaseMedia *a_media) throw (std::invalid_argument);
 
 	// Removes a media!
-	void removeMedia(const BaseMedia *a_media) {
-		std::remove(m_media.begin(), m_media.end(), a_media);
+	bool removeMedia(const BaseMedia *a_media) {
+		std::vector<BaseMedia *>::iterator tmp = std::remove(m_media.begin(),
+				m_media.end(), a_media);
+		if (tmp == m_media.end()) {
+			return false;
+		}
+
+		delete *tmp;
+		m_media.erase(tmp);
+		return true;
 	}
 
 	// Finds the specified media by artist name and album name.

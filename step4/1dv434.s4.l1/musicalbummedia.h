@@ -16,7 +16,7 @@
 #include "basemedia.h"
 
 class MusicAlbumMedia: public BaseMedia {
-	char *m_artistName, *m_albumName;
+	char *m_artistName = NULL, *m_albumName = NULL;
 	short m_releaseYear;
 
 	// For output with cout or a file. Is used by friend std::operator
@@ -66,6 +66,21 @@ public:
 	// Year the album got released.
 	short getReleaseYear() const {
 		return m_releaseYear;
+	}
+
+	// The artist's name.
+	// Makes copy.
+	// May throw invalid_argument if artistName is NULL.
+	void setArtistName(const char *artistName) throw (std::invalid_argument);
+
+	// The album name.
+	// Makes copy.
+	// May throw invalid_argument if albumName is NULL.
+	void setAlbumName(const char *a_albumName) throw (std::invalid_argument);
+
+	// Year the album got released.
+	void setReleaseYear(short a_value) {
+		m_releaseYear = a_value;
 	}
 
 	// Needed when not an initialization, but assignment.
