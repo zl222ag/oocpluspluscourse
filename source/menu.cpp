@@ -1,6 +1,3 @@
-#ifndef MENU_CPP
-#define MENU_CPP
-
 #include <iostream>
 #include <limits>
 #include <menu.h>
@@ -120,5 +117,3 @@ int Menu::addMenuItem(int a_menu, const char *a_itemText) {
 	m_menus[a_menu].item[m_menus[a_menu].length] = a_itemText;
 	return m_menus[a_menu].length++;
 }
-
-#endif // MENU_CPP

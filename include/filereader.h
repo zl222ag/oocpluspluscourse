@@ -28,9 +28,9 @@ public:
 		}
 	}
 
-	// Opens a file, if a file is already opened
-	// then it closes the previous one.
-	void open(char *);
+	// Opens a file, if a file is already opened then it closes the previous one.
+	// May throw runtime error if an error occurs while opening file.
+	void open(char *) throw (runtime_error);
 
 	// Is a file currently opened?
 	bool isOpen() const {
@@ -42,12 +42,13 @@ public:
 		if (!m_file.is_open()) {
 			throw state_error("A file must be opened!");
 		}
+
 		m_file.close();
 	}
 
 	// Reads next Double, returns true if not EOF or non double value,
 	// throws state_error if a file is not opened.
-	bool readNextDouble(double &);
+	bool readNextDouble(double &) throw(state_error);
 };
 
 #endif // FILE_READER_H

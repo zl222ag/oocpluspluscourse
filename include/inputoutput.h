@@ -5,6 +5,7 @@
 #include <limits>
 
 using std::cout;
+using std::endl;
 using std::cin;
 using std::numeric_limits;
 using std::streamsize;
@@ -34,6 +35,14 @@ public:
 		cin.get(a_userChoice);
 		readEnter();
 	}
+
+	// Reads a number from the user (repeated until it's not an error).
+	static void readInteger(const char *text, int &value, int min);
+
+	// Reads a number from the user (repeated until it's not an error).
+	// May throw runtime_error if min is greater than max
+	static void readInteger(const char *text, int &value, int min, int max)
+			throw (std::runtime_error);
 };
 
 #endif // INPUT_OUTPUT_H
