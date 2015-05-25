@@ -179,7 +179,7 @@ int MediaApplication::run() {
 				m_register.loadReg();
 				cout << "Successfully loaded the register from file." << endl;
 			} catch (const invalid_argument &e) {
-				cout << "Couldn't load the register from file." << endl;
+				cout << "Couldn't load the register from file: " << e.what() << endl;
 			}
 
 			readEnter();
@@ -190,7 +190,7 @@ int MediaApplication::run() {
 				m_register.saveReg();
 				cout << "Successfully saved the register to file." << endl;
 			} catch (const invalid_argument &e) {
-				cout << "Couldn't load the register to file." << endl;
+				cout << "Couldn't load the register to file: " << e.what() << endl;
 			}
 
 			readEnter();

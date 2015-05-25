@@ -42,6 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath);C:\Users\Zlatkow\libs\include;..\..\include\</IncludePath>
+    <LibraryPath>$(LibraryPath);C:\Users\Zlatkow\libs\lib\x86;..\..\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -84,6 +85,7 @@
     <ClCompile Include="mediadbwriter.cpp" />
     <ClCompile Include="mediaregister.cpp" />
     <ClCompile Include="musicalbummedia.cpp" />
+    <ClCompile Include="tester.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basemedia.h" />
@@ -91,11 +93,14 @@
     <ClInclude Include="mediadbwriter.h" />
     <ClInclude Include="mediaregister.h" />
     <ClInclude Include="musicalbummedia.h" />
+    <ClInclude Include="tester.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\lib\zlib.lib" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="broken1.dat" />
+    <None Include="broken2.dat" />
     <None Include="media.dat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

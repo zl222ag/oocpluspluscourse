@@ -136,7 +136,7 @@ void Tester::testRegister() {
 		thrown = false;
 		mediaRegister.addMedia(
 				MusicAlbumMedia("Judas Priest", "killing machine", 1978));
-	} catch (const invalid_argument &e) {
+	} catch (const invalid_argument &) {
 		thrown = true;
 	}
 
@@ -162,11 +162,19 @@ void Tester::testRegister() {
 	assert(
 			mediaRegister.removeMedia(
 					MusicAlbumMedia("RUSH", "stratospheres", 1976)));
-	try {
-		assert(mediaRegister.findMedia("RuSH", "StratosPHeres") == NULL);
-	} catch (...) {
-		cout << "pork" << endl;
-	}
+	assert((media = mediaRegister.findMedia("RuSH", "StratosPHeres")) == NULL);
+	delete media;
+
+	cout << "Searching and checking for Sting's ...Nothing Like The Sun." << endl;
+	assert((media = mediaRegister.findMedia("Sting", "...nothing LIKE THE SUN")) != NULL);
+	assert(*media == MusicAlbumMedia("sting", "...nothing like the sun", 1987));
+	delete media;
+
+	cout << "Searching and removing Rush's Moving Pictures." << endl;
+	assert((media = mediaRegister.findMedia("Rush", "Moving pictures")) != NULL);
+	assert(mediaRegister.removeMedia(*media));
+	delete media;
+	assert((media = mediaRegister.findMedia("Rush", "Moving pictures")) == NULL);
 }
 
 // Runs tests for the music album media class.
@@ -227,7 +235,7 @@ void Tester::testMusicAlbumMedia() {
 	try {
 		thrown = false;
 		MusicAlbumMedia(NULL, NULL, 0);
-	} catch (const std::invalid_argument &e) {
+	} catch (const std::invalid_argument &) {
 		thrown = true;
 	}
 
@@ -236,7 +244,7 @@ void Tester::testMusicAlbumMedia() {
 	try {
 		thrown = false;
 		MusicAlbumMedia("testing", NULL, 0);
-	} catch (const std::invalid_argument &e) {
+	} catch (const std::invalid_argument &) {
 		thrown = true;
 	}
 
@@ -245,7 +253,7 @@ void Tester::testMusicAlbumMedia() {
 	try {
 		thrown = false;
 		MusicAlbumMedia(NULL, "testing", 0);
-	} catch (const std::invalid_argument &e) {
+	} catch (const std::invalid_argument &) {
 		thrown = true;
 	}
 
@@ -267,7 +275,7 @@ void Tester::testMediaReader() {
 	try {
 		thrown = false;
 		reader.readNext();
-	} catch (const std::invalid_argument &e) {
+	} catch (const std::invalid_argument &) {
 		thrown = true;
 	}
 
@@ -352,7 +360,7 @@ void Tester::testMediaReader() {
 			++i;
 			delete media;
 		}
-	} catch (const std::invalid_argument &e) {
+	} catch (const std::invalid_argument &) {
 		assert(i == 4);
 		thrown = true;
 	}
@@ -400,7 +408,7 @@ void Tester::testMediaReader() {
 	try {
 		thrown = false;
 		media = reader.readNext();
-	} catch (const std::invalid_argument &e) {
+	} catch (const std::invalid_argument &) {
 		thrown = true;
 	}
 

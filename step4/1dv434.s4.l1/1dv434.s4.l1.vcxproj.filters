@@ -30,6 +30,9 @@
     <ClCompile Include="mediadbwriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basemedia.h">
@@ -47,11 +50,16 @@
     <ClInclude Include="mediadbwriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tester.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\lib\zlib.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="media.dat" />
+    <None Include="broken1.dat" />
+    <None Include="broken2.dat" />
   </ItemGroup>
 </Project>

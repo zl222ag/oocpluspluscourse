@@ -8,19 +8,12 @@
 #include <stdexcept>
 #include "musicalbummedia.h"
 
-// The copy constructor.
-// c++11 supports this (delagating constructor)!
-MusicAlbumMedia::MusicAlbumMedia(const MusicAlbumMedia &a_media) :
-		MusicAlbumMedia(a_media.m_artistName, a_media.m_albumName,
-				a_media.m_releaseYear) {
-}
-
 // "Normal" constructor.
 // May throw invalid_argument if one parameter is NULL.
 MusicAlbumMedia::MusicAlbumMedia(const char *a_artistName,
 		const char *a_albumName, short a_releaseYear)
 				throw (std::invalid_argument) :
-		m_releaseYear(a_releaseYear) {
+				m_releaseYear(a_releaseYear) {
 	setArtistName(a_artistName);
 	setAlbumName(a_albumName);
 }
