@@ -154,7 +154,7 @@ void Tester::testRegister() {
 	cout << "Replacing Rush's Hemispheres with Stratospheres." << endl;
 
 	mediaRegister.replaceMedia(MusicAlbumMedia("rush", "hemispheres", 1978),
-			 MusicAlbumMedia("RUSH", "stratospheres", 1976));
+			MusicAlbumMedia("RUSH", "stratospheres", 1976));
 	assert((media = mediaRegister.findMedia("RuSH", "StratosPHeres")) != NULL);
 	delete media;
 
@@ -165,16 +165,20 @@ void Tester::testRegister() {
 	assert((media = mediaRegister.findMedia("RuSH", "StratosPHeres")) == NULL);
 	delete media;
 
-	cout << "Searching and checking for Sting's ...Nothing Like The Sun." << endl;
-	assert((media = mediaRegister.findMedia("Sting", "...nothing LIKE THE SUN")) != NULL);
+	cout << "Searching and checking for Sting's ...Nothing Like The Sun."
+			<< endl;
+	assert(
+			(media = mediaRegister.findMedia("Sting", "...nothing LIKE THE SUN")) != NULL);
 	assert(*media == MusicAlbumMedia("sting", "...nothing like the sun", 1987));
 	delete media;
 
 	cout << "Searching and removing Rush's Moving Pictures." << endl;
-	assert((media = mediaRegister.findMedia("Rush", "Moving pictures")) != NULL);
+	assert(
+			(media = mediaRegister.findMedia("Rush", "Moving pictures")) != NULL);
 	assert(mediaRegister.removeMedia(*media));
 	delete media;
-	assert((media = mediaRegister.findMedia("Rush", "Moving pictures")) == NULL);
+	assert(
+			(media = mediaRegister.findMedia("Rush", "Moving pictures")) == NULL);
 }
 
 // Runs tests for the music album media class.

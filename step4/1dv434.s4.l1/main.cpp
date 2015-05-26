@@ -150,7 +150,6 @@ void MediaApplication::showArtistAlbums() {
 
 int MediaApplication::run() {
 	char choice = '\0';
-	choice = 'y';
 	MusicAlbumMedia *album = NULL;
 
 #ifdef _DEBUG
@@ -158,7 +157,7 @@ int MediaApplication::run() {
 
 		do {
 			cout << "Run test first?: ";
-			//InputOutput::readChar(choice);
+			InputOutput::readChar(choice);
 			choice = tolower(choice);
 			cout << endl;
 		} while (choice != 'n' && choice != 'y');
@@ -179,7 +178,8 @@ int MediaApplication::run() {
 				m_register.loadReg();
 				cout << "Successfully loaded the register from file." << endl;
 			} catch (const invalid_argument &e) {
-				cout << "Couldn't load the register from file: " << e.what() << endl;
+				cout << "Couldn't load the register from file: " << e.what()
+						<< endl;
 			}
 
 			readEnter();
@@ -190,7 +190,8 @@ int MediaApplication::run() {
 				m_register.saveReg();
 				cout << "Successfully saved the register to file." << endl;
 			} catch (const invalid_argument &e) {
-				cout << "Couldn't load the register to file: " << e.what() << endl;
+				cout << "Couldn't load the register to file: " << e.what()
+						<< endl;
 			}
 
 			readEnter();
@@ -208,8 +209,12 @@ int MediaApplication::run() {
 			break;
 
 		case Main::MenuItems::ADD_ALBUM:
-			m_register.addMedia(createAlbum());
-			cout << "Album was added!" << endl;
+			try {
+				m_register.addMedia(createAlbum());
+				cout << "Album was added!" << endl;
+			} catch (const invalid_argument &e) {
+				cout << "Album couldn't be added: " << e.what() << endl;
+			}
 			readEnter();
 			break;
 

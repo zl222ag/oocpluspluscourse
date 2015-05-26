@@ -29,8 +29,8 @@ public:
 	// The copy constructor.
 	// c++11 supports this (delagating constructor)!
 	MusicAlbumMedia(const MusicAlbumMedia &a_media) :
-		MusicAlbumMedia(a_media.m_artistName, a_media.m_albumName,
-		a_media.m_releaseYear) {
+			MusicAlbumMedia(a_media.m_artistName, a_media.m_albumName,
+					a_media.m_releaseYear) {
 	}
 
 	// "Normal" constructor.

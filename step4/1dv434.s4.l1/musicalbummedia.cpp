@@ -13,7 +13,7 @@
 MusicAlbumMedia::MusicAlbumMedia(const char *a_artistName,
 		const char *a_albumName, short a_releaseYear)
 				throw (std::invalid_argument) :
-				m_releaseYear(a_releaseYear) {
+		m_releaseYear(a_releaseYear) {
 	setArtistName(a_artistName);
 	setAlbumName(a_albumName);
 }
