@@ -16,6 +16,7 @@
 #include "mediaregister.h"
 
 using std::cout;
+using std::clog;
 using std::endl;
 using std::invalid_argument;
 
@@ -39,22 +40,30 @@ enum MenuItems {
 }
 
 class MediaApplication {
+	// Reads a line from the user, with size limit (min 1 char is implied).
 	static void readLine(const char *text, char *out, const size_t size);
 
+	// Reads the enter key!
 	static void readEnter() {
 		cout << "Press a key to continue...";
 		InputOutput::readEnter();
 		cout << endl;
 	}
 
+	// Creates an album from user's input.
+	static MusicAlbumMedia createAlbum() throw (invalid_argument);
+
 	MediaRegister m_register;
 	Menu m_menu;
 
+	// Initializes the menus for the application.
 	void initMenus();
-	MusicAlbumMedia createAlbum() throw (invalid_argument);
-	void removeAlbum(const MusicAlbumMedia &) throw (runtime_error);
+	// Removes an album from register.
+	void removeAlbum(const MusicAlbumMedia &);
+	// Finds an album and returns it.
 	MusicAlbumMedia *findAlbum();
 	void manageAlbum(MusicAlbumMedia album);
+	// Lists the artists and their albums.
 	void showArtistAlbums();
 
 public:
@@ -65,6 +74,7 @@ public:
 	int run();
 };
 
+// Reads a line from the user, with size limit (min 1 char is implied).
 void MediaApplication::readLine(const char *a_text, char *a_out,
 		const size_t a_size) {
 	bool error = false;
@@ -77,6 +87,22 @@ void MediaApplication::readLine(const char *a_text, char *a_out,
 	} while (error || strlen(a_out) < 1);
 }
 
+// Creates an album from user's input.
+MusicAlbumMedia MediaApplication::createAlbum() throw (invalid_argument) {
+	char artistName[MusicAlbumMedia::CHARS_LIMIT];
+	char albumName[MusicAlbumMedia::CHARS_LIMIT];
+	int releaseYear = 0;
+
+	readLine("Enter the artist's name: ", artistName,
+			MusicAlbumMedia::CHARS_LIMIT);
+	readLine("Enter the album name: ", albumName, MusicAlbumMedia::CHARS_LIMIT);
+	InputOutput::readInteger("Enter the album's release year: ", releaseYear,
+			-3000, 3000);
+
+	return MusicAlbumMedia(artistName, albumName, (short) releaseYear);
+}
+
+// Initializes the menus for the application.
 void MediaApplication::initMenus() {
 	m_menu.addMenu("Media Library++");
 	m_menu.addMenuItem(0, "Load library");
@@ -95,30 +121,18 @@ void MediaApplication::initMenus() {
 	m_menu.addMenuItem(1, "Exit this menu");
 }
 
-MusicAlbumMedia MediaApplication::createAlbum() throw (invalid_argument) {
-	char artistName[MusicAlbumMedia::CHARS_LIMIT];
-	char albumName[MusicAlbumMedia::CHARS_LIMIT];
-	int releaseYear = 0;
-
-	readLine("Enter the artist's name: ", artistName,
-			MusicAlbumMedia::CHARS_LIMIT);
-	readLine("Enter the album name: ", albumName, MusicAlbumMedia::CHARS_LIMIT);
-	InputOutput::readInteger("Enter the album's release year: ", releaseYear,
-			-3000, 3000);
-
-	return MusicAlbumMedia(artistName, albumName, (short) releaseYear);
-}
-
-void MediaApplication::removeAlbum(const MusicAlbumMedia &a_album)
-		throw (runtime_error) {
+// Removes an album from register.
+void MediaApplication::removeAlbum(const MusicAlbumMedia &a_album) {
 
 	if (!m_register.removeMedia(a_album)) {
-		throw runtime_error("Something went wrong when removing the album!");
+		clog << "Something went wrong when removing the album!" << endl;
+		return;
 	}
 
 	cout << "The album " << a_album << " was removed." << endl;
 }
 
+// Finds an album and returns it.
 MusicAlbumMedia *MediaApplication::findAlbum() {
 	char artistName[MusicAlbumMedia::CHARS_LIMIT],
 			albumName[MusicAlbumMedia::CHARS_LIMIT];
@@ -130,6 +144,7 @@ MusicAlbumMedia *MediaApplication::findAlbum() {
 	return (MusicAlbumMedia *) m_register.findMedia(artistName, albumName);
 }
 
+// Lists the artists and their albums.
 void MediaApplication::showArtistAlbums() {
 	char artistName[MusicAlbumMedia::CHARS_LIMIT];
 	readLine("What's the artist's name?: ", artistName,
@@ -246,6 +261,7 @@ int MediaApplication::run() {
 	return EXIT_SUCCESS;
 }
 
+// Manages an album from the register.
 void MediaApplication::manageAlbum(MusicAlbumMedia a_album) {
 	int choice = 0;
 	MusicAlbumMedia tmpAlbum;
