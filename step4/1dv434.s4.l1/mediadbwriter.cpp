@@ -40,6 +40,20 @@ void MediaDbWriter::open(const char *a_filename) throw (invalid_argument) {
 	}
 }
 
+// Closes a file (may throw invalid_argument if a file is not
+// already opened.
+void MediaDbWriter::close() throw(invalid_argument) {
+	if (!m_writer.is_open()) {
+		throw invalid_argument("No file was opened!");
+	}
+
+	m_writer.close();
+
+	if (!m_writer.good()) {
+		throw invalid_argument("Something went wrong while writing the file!");
+	}
+}
+
 // Writes a line of data.
 // May throw invalid_argument if a_media is not MusicAlbumMedia,
 // if a_media is NULL, or if an error occurs during the writing of the file.

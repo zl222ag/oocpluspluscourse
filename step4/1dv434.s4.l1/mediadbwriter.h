@@ -32,6 +32,12 @@ public:
 		open(a_filename);
 	}
 
+	~MediaDbWriter() throw(std::invalid_argument) {
+		if (m_writer.is_open()) {
+			close();
+		}
+	}
+
 	// Opens a file, closes if one is already opened.
 	// May throw invalid_argument if an error occured while opening the file.
 	void open(const char *filename) throw (std::invalid_argument);
@@ -43,13 +49,7 @@ public:
 
 	// Closes a file (may throw invalid_argument if a file is not
 	// already opened.
-	void close() throw(std::invalid_argument) {
-		if (!m_writer.is_open()) {
-			throw std::invalid_argument("No file was opened!");
-		}
-
-		m_writer.close();
-	}
+	void close() throw(std::invalid_argument);
 
 	// Writes a line of data.
 	// May throw invalid_argument if a_media is not MusicAlbumMedia,
