@@ -15,7 +15,7 @@
 
 using std::cout;
 using std::endl;
-using std::vector;
+using std::list;
 using std::invalid_argument;
 
 // Runs the tests for the media register class.
@@ -110,24 +110,25 @@ void Tester::testRegister() {
 	cout << endl << "Rushing to find rush (should be 3 elements)." << endl;
 	mediaRegister.loadReg();
 
-	vector<BaseMedia *> mediaVec = mediaRegister.findMedia("rush");
+	list<BaseMedia *> mediaVec = mediaRegister.findMedia("rush");
+	list<BaseMedia *>::const_iterator iterator = mediaVec.begin();
 	assert(mediaVec.size() == 3);
-	assert(*mediaVec[0] == MusicAlbumMedia("Rush", "Hemispheres", 1978));
-	assert(*mediaVec[1] == MusicAlbumMedia("Rush", "Permanent waves", 1980));
-	assert(*mediaVec[2] == MusicAlbumMedia("Rush", "Moving Pictures", 1981));
-	delete mediaVec[0];
-	delete mediaVec[1];
-	delete mediaVec[2];
+	assert(**iterator == MusicAlbumMedia("Rush", "Hemispheres", 1978));
+	delete *(iterator++);
+	assert(**iterator == MusicAlbumMedia("Rush", "Permanent waves", 1980));
+	delete *(iterator++);
+	assert(**iterator == MusicAlbumMedia("Rush", "Moving Pictures", 1981));
+	delete *iterator;
 
 	cout << endl << "Checking for Judas Priest (should be 1 element)." << endl;
 
 	mediaVec = mediaRegister.findMedia("JUDAS priest");
 	assert(mediaVec.size() == 1);
 	assert(
-			*mediaVec[0]
+		**mediaVec.begin()
 					== MusicAlbumMedia("Judas Priest", "killing machine",
 							1978));
-	delete mediaVec[0];
+	delete *mediaVec.begin();
 
 	cout << endl << "Trying to add Judas Priest - Killing Machine "
 			"(should throw invalid_argument)." << endl;

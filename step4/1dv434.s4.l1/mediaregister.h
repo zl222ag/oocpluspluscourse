@@ -8,7 +8,7 @@
 #ifndef MEDIAREGISTER_H_
 #define MEDIAREGISTER_H_
 
-#include <vector>
+#include <list>
 #include <iostream>
 #include <algorithm>
 #include <iostream>
@@ -18,7 +18,7 @@
 #include "musicalbummedia.h"
 
 class MediaRegister {
-	std::vector<BaseMedia *> m_media;
+	std::list<BaseMedia *> m_media;
 
 	// Is used together with showMedia's for_each!
 	static void show(BaseMedia *a_media) {
@@ -58,7 +58,7 @@ public:
 	BaseMedia *findMedia(const char *artistName, const char *albumName) const;
 
 	// Finds the specified media's by artist's name.
-	std::vector<BaseMedia *> findMedia(const char *artistName) const;
+	std::list<BaseMedia *> findMedia(const char *artistName) const;
 
 	// Shows data for media.
 	void showMedia() const {
@@ -68,7 +68,7 @@ public:
 	// Sorts media.
 	void sortMedia() {
 		// Is there a better way? (Not a rhetorical question)
-		std::sort(m_media.begin(), m_media.end(), sorter);
+		m_media.sort(sorter);
 	}
 
 	// Replaces media

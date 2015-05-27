@@ -149,14 +149,14 @@ void MediaApplication::showArtistAlbums() {
 	char artistName[MusicAlbumMedia::CHARS_LIMIT];
 	readLine("What's the artist's name?: ", artistName,
 			MusicAlbumMedia::CHARS_LIMIT);
-	std::vector<BaseMedia *> media = m_register.findMedia(artistName);
+	std::list<BaseMedia *> media = m_register.findMedia(artistName);
 
 	if (media.size() < 1) {
-		cout << "Cannot find artist " << artistName << '!' << endl;
+		clog << "Cannot find artist " << artistName << '!' << endl;
 		return;
 	}
 
-	for (std::vector<BaseMedia *>::const_iterator i = media.begin();
+	for (std::list<BaseMedia *>::const_iterator i = media.begin();
 			i != media.end(); ++i) {
 		cout << **i << endl;
 		delete *i;
@@ -193,7 +193,7 @@ int MediaApplication::run() {
 				m_register.loadReg();
 				cout << "Successfully loaded the register from file." << endl;
 			} catch (const invalid_argument &e) {
-				cout << "Couldn't load the register from file: " << e.what()
+				clog << "Couldn't load the register from file: " << e.what()
 						<< endl;
 			}
 
@@ -205,7 +205,7 @@ int MediaApplication::run() {
 				m_register.saveReg();
 				cout << "Successfully saved the register to file." << endl;
 			} catch (const invalid_argument &e) {
-				cout << "Couldn't load the register to file: " << e.what()
+				clog << "Couldn't load the register to file: " << e.what()
 						<< endl;
 			}
 
@@ -228,7 +228,7 @@ int MediaApplication::run() {
 				m_register.addMedia(createAlbum());
 				cout << "Album was added!" << endl;
 			} catch (const invalid_argument &e) {
-				cout << "Album couldn't be added: " << e.what() << endl;
+				clog << "Album couldn't be added: " << e.what() << endl;
 			}
 			readEnter();
 			break;
@@ -237,7 +237,7 @@ int MediaApplication::run() {
 			album = findAlbum();
 
 			if (album == NULL) {
-				cout << "Couldn't find album with those credentials!" << endl;
+				clog << "Couldn't find album with those credentials!" << endl;
 				readEnter();
 				break;
 			}
