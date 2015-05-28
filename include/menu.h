@@ -21,7 +21,7 @@ class Menu {
 	/* Shows the menu.
 	 * Returns -1 on error.
 	 */
-	int showMenu(int) const;
+	int showMenu(int menu) const;
 public:
 	Menu() {}
 
@@ -29,15 +29,15 @@ public:
 	 * Reads cin from user and returns item.
 	 * Returns -1 on error.
 	 */
-	int select(int) const;
+	int select(int menu) const;
 	/* Adds a menu.
 	 * returns -1 on error (if it reached the limit).
 	 */
-	int addMenu(const char *);
+	int addMenu(const char *header);
 	/* Adds a menu item to an existing menu.
 	 * Returns -1 on error.
 	 */
-	int addMenuItem(int, const char *);
+	int addMenuItem(int menu, const char *itemText);
 };
 
 #endif // MENU_H

@@ -4,6 +4,7 @@
 #include <inputoutput.h>
 
 using std::cout;
+using std::clog;
 using std::cin;
 using std::endl;
 using std::numeric_limits;
@@ -65,26 +66,41 @@ int Menu::select(int a_menu) const {
 	}
 
 	int returnValue;
+	bool error;
 	showMenu(a_menu);
 
 	do {
 		returnValue = -1;
 		if (swedish) {
-			cout << endl << "Skriv in ett nummer från 0 - " <<
+			clog << endl << "Skriv in ett nummer från 0 - " <<
 				currentMenu.length << " och tryck sedan på RETUR: ";
 		} else {
-			cout << endl << "Write in a number from 0 - " <<
+			clog << endl << "Write in a number from 0 - " <<
 				currentMenu.length << " and press ENTER: ";
 		}
+
 		cin >> returnValue;
+		error = !cin.good();
 		cin.clear();
 		InputOutput::readEnter();
+		cout << endl;
 
 		if (returnValue == 0) {
-			cout << endl;
 			showMenu(a_menu);
+		} else if (error) {
+			if (swedish) {
+				clog << "Fel: ogiltig inmatning!" << endl;
+			} else {
+				clog << "Error: invalid input!" << endl;
+			}
+		} else if (returnValue < 0 || returnValue > currentMenu.length) {
+			if (swedish) {
+				clog << "Fel: meny alternativet finns inte!" << endl;
+			} else {
+				clog << "Error: menu choice does not exist!" << endl;
+			}
 		}
-	} while (returnValue < 1 || returnValue > currentMenu.length);
+	} while (error || returnValue < 1 || returnValue > currentMenu.length);
 
 	cout << endl;
 
@@ -107,11 +123,9 @@ int Menu::addMenu(const char *a_header) {
  * Returns -1 on error.
  */
 int Menu::addMenuItem(int a_menu, const char *a_itemText) {
-	if (a_menu < 0 || a_menu >= m_length) {
+	if (a_menu < 0 || a_menu >= m_length ||
+			m_menus[a_menu].length >= MAX_MENU_ITEMS) {
 		return -1; // TODO: THROW EXCEPTION
-	}
-	if (m_menus[a_menu].length >= MAX_MENU_ITEMS) {
-		return -1;
 	}
 
 	m_menus[a_menu].item[m_menus[a_menu].length] = a_itemText;

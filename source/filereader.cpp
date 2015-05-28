@@ -1,5 +1,7 @@
 #include <filereader.h>
 
+using std::runtime_error;
+
 // Opens a file, if a file is already opened then it closes the previous one.
 // May throw runtime error if an error occurs while opening file.
 void FileReader::open(char *a_filename) throw (runtime_error) {

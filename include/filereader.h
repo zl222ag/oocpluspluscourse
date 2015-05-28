@@ -4,22 +4,18 @@
 #include <fstream>
 #include <stdexcept>
 
-using std::ifstream;
-using std::logic_error;
-using std::runtime_error;
-
 // To be used with erroneous states.
 // For instance when closing a file that is not even opened.
-class state_error: public logic_error {
+class state_error : public std::logic_error {
 public:
 	state_error(const char *a_msg) :
-			logic_error(a_msg) {
+			std::logic_error(a_msg) {
 	}
 };
 
 class FileReader {
 private:
-	ifstream m_file;
+	std::ifstream m_file;
 
 public:
 	~FileReader() {
@@ -30,7 +26,7 @@ public:
 
 	// Opens a file, if a file is already opened then it closes the previous one.
 	// May throw runtime error if an error occurs while opening file.
-	void open(char *) throw (runtime_error);
+	void open(char *) throw (std::runtime_error);
 
 	// Is a file currently opened?
 	bool isOpen() const {
