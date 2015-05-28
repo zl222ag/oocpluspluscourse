@@ -15,10 +15,12 @@
 #endif
 #include "mediaregister.h"
 
+using std::cin;
 using std::cout;
 using std::clog;
 using std::endl;
 using std::invalid_argument;
+using std::runtime_error;
 
 namespace Main {
 enum MenuItems {
@@ -84,6 +86,12 @@ void MediaApplication::readLine(const char *a_text, char *a_out,
 		cin.getline(a_out, a_size);
 		error = !cin.good();
 		cin.clear();
+
+		if (error) {
+			clog << "Could not read input!" << endl;
+		} else if (strlen(a_out) < 1) {
+			clog << "Input should at least have one character!" << endl;
+		}
 	} while (error || strlen(a_out) < 1);
 }
 
@@ -97,7 +105,8 @@ MusicAlbumMedia MediaApplication::createAlbum() throw (invalid_argument) {
 			MusicAlbumMedia::CHARS_LIMIT);
 	readLine("Enter the album name: ", albumName, MusicAlbumMedia::CHARS_LIMIT);
 	InputOutput::readInteger("Enter the album's release year: ", releaseYear,
-			-3000, 3000);
+			-3000, 3000, "Value was less than the limit -3000.",
+			"Value was greater than the limit 3000.", "Invalid input.");
 
 	return MusicAlbumMedia(artistName, albumName, (short) releaseYear);
 }

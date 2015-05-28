@@ -48,7 +48,7 @@ public:
 	// Adds media!
 	// May throw invalid_argument if a_media is NULL or if the element
 	// has already been added.
-	void addMedia(const BaseMedia &a_media) throw (std::invalid_argument);
+	void addMedia(const BaseMedia &media) throw (std::invalid_argument);
 
 	// Removes a media!
 	bool removeMedia(const BaseMedia &);

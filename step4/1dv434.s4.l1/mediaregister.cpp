@@ -20,16 +20,22 @@ using std::invalid_argument;
 // Adds media!
 // May throw invalid_argument if a_media has already been added.
 void MediaRegister::addMedia(const BaseMedia &a_media) throw (invalid_argument) {
-	if (a_media.getId() != MusicAlbumMedia::IDENTIFICATION) {
-		return;
-	}
+	if (a_media.getId() == MusicAlbumMedia::IDENTIFICATION) {
+		// MusicAlbumMedia
+		const MusicAlbumMedia media = *((MusicAlbumMedia *) &a_media);
+		BaseMedia *tmp;
 
-	const MusicAlbumMedia media = *((MusicAlbumMedia *) &a_media);
-	BaseMedia *tmp;
-
-	if ((tmp = findMedia(media.getArtistName(), media.getAlbumName())) != NULL) {
-		delete tmp;
-		throw invalid_argument("That media has already been added!");
+		if ((tmp = findMedia(media.getArtistName(), media.getAlbumName())) != NULL) {
+			delete tmp;
+			throw invalid_argument("That media has already been added!");
+		}
+	} else {
+		// Other media
+		if (find_if(m_media.begin(), m_media.end(), [&a_media](BaseMedia *a_current) {
+			return a_media == *a_current;
+		}) != m_media.end()) {
+			throw invalid_argument("That media has already been added!");
+		}
 	}
 
 	m_media.push_back(a_media.clone());
@@ -100,7 +106,25 @@ list<BaseMedia *> MediaRegister::findMedia(const char *a_artistName) const {
 }
 
 bool MediaRegister::replaceMedia(const BaseMedia &a_from,
-		const BaseMedia &a_to) {
+	const BaseMedia &a_to) {
+	if (a_to.getId() == MusicAlbumMedia::IDENTIFICATION) {
+		// MusicAlbumMedia
+		const MusicAlbumMedia media = *((MusicAlbumMedia *) &a_to);
+		BaseMedia *tmp;
+
+		if ((tmp = findMedia(media.getArtistName(), media.getAlbumName())) != NULL) {
+			delete tmp;
+			throw invalid_argument("That media has already been added!");
+		}
+	} else {
+		// Other media
+		if (find_if(m_media.begin(), m_media.end(), [&a_to](BaseMedia *a_current) {
+			return a_to == *a_current;
+		}) != m_media.end()) {
+			throw invalid_argument("That media has already been added!");
+		}
+	}
+
 	for (std::list<BaseMedia*>::iterator i = m_media.begin();
 			i != m_media.end(); ++i) {
 		if (**i == a_from) {
