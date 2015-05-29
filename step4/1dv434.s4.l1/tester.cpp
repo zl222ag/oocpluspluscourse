@@ -245,6 +245,9 @@ void Tester::testRegister() {
 	delete media2;
 	delete media;
 
+	// Testing to find album, then replace that class's data.
+	// Testing to add as well that non existing album and checks its data.
+	// Extra tests for fields.
 	assert((media = mediaRegister.findMedia("pink floyd", "Wish you where HERE")) != NULL);
 	assert(Compare::equali(((MusicAlbumMedia *) media)->getArtistName(), "pink floyd"));
 	assert(Compare::equali(((MusicAlbumMedia *) media)->getAlbumName(), "wish you where here"));
