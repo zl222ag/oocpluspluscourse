@@ -15,7 +15,7 @@ public:
 #elif defined(__unix__)
 		// ANSI THINGY, clears the screen and set the cursor position at the
 		// beginning!
-		cout << "\033[2J\033[0;0f";
+		std::cout << "\033[2J\033[0;0f";
 #endif
 	}
 
