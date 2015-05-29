@@ -205,16 +205,29 @@ int MediaApplication::run() {
 		case Main::MenuItems::LOAD_LIBRARY:
 			try {
 				m_register.loadReg();
-				cout << "Successfully loaded the library from file." << endl;
 			} catch (const invalid_argument &e) {
 				clog << "Couldn't load the library from file: " << e.what()
 						<< endl;
+				readEnter();
+				break;
+			}
+
+			cout << "Successfully loaded the library from file." << endl;
+
+			if (m_register.isEmptyReg()) {
+				cout << "Though the library is still empty (empty library file)!" << endl;
 			}
 
 			readEnter();
 			break;
 
 		case Main::MenuItems::SAVE_LIBRARY:
+			if (m_register.isEmptyReg()) {
+				cout << "There are no albums in the library, nothing to save!"
+					<< endl;
+				readEnter();
+			}
+
 			try {
 				m_register.saveReg();
 				cout << "Successfully saved the library to file." << endl;
@@ -228,7 +241,7 @@ int MediaApplication::run() {
 
 		case Main::MenuItems::SHOW_LIBRARY:
 			if (m_register.isEmptyReg()) {
-				cout << "There are no albums in the Library!" << endl;
+				cout << "There are no albums in the library!" << endl;
 			} else {
 				m_register.showMedia();
 			}
