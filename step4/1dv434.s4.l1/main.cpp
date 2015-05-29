@@ -132,7 +132,6 @@ void MediaApplication::initMenus() {
 
 // Removes an album from register.
 void MediaApplication::removeAlbum(const MusicAlbumMedia &a_album) {
-
 	if (!m_register.removeMedia(a_album)) {
 		clog << "Something went wrong when removing the album!" << endl;
 		return;
@@ -155,7 +154,13 @@ MusicAlbumMedia *MediaApplication::findAlbum() {
 
 // Lists the artists and their albums.
 void MediaApplication::showArtistAlbums() {
+	if (m_register.isEmptyReg()) {
+		clog << "Cannot search for artist register since it is empty!" << endl;
+		return;
+	}
+
 	char artistName[MusicAlbumMedia::CHARS_LIMIT];
+
 	readLine("What's the artist's name?: ", artistName,
 			MusicAlbumMedia::CHARS_LIMIT);
 	std::list<BaseMedia *> media = m_register.findMedia(artistName);
@@ -239,10 +244,18 @@ int MediaApplication::run() {
 			} catch (const invalid_argument &e) {
 				clog << "Album couldn't be added: " << e.what() << endl;
 			}
+
 			readEnter();
 			break;
 
 		case Main::MenuItems::MANAGE_ALBUM:
+			if (m_register.isEmptyReg()) {
+				clog << "Cannot search for albums register since it is "
+						"empty!" << endl;
+				readEnter();
+				break;
+			}
+
 			album = findAlbum();
 
 			if (album == NULL) {

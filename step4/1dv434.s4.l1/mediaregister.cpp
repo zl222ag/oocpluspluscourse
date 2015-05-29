@@ -105,6 +105,8 @@ list<BaseMedia *> MediaRegister::findMedia(const char *a_artistName) const {
 	return out;
 }
 
+// Replaces media
+// May throw invalid_argument if a_media has already been added.
 bool MediaRegister::replaceMedia(const BaseMedia &a_from,
 	const BaseMedia &a_to) {
 	if (a_to.getId() == MusicAlbumMedia::IDENTIFICATION) {

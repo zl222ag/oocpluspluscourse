@@ -178,8 +178,68 @@ void Tester::testRegister() {
 			(media = mediaRegister.findMedia("Rush", "Moving pictures")) != NULL);
 	assert(mediaRegister.removeMedia(*media));
 	delete media;
+
 	assert(
 			(media = mediaRegister.findMedia("Rush", "Moving pictures")) == NULL);
+
+	cout << endl << "Checking if replacing the police's album ghost in the "
+		"machine with the existing Fleetwood Mac's Rumours causes an "
+		"invalid_argument! (should)" << endl;
+
+	try {
+		thrown = false;
+		mediaRegister.replaceMedia(MusicAlbumMedia("the police", "ghost in the machine", 1981), MusicAlbumMedia("Fleetwood mac", "rumours", 1977));
+	} catch (const invalid_argument &) {
+		thrown = true;
+	}
+
+	assert(thrown);
+
+	// Testing to add album, then replace that class's data.
+	// Testing to add as well that non existing album and checks its data.
+	// Extra tests for fields.
+	cout << "Checking to see if Bee Gees's album can be added, and then modified "
+		"from the outside. (should not)" << endl;
+	BaseMedia *media2 = NULL;
+	media = new MusicAlbumMedia("Bee Gees", "Children of the World", 1976);
+	mediaRegister.addMedia(*media);
+	assert(
+		(media2 = mediaRegister.findMedia("Bee Gees", "Children of the World")) != NULL);
+	assert(*media == *media2);
+	delete media2;
+	((MusicAlbumMedia *) media)->setAlbumName("trafalgar");
+	((MusicAlbumMedia *) media)->setReleaseYear(1971);
+	assert(Compare::equali(((MusicAlbumMedia *) media)->getAlbumName(), "trafalgar"));
+	assert(((MusicAlbumMedia *) media)->getReleaseYear(), 1971);
+	assert(
+		(media2 = mediaRegister.findMedia("Bee Gees", "Trafalgar")) == NULL);
+	mediaRegister.addMedia(*media);
+	assert((media2 = mediaRegister.findMedia("Bee Gees", "Trafalgar")) != NULL);
+	delete media2;
+	delete media;
+
+	// Testing to replace album, then replace that class's data.
+	// Testing to add as well that non existing album and checks its data.
+	// Extra tests for fields.
+	cout << "Checking to see if Oscar Peterson's album can be replaced, and then modified "
+		"from the outside. (should not)" << endl;
+	media = new MusicAlbumMedia("Test", "Testing", -256);
+	mediaRegister.replaceMedia(MusicAlbumMedia("Oscar Peterson", "Soft Sands", 1957), *media);
+	assert((media2 = mediaRegister.findMedia("Test", "Testing")) != NULL);
+	assert(*media == *media2);
+	delete media2;
+	((MusicAlbumMedia *) media)->setArtistName("NULL1");
+	((MusicAlbumMedia *) media)->setAlbumName("NULL2");
+	((MusicAlbumMedia *) media)->setReleaseYear(-256);
+	assert(Compare::equali(((MusicAlbumMedia *) media)->getArtistName(), "NULL1"));
+	assert(Compare::equali(((MusicAlbumMedia *) media)->getAlbumName(), "NULL2"));
+	assert(((MusicAlbumMedia *) media)->getReleaseYear(), -256);
+	assert(
+		(media2 = mediaRegister.findMedia("NULL1", "NULL2")) == NULL);
+	mediaRegister.addMedia(*media);
+	assert((media2 = mediaRegister.findMedia("NULL1", "NULL2")) != NULL);
+	delete media2;
+	delete media;
 }
 
 // Runs tests for the music album media class.
@@ -249,7 +309,7 @@ void Tester::testMusicAlbumMedia() {
 	try {
 		thrown = false;
 		MusicAlbumMedia("testing", NULL, 0);
-	} catch (const std::invalid_argument &) {
+	} catch (const invalid_argument &) {
 		thrown = true;
 	}
 
@@ -258,7 +318,7 @@ void Tester::testMusicAlbumMedia() {
 	try {
 		thrown = false;
 		MusicAlbumMedia(NULL, "testing", 0);
-	} catch (const std::invalid_argument &) {
+	} catch (const invalid_argument &) {
 		thrown = true;
 	}
 
@@ -280,7 +340,7 @@ void Tester::testMediaReader() {
 	try {
 		thrown = false;
 		reader.readNext();
-	} catch (const std::invalid_argument &) {
+	} catch (const invalid_argument &) {
 		thrown = true;
 	}
 
@@ -365,7 +425,7 @@ void Tester::testMediaReader() {
 			++i;
 			delete media;
 		}
-	} catch (const std::invalid_argument &) {
+	} catch (const invalid_argument &) {
 		assert(i == 4);
 		thrown = true;
 	}
@@ -413,7 +473,7 @@ void Tester::testMediaReader() {
 	try {
 		thrown = false;
 		media = reader.readNext();
-	} catch (const std::invalid_argument &) {
+	} catch (const invalid_argument &) {
 		thrown = true;
 	}
 

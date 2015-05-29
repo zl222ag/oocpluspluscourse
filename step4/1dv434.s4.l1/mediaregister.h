@@ -72,12 +72,18 @@ public:
 	}
 
 	// Replaces media
+	// May throw invalid_argument if a_media has already been added.
 	bool replaceMedia(const BaseMedia &from, const BaseMedia &to);
 
 	// Removes all data from register.
 	void emptyReg() {
 		std::for_each(m_media.begin(), m_media.end(), empty);
 		m_media.clear();
+	}
+
+	// Is the register empty.
+	bool isEmptyReg() const {
+		return m_media.empty();
 	}
 
 	// Saves register to file.
