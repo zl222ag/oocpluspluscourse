@@ -155,7 +155,7 @@ MusicAlbumMedia *MediaApplication::findAlbum() {
 // Lists the artists and their albums.
 void MediaApplication::showArtistAlbums() {
 	if (m_register.isEmptyReg()) {
-		clog << "Cannot search for artist register since it is empty!" << endl;
+		clog << "Cannot search for artist library since it is empty!" << endl;
 		return;
 	}
 
@@ -205,9 +205,9 @@ int MediaApplication::run() {
 		case Main::MenuItems::LOAD_LIBRARY:
 			try {
 				m_register.loadReg();
-				cout << "Successfully loaded the register from file." << endl;
+				cout << "Successfully loaded the library from file." << endl;
 			} catch (const invalid_argument &e) {
-				clog << "Couldn't load the register from file: " << e.what()
+				clog << "Couldn't load the library from file: " << e.what()
 						<< endl;
 			}
 
@@ -217,9 +217,9 @@ int MediaApplication::run() {
 		case Main::MenuItems::SAVE_LIBRARY:
 			try {
 				m_register.saveReg();
-				cout << "Successfully saved the register to file." << endl;
+				cout << "Successfully saved the library to file." << endl;
 			} catch (const invalid_argument &e) {
-				clog << "Couldn't load the register to file: " << e.what()
+				clog << "Couldn't load the library to file: " << e.what()
 						<< endl;
 			}
 
@@ -227,13 +227,22 @@ int MediaApplication::run() {
 			break;
 
 		case Main::MenuItems::SHOW_LIBRARY:
-			m_register.showMedia();
+			if (m_register.isEmptyReg()) {
+				cout << "There are no albums in the Library!" << endl;
+			} else {
+				m_register.showMedia();
+			}
+
 			readEnter();
 			break;
 
 		case Main::MenuItems::SORT_LIBRARY:
-			m_register.sortMedia();
-			cout << "Library was sorted!" << endl;
+			if (m_register.isEmptyReg()) {
+				cout << "Library was not sorted since it is empty!" << endl;
+			} else {
+				m_register.sortMedia();
+				cout << "Library was sorted!" << endl;
+			}
 			readEnter();
 			break;
 
@@ -250,7 +259,7 @@ int MediaApplication::run() {
 
 		case Main::MenuItems::MANAGE_ALBUM:
 			if (m_register.isEmptyReg()) {
-				clog << "Cannot search for albums register since it is "
+				clog << "Cannot search for albums library since it is "
 						"empty!" << endl;
 				readEnter();
 				break;
