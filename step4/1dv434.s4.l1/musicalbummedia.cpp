@@ -20,7 +20,7 @@ MusicAlbumMedia::MusicAlbumMedia(const char *a_artistName,
 
 // The artist's name.
 // Makes copy.
-// May throw invalid_argument if artistName is NULL.
+// May throw invalid_argument if "a_artistName" is NULL.
 void MusicAlbumMedia::setArtistName(const char *a_artistName)
 		throw (std::invalid_argument) {
 	if (a_artistName == NULL) {
@@ -32,7 +32,7 @@ void MusicAlbumMedia::setArtistName(const char *a_artistName)
 
 // The album name.
 // Makes copy.
-// May throw invalid_argument if albumName is NULL.
+// May throw invalid_argument if "a_albumName" is NULL.
 void MusicAlbumMedia::setAlbumName(const char *a_albumName)
 		throw (std::invalid_argument) {
 	if (a_albumName == NULL) {

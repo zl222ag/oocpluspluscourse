@@ -20,14 +20,14 @@ public:
 	static const int IDENTIFICATION = 10654;
 	static const int CHARS_LIMIT = 128;
 
-	// C++ STL's require this.
+	// C++'s STLs require this.
 	// C++11 supports this (delegating constructors).
 	MusicAlbumMedia() :
 			MusicAlbumMedia("", "", 0) {
 	}
 
 	// The copy constructor.
-	// c++11 supports this (delagating constructor)!
+	// C++11 supports this (delegating constructor)!
 	MusicAlbumMedia(const MusicAlbumMedia &a_media) :
 			MusicAlbumMedia(a_media.m_artistName, a_media.m_albumName,
 					a_media.m_releaseYear) {
@@ -38,7 +38,7 @@ public:
 	MusicAlbumMedia(const char *artistName, const char *albumName,
 			short releaseYear) throw (std::invalid_argument);
 
-	// The class's id (polymorhism).
+	// The class's id (polymorphism).
 	virtual int getId() const {
 		return IDENTIFICATION;
 	}
@@ -62,13 +62,13 @@ public:
 
 	// The artist's name.
 	// Makes copy.
-	// May throw invalid_argument if artistName is NULL.
+	// May throw invalid_argument if "artistName" is NULL.
 	void setArtistName(const char *artistName) throw (std::invalid_argument);
 
 	// The album name.
 	// Makes copy.
-	// May throw invalid_argument if albumName is NULL.
-	void setAlbumName(const char *a_albumName) throw (std::invalid_argument);
+	// May throw invalid_argument if "albumName" is NULL.
+	void setAlbumName(const char *albumName) throw (std::invalid_argument);
 
 	// Year the album got released.
 	void setReleaseYear(short a_value) {

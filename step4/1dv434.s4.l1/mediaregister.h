@@ -46,18 +46,21 @@ public:
 	}
 
 	// Adds media!
-	// May throw invalid_argument if a_media is NULL or if the element
+	// May throw invalid_argument if "media" is NULL or if the element
 	// has already been added.
 	void addMedia(const BaseMedia &media) throw (std::invalid_argument);
 
 	// Removes a media!
+	// Returns true if the media was found.
 	bool removeMedia(const BaseMedia &);
 
 	// Finds the specified media by artist name and album name.
 	// May return NULL if the specified media was not found.
+	// Returns a copy, memory must be released (if not NULL of course).
 	BaseMedia *findMedia(const char *artistName, const char *albumName) const;
 
 	// Finds the specified media's by artist's name.
+	// Returns a vector of copies, memory must be released.
 	std::list<BaseMedia *> findMedia(const char *artistName) const;
 
 	// Shows data for media.
@@ -71,8 +74,10 @@ public:
 		m_media.sort(sorter);
 	}
 
-	// Replaces media
-	// May throw invalid_argument if a_media has already been added.
+	// Replaces media.
+	// May throw invalid_argument if "media" has already been added.
+	// Creates a copy of "to".
+	// Returns true if "from" was found (and replaced).
 	bool replaceMedia(const BaseMedia &from, const BaseMedia &to);
 
 	// Removes all data from register.
@@ -87,13 +92,14 @@ public:
 	}
 
 	// Saves register to file.
-	// May throw invalid_argument if a_dbFile is NULL.
-	void saveReg(const char *a_dbFile = "media.dat") const
+	// May throw invalid_argument if "dbFile" is NULL.
+	void saveReg(const char *dbFile = "media.dat") const
 			throw (std::invalid_argument);
+
 	// Loads register from file.
-	// May throw invalid_argument if a_dbFile is NULL or
+	// May throw invalid_argument if "dbFile" is NULL or
 	// if an error occurs during the reading of the file.
-	void loadReg(const char *a_dbFile = "media.dat")
+	void loadReg(const char *dbFile = "media.dat")
 			throw (std::invalid_argument);
 };
 

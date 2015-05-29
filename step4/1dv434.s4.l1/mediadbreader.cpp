@@ -30,6 +30,7 @@ void MediaDbReader::open(const char *a_filename) throw (invalid_argument) {
 // May throw invalid_argument if no file is opened,
 // if album name or release year could not be read, or if
 // an error occured during reading of the file.
+// Since it returns a pointer it has to be freed.
 BaseMedia *MediaDbReader::readNext() throw (invalid_argument) {
 	if (!m_reader.is_open()) {
 		throw invalid_argument("No file was opened!");

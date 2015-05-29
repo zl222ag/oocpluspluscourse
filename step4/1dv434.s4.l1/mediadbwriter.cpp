@@ -55,24 +55,20 @@ void MediaDbWriter::close() throw(invalid_argument) {
 }
 
 // Writes a line of data.
-// May throw invalid_argument if a_media is not MusicAlbumMedia,
-// if a_media is NULL, or if an error occurs during the writing of the file.
-void MediaDbWriter::write(const BaseMedia *a_media) throw (invalid_argument) {
-	if (a_media->getId() != MusicAlbumMedia::IDENTIFICATION) {
+// May throw invalid_argument if "a_media" is not MusicAlbumMedia or
+// if an error occurs during the writing of the file.
+void MediaDbWriter::write(const BaseMedia &a_media) throw (invalid_argument) {
+	if (a_media.getId() != MusicAlbumMedia::IDENTIFICATION) {
 		throw invalid_argument("Only music album media is supported!");
 	}
 
-	if (a_media == NULL) {
-		throw invalid_argument("a_media was NULL!");
-	}
+	const MusicAlbumMedia media = *((MusicAlbumMedia *) &a_media);
 
-	MusicAlbumMedia *media = (MusicAlbumMedia *) a_media;
-
-	char *tmpArtist = lowerer(media->getArtistName()), *tmpAlbum = lowerer(
-			media->getAlbumName());
+	char *tmpArtist = lowerer(media.getArtistName()), *tmpAlbum = lowerer(
+			media.getAlbumName());
 
 	m_writer << tmpArtist << DELIMITER << tmpAlbum << DELIMITER
-			<< media->getReleaseYear() << endl;
+			<< media.getReleaseYear() << endl;
 
 	delete[] tmpArtist;
 	delete[] tmpAlbum;

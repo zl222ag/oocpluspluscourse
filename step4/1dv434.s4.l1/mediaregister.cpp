@@ -18,7 +18,8 @@ using std::list;
 using std::invalid_argument;
 
 // Adds media!
-// May throw invalid_argument if a_media has already been added.
+// May throw invalid_argument if "a_media" has already been added.
+// Creates a copy of "a_media".
 void MediaRegister::addMedia(const BaseMedia &a_media) throw (invalid_argument) {
 	if (a_media.getId() == MusicAlbumMedia::IDENTIFICATION) {
 		// MusicAlbumMedia
@@ -42,6 +43,7 @@ void MediaRegister::addMedia(const BaseMedia &a_media) throw (invalid_argument) 
 }
 
 // Removes a media!
+// Returns true if the media was found (and removed).
 bool MediaRegister::removeMedia(const BaseMedia &a_media) {
 	bool retVal = false;
 	m_media.remove_if(
@@ -60,6 +62,7 @@ bool MediaRegister::removeMedia(const BaseMedia &a_media) {
 
 // Finds the specified media by artist name and album name.
 // May return NULL if the specified media was not found.
+// Returns a copy, memory must be released (if not NULL of course).
 BaseMedia *MediaRegister::findMedia(const char *a_artistName,
 		const char *a_albumName) const {
 	list<BaseMedia *>::const_iterator tmp = std::find_if(m_media.begin(),
@@ -79,6 +82,7 @@ BaseMedia *MediaRegister::findMedia(const char *a_artistName,
 }
 
 // Finds the specified media's by artist's name.
+// Returns a vector of copies, memory must be released.
 list<BaseMedia *> MediaRegister::findMedia(const char *a_artistName) const {
 	list<BaseMedia *>::const_iterator tmp, pos = m_media.begin();
 	list<BaseMedia *> out;
@@ -105,8 +109,10 @@ list<BaseMedia *> MediaRegister::findMedia(const char *a_artistName) const {
 	return out;
 }
 
-// Replaces media
-// May throw invalid_argument if a_media has already been added.
+// Replaces media.
+// May throw invalid_argument if "a_media" has already been added.
+// Creates a copy of "a_to".
+// Returns true if "a_from" was found (and replaced).
 bool MediaRegister::replaceMedia(const BaseMedia &a_from,
 	const BaseMedia &a_to) {
 	if (a_to.getId() == MusicAlbumMedia::IDENTIFICATION) {
@@ -140,7 +146,7 @@ bool MediaRegister::replaceMedia(const BaseMedia &a_from,
 }
 
 // Saves register to file.
-// May throw invalid_argument if a_dbFile is NULL.
+// May throw invalid_argument if "a_dbFile" is NULL.
 void MediaRegister::saveReg(const char *a_dbFile /* "media.dat" */) const
 		throw (invalid_argument) {
 	if (a_dbFile == NULL) {
@@ -151,12 +157,12 @@ void MediaRegister::saveReg(const char *a_dbFile /* "media.dat" */) const
 
 	for (list<BaseMedia *>::const_iterator i = m_media.begin();
 			i != m_media.end(); ++i) {
-		writer.write(*i);
+		writer.write(**i);
 	}
 }
 
 // Loads register from file.
-// May throw invalid_argument if a_dbFile is NULL or
+// May throw invalid_argument if "a_dbFile" is NULL or
 // if an error occurs during the reading of the file.
 void MediaRegister::loadReg(const char *a_dbFile /* "media.dat" */)
 		throw (invalid_argument) {

@@ -11,7 +11,7 @@
 #include <ostream>
 
 class BaseMedia {
-	// For output with cout or a file. Is used by friend std::operator.
+	// For output with cout or a file. Is used by friend operator.
 	virtual std::ostream &print(std::ostream &) const = 0;
 
 public:

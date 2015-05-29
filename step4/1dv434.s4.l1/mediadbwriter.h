@@ -16,8 +16,7 @@ class BaseMedia;
 
 class MediaDbWriter {
 	static const char DELIMITER = '|';
-	static const int ARTIST_NAME_MAX_LENGTH = 128, ALBUM_NAME_MAX_LENGTH = 128,
-			YEAR_CHAR_MAX_LENGTH = 10;
+	static const int YEAR_CHAR_MAX_LENGTH = 10;
 	std::ofstream m_writer;
 
 	// Gets a lower case version of the string.
@@ -52,9 +51,9 @@ public:
 	void close() throw(std::invalid_argument);
 
 	// Writes a line of data.
-	// May throw invalid_argument if a_media is not MusicAlbumMedia,
-	// if a_media is NULL, or if an error occurs during the writing of the file.
-	void write(const BaseMedia *) throw (std::invalid_argument);
+	// May throw invalid_argument if "media" is not MusicAlbumMedia or
+	// if an error occurs during the writing of the file.
+	void write(const BaseMedia &media) throw (std::invalid_argument);
 };
 
 #endif // MEDIADBWRITER_H_

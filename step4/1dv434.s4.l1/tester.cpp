@@ -210,7 +210,7 @@ void Tester::testRegister() {
 	((MusicAlbumMedia *) media)->setAlbumName("trafalgar");
 	((MusicAlbumMedia *) media)->setReleaseYear(1971);
 	assert(Compare::equali(((MusicAlbumMedia *) media)->getAlbumName(), "trafalgar"));
-	assert(((MusicAlbumMedia *) media)->getReleaseYear(), 1971);
+	assert(((MusicAlbumMedia *) media)->getReleaseYear() == 1971);
 	assert(
 		(media2 = mediaRegister.findMedia("Bee Gees", "Trafalgar")) == NULL);
 	mediaRegister.addMedia(*media);
@@ -233,7 +233,7 @@ void Tester::testRegister() {
 	((MusicAlbumMedia *) media)->setReleaseYear(-256);
 	assert(Compare::equali(((MusicAlbumMedia *) media)->getArtistName(), "NULL1"));
 	assert(Compare::equali(((MusicAlbumMedia *) media)->getAlbumName(), "NULL2"));
-	assert(((MusicAlbumMedia *) media)->getReleaseYear(), -256);
+	assert(((MusicAlbumMedia *) media)->getReleaseYear() == -256);
 	assert(
 		(media2 = mediaRegister.findMedia("NULL1", "NULL2")) == NULL);
 	mediaRegister.addMedia(*media);

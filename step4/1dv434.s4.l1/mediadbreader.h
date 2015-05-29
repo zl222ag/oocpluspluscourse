@@ -44,7 +44,7 @@ public:
 	}
 
 	// Rewinds the file/starts from the beginning!
-	// Throws invalid_argument if an error occurs.
+	// May throw invalid_argument if an error occurs.
 	void rewind() throw (std::invalid_argument) {
 		m_reader.seekg(std::ios::beg);
 
@@ -55,7 +55,7 @@ public:
 	}
 
 	// Closes a file.
-	// Throws invalid_argument if no file was opened.
+	// May throw invalid_argument if no file was opened.
 	void close() throw (std::invalid_argument) {
 		if (!m_reader.is_open()) {
 			throw std::invalid_argument("No file was opened!");
@@ -68,6 +68,7 @@ public:
 	// May throw invalid_argument if no file is opened,
 	// if album name or release year could not be read, or if
 	// an error occured during reading of the file.
+	// Since it returns a pointer it has to be freed.
 	BaseMedia *readNext() throw (std::invalid_argument);
 };
 
