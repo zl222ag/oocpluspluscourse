@@ -244,6 +244,22 @@ void Tester::testRegister() {
 	assert((media2 = mediaRegister.findMedia("NULL1", "NULL2")) != NULL);
 	delete media2;
 	delete media;
+
+	assert((media = mediaRegister.findMedia("pink floyd", "Wish you where HERE")) != NULL);
+	assert(Compare::equali(((MusicAlbumMedia *) media)->getArtistName(), "pink floyd"));
+	assert(Compare::equali(((MusicAlbumMedia *) media)->getAlbumName(), "wish you where here"));
+	assert(((MusicAlbumMedia *) media)->getReleaseYear() == 1975);
+	((MusicAlbumMedia *) media)->setAlbumName("the wall");
+	((MusicAlbumMedia *) media)->setReleaseYear(1979);
+	assert(Compare::equali(((MusicAlbumMedia *) media)->getArtistName(), "pink floyd"));
+	assert(Compare::equali(((MusicAlbumMedia *) media)->getAlbumName(), "the wall"));
+	assert(((MusicAlbumMedia *) media)->getReleaseYear() == 1979);
+	assert(
+		(media2 = mediaRegister.findMedia("pink floyd", "the wall")) == NULL);
+	mediaRegister.addMedia(*media);
+	assert((media2 = mediaRegister.findMedia("pink FLOYD", "The WALL")) != NULL);
+	delete media2;
+	delete media;
 }
 
 // Runs tests for the music album media class.
