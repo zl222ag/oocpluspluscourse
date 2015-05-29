@@ -226,6 +226,7 @@ int MediaApplication::run() {
 				cout << "There are no albums in the library, nothing to save!"
 					<< endl;
 				readEnter();
+				break;
 			}
 
 			try {
@@ -256,6 +257,7 @@ int MediaApplication::run() {
 				m_register.sortMedia();
 				cout << "Library was sorted!" << endl;
 			}
+
 			readEnter();
 			break;
 
@@ -321,8 +323,19 @@ void MediaApplication::manageAlbum(MusicAlbumMedia a_album) {
 
 		case Album::MenuItems::EDIT:
 			tmpAlbum = createAlbum();
-			m_register.replaceMedia(a_album, tmpAlbum);
+
+			try {
+				m_register.replaceMedia(a_album, tmpAlbum);
+			} catch (const invalid_argument &e) {
+				cout << "Couldn't edit media: " << e.what() << endl;
+				readEnter();
+				break;
+			}
+
+			cout << "\"" << a_album << "\" was replaced with \"" << tmpAlbum <<
+				"\"."<< endl;
 			a_album = tmpAlbum;
+			readEnter();
 			break;
 
 		case Album::MenuItems::REMOVE:
