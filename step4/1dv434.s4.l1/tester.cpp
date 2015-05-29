@@ -44,6 +44,7 @@ void Tester::testRegister() {
 	mediaRegister.emptyReg();
 	mediaRegister.showMedia();
 	cout << "--end--" << endl;
+	assert(mediaRegister.isEmptyReg());
 
 	cout << endl << "Testing newly saved wabjers!" << endl;
 	MediaDbReader reader(tmpJunkFile);
@@ -104,8 +105,11 @@ void Tester::testRegister() {
 
 	media = reader.readNext();
 	assert(media == NULL);
+	reader.close();
 
-	std::remove(tmpJunkFile);
+	if (std::remove(tmpJunkFile) != 0) {
+		std::clog << "Couldn't remove tmp file \"" << tmpJunkFile << "\"!" << endl;
+	}
 
 	cout << endl << "Rushing to find rush (should be 3 elements)." << endl;
 	mediaRegister.loadReg();

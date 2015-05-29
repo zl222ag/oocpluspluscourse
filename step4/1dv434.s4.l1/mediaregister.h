@@ -33,7 +33,6 @@ class MediaRegister {
 
 	// Deletes a media from register (to be used with for loop).
 	static void empty(BaseMedia *a_media) {
-		std::cout << *a_media << std::endl;
 		delete a_media;
 	}
 
